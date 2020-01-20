@@ -1,0 +1,10 @@
+name: root
+dependencies:
+- jupyter
+- pandas
+- requests
+- pip:
+  - folium
+channels:
+  - defaults
+  - conda-forge
