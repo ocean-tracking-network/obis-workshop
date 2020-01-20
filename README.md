@@ -1,11 +1,11 @@
-SLGO OBIS Workshop - Jan 21-23 2020
+## SLGO OBIS Workshop - Jan 21-23 2020
 
 This workshop has been adapted from the standard 4.5 day OBIS training workshop and tailored to an audience of software developers and data management professionals working at the St Lawrence Global Observatory in Rimouski, QC. Understanding that the audience expertise trends more towards Python than R, the R package component has been replaced by a hands-on walkthrough of how to interface directly with the OBIS and WoRMS APIs from Python. R examples are provided in ipython notebook format but are not core to the learning experience.
 
 As SLGO is a world-class operational data aggregation and management platform actively serving a large and important ocean region in Canada, we also choose to encourage participant-directed subject matter and attempt to focus on operational outcomes that serve SLGO moving forward in the important hands-on sessions.
 
 #### Facilitators
-**Name** - *(home OBIS node)* email
+**Name** - *(home OBIS node)* - email
 
 Jon Pye - (Ocean Tracking Network) - jdpye@dal.ca
 
