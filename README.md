@@ -6,8 +6,11 @@ As SLGO is a world-class operational data aggregation and management platform ac
 
 #### Facilitators
 **Name** - *(home OBIS node)* email
+
 Jon Pye - (Ocean Tracking Network) - jdpye@dal.ca
+
 Brian Jones -  (Ocean Tracking Network) - brian.jones@dal.ca
+
 Naomi Tress - (Ocean Tracking Network) - ntress@dal.ca
 
 Many thanks to Ward Appeltans, Leen Vandepitte, Pieter Provoost, Daphnis De Pooter, Abby Benson and all those throughout the OBIS community who helped build and refine the source material used in assembling this workshop. We hope that our adaptation is useful, fit for purpose, and results in productive outcomes for these and other prospective OBIS contributors.
@@ -29,9 +32,9 @@ Give attendees an idea of what OBIS is and how it functions, why and how to beco
 
 09:00  -  Welcome, Introductions, goals for the workshop  
 
-Intro to OBIS – Jon Pye
+Intro to OBIS
 
-Intro to WoRMS – Jon Pye
+Intro to WoRMS
 
 *10:20     Break*
 
