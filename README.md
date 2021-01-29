@@ -1,8 +1,8 @@
-## SLGO OBIS Workshop - Jan 21-23 2020
+## OBIS, DarwinCore, and IPTs Workshop -
 
-This workshop has been adapted from the standard 4.5 day OBIS training workshop and tailored to an audience of software developers and data management professionals working at the St Lawrence Global Observatory in Rimouski, QC. Understanding that the audience expertise trends more towards Python than R, the R package component has been replaced by a hands-on walkthrough of how to interface directly with the OBIS and WoRMS APIs from Python. R examples are provided in ipython notebook format but are not core to the learning experience.
+This workshop has been adapted from the standard 4.5 day OBIS training workshop and is aimed at researchers and data professionals who may be creating or aggregating biological presence data with a desire to report that data to OBIS via their national OBIS Node. 
 
-As SLGO is a world-class operational data aggregation and management platform actively serving a large and important ocean region in Canada, we also choose to encourage participant-directed subject matter and attempt to focus on operational outcomes that serve SLGO moving forward in the important hands-on sessions.
+
 
 #### Facilitators
 **Name** - *(home OBIS node)* - email
@@ -13,131 +13,115 @@ Brian Jones -  (Ocean Tracking Network) - brian.jones@dal.ca
 
 Naomi Tress - (Ocean Tracking Network) - ntress@dal.ca
 
-Many thanks to Ward Appeltans, Leen Vandepitte, Pieter Provoost, Daphnis De Pooter, Abby Benson and all those throughout the OBIS community who helped build and refine the source material used in assembling this workshop. We hope that our adaptation is useful, fit for purpose, and results in productive outcomes for these and other prospective OBIS contributors.
-
-### Specifics of the initial request:
-
-An existing biodiversity application is introspecting and serving data from an internally developed database that is very close to OBIS-compliant. Database designed to run the portal and is not necessarily an ideal data representation. Data and metadata live in this portal and a CKAN instance. Looking for a system-to-system approach to meeting OBIS compliance without designing too-disparate data pipelines. Considering all options and welcoming advice on meeting these goals.
-
+Many thanks to Ward Appeltans, Leen Vandepitte, Pieter Provoost, Daphnis De Pooter, Abby Benson and all those throughout the OBIS community who helped build and refine the source material used in assembling this workshop. We hope that our adaptation is useful, fit for purpose, and results in productive outcomes for all prospective OBIS contributors.
 
 
 ### Goals of the Workshop:
 
-Give attendees an idea of what OBIS is and how it functions, why and how to become compliant with OBIS data and metadata formatting and data policy, how OBIS reporting pipelines work. Allow time to investigate solutions to meeting OBIS-compliance from the existing biodiversity data portal at SLGO. Build prototype or work plan to do so.  
+Give attendees an idea of what OBIS is and how it functions, why and how to become compliant with OBIS data and metadata formatting and data policy, how OBIS reporting pipelines work. Allow time to investigate solutions to meeting OBIS-compliance from user-held datasets and work in groups with support from trained bioinformaticians to produce DarwinCore archives fit for ingestion into OBIS nodes, especially OBIS-Canada 
 
 
 ### Schedule:
 
 **Day 1**
 
-09:00  -  Welcome, Introductions, goals for the workshop  
+Welcome, Introductions, goals for the workshop  
 
 Intro to OBIS
 
 Intro to WoRMS
 
-*10:20     Break*
+Intro to Darwin Core 
 
-10:35  -  Darwin Core I
-
-History of DarwinCore  
-
+     History of DarwinCore  
+    
+     (Quiz)
+  
 Occurrence Core and Event Core
 
-Occurrence, Location, Time, and Quantity in Darwin Core
+     Terms, definitions, Resources for End Users
+  
+     Occurrence, Location, Time, and Quantity in Darwin Core
 
-12:00     Lunch
 
-13:00  -  Darwin Core II  
+Darwin Core II  
 
-Darwin Core Archives – how to represent DwC schemas and types
+     Darwin Core Archives – 
+          
+     How to represent DwC schemas and types
 
-Occurrence Core, MeasurementOrFact, Event Core
+     Minimum required information for a DwC-A
+              
+     Occurrence Core + MeasurementOrFact
 
-Representing Event Core in DwC Archives
-
-Ecological Metadata Language and OBIS
-
-*14:20     Break*
-
-14:35  -  Data processing, taxon matching, QC using the OBIS and WoRMS APIs
-
-WoRMS
-
-Accessing WoRMS webservices (REST API)
-
-OBIS
-
-Using the OBIS Data mapper to discover OBIS held datasets
-
-OBIS API v3 – using the REST API  
-
+     Representing Event Core in DwC Archives 
+              
+     OBIS-ENV-DATA
+              
+     (Quiz)
 
 
 **Day 2**
 
-09:00  -  Becoming / contributing data to an OBIS Node
 
-Process and organizational hierarchy
+Ecological Metadata Language and OBIS
 
-Technical / Policy implications
+     (Quiz)
 
-  OBIS Guidelines on Data Sharing and Use
+*Hands-on session 1*
 
-Motivations for sharing data for curation
+Data processing, taxon matching, QC using the robis and obistools R packages
 
-License selection and OBIS data license
+WoRMS
 
-Researcher control of additional restrictions w/ licensing
+    Accessing WoRMS webservices (REST API)
 
-*10:20  -  Break*
+OBIS
 
-10:35  -  Registering Datasets with OBIS IPT (and GBIF)
+    Using the OBIS Data mapper to discover OBIS held datasets
 
-Use the OBIS IPT to register datasets and produce EML entries.
+    OBIS API v3 – using the REST API  
+    
+    Using the robis and obistools packages to discovery OBIS-held datasets
+    
+    
+**Day 3**    
+    
+Publishing your data via OBIS
 
-12:00  -  Lunch
+    Process of submitting/updating DwC archives to OBIS Canada
+    
+    Contributing data to an OBIS Node
+    
+    OBIS Guidelines on Data Sharing and Use
+    
+    Motivations for sharing data
+    
+    Licensing your dataset, CC licenses, OBIS default data licens, implications
 
-13:00  -  Hands-on session 1 – mapping SLGO datasets to DwC archives
+    Researcher control of additional restrictions w/ licensing
 
-Select dataset to map and migrate the data and metadata to a DarwinCore archive
+*Hands-on Session 2*
 
-Register the resulting archive with a test IPT, building the EML
-
-*14:20  -  Break*
-
-14:35  -  Hands-on session 1 – cont. – Mapping datasets from OGSL.ca/bio to DwC Occurrence Core
-
-Demo – mapping of output from ogsl.ca/bio extract to DwC terms.
-
-Collaboratively map data flow from SLGO backend to DwC archives
-
-
-
-**Day 3**
-
-09:00  -  Hands-on session 2 – User-directed project(s)
-
-Will identify one or more useful OBIS-adjacent projects / data pipelines / outcomes that SLGO staff identify as important and build towards implementation of those outcomes.
-
-Suggested topics:
-
-Work towards MVP of OBIS-compliant archives for SLGO biodiversity data
-
-Build process to map and keep current SLGO-held data as it’s currently ingested or held into updating DwC archives in either OBIS Canada or a custom SLGO IPT
-
-Build Python implementations of robis and/or obistools
+Mapping (user-provided) dataset into parseable DwC-A / EML package and submitting to OBIS Canada
 
 
+**Day 4**
 
-12:00  -  Lunch
+*Hands-on Session 3*
 
-13:00  -  Infrastructure exercise – deployment [plan for] test-mode IPT for use at SLGO
+Finding, collecting, visualizing and analyzing data from DwC archives provided from OBIS's data portal or via robis (Binder/JuPyTeR notebook session)
 
-Deploy or plan the deployment of an Integrated Publishing Toolkit to SLGO infrastructure. Continue to work in teams on user-directed projects from Hands-on Session 2
+Contributing to OBIS and OBIS Canada
 
-*14:20  -  Break*
+    As a data contributor
+    
+    As a collections manager
+    
+    As a software developer
+    
+    (Quiz)
 
-14:35  -  Question and Answer, Wrap-up and Next Steps  
+Question and Answer, Wrap-up and Next Steps  
 
-Answer questions, evaluate workshop content, and plan necessary follow-ups
+Answer questions, evaluate workshop content, plan necessary follow-ups
