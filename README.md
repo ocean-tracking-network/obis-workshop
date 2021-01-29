@@ -20,6 +20,13 @@ Many thanks to Ward Appeltans, Leen Vandepitte, Pieter Provoost, Daphnis De Poot
 
 Give attendees an idea of what OBIS is and how it functions, why and how to become compliant with OBIS data and metadata formatting and data policy, how OBIS reporting pipelines work. Allow time to investigate solutions to meeting OBIS-compliance from user-held datasets and work in groups with support from trained bioinformaticians to produce DarwinCore archives fit for ingestion into OBIS nodes, especially OBIS-Canada 
 
+Highlight the utility of providing data to OBIS Canada (and onward to OBIS), learn how to create 
+Darwin Core Archives.  
+
+Provide our own institutionally held project data and metadata in EML/DwC-A format to OBIS Canada for publication/aggregation.  
+
+Deliver curriculum via OceanTeacher Global Academy and/or GitHub to provide a permanent resource for users to refer back to. 
+
 
 ### Schedule:
 
