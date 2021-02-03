@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+
+*.pyc
+*.ipynb_checkpoints/*
+*.DS_Store*
+*.vscode/*
