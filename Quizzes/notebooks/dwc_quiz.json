@@ -1,0 +1,207 @@
+[
+    {
+        "question": "Your dataset contains abundance data, for example 25 individuals per liter. You need to record this as:",
+        "answers": [
+            "DwC:individualCount: 25 per liter",
+            "DwC:organismQuantity: 25 and DwC:organismQuantityType: individuals per liter",
+            "MeasurementType: abundance; MeasurementValue: 25 ; MeasurementUnit: individuals per liter",
+            "DwC:abundance: 25 individuals per liter"
+        ],
+        "answer_text": "",
+        "correct_answer": 2
+    },
+    {
+        "question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?",
+        "answers": [
+            "associatedTaxa",
+            "identificationQualifier",
+            "bibliographicCitation",
+            "identificationReferences"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "only have the country as location information, no coordinates. What should I do?",
+        "answers": [
+            "Add the country name in the DwC:location. OBIS automatically adds the coordinates",
+            "Add the country's EEZ name in DwC:country. OBIS automatically adds the coordinates",
+            "Provide the midpoint and radius from the countries EEZ (available in marineregions.org) in DwC:decimalLatitude, DwC:decimalLongitude and DwC:coordinateuncertaintyInMeters and provide the country EEZ name in DwC:location and add the marineregions ID (MRGID) in DwC:locationID",
+            "Add the ISO country code in DwC:country. OBIS automatically adds the coordinates"
+        ],
+        "answer_text": "The correct answer is: Provide the midpoint and radius from the countries EEZ (available in marineregions.org) in DwC:decimalLatitude, DwC:decimalLongitude and DwC:coordinateuncertaintyInMeters and provide the country EEZ name in DwC:location and add the marineregions ID (MRGID) in DwC:locationID",
+        "correct_answer": 2
+    },
+    {
+        "question": "Which dates and times are acceptable for OBIS? Multiple answers are possible.",
+        "answers": [
+            "2010",
+            "2013-02-15/2023-02-20",
+            "05-12-2010T10:08:35",
+            "2010-6-05",
+            "2010-02"
+        ],
+        "answer_text": "",
+        "correct_answer": [
+            0,
+            4
+        ]
+    },
+    {
+        "question": "The scientificNameID is a mandatory DwC term for OBIS. It represents a unique and persistent identifier for the taxon name. OBIS recommends to use the LifeScience Identifier (LSID) from the World Register of Marine Species (WoRMS). Go to WoRMS and search for Ascidia curvata. What is the scientificNameID for this species?",
+        "answers": [
+            "urn:lsid:marinespecies.org:taxname:103483",
+            "http://www.marinespecies.org/aphia.php?p=taxdetails&id=249981",
+            "ascidia_curvata_249981",
+            "urn:lsid:marinespecies.org:taxname:249981"
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "When a scientificName is not in WoRMS, I can leave the scientificNameID blank, but contact the WoRMS data management team to add the name and I will add the WoRMS LSID in the next dataset version.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "You should only correct or update datasets with the consent of the original data provider.",
+        "correct_answer": 0
+    },
+    {
+        "question": "My dataset contains bottom trawl transects, how can I publish this in OBIS?",
+        "answers": [
+            "Provide the coordinates as DwC:startdecimalLongitude and DwC:startdecimalLatitude and DwC:enddecimalLongitude and DwC:enddecimalLatitude.",
+            "OBIS cannot deal with line transects, only point data",
+            "Provide the line transect as DwC:footprintWKT.",
+            "Provide the midpoint in DwC:decimalLatitude and DwC:decimalLongitude and add the radius in DwC:coordinateuncertaintyInMeters. The line transect itself can be provided in DwC:footprintWKT."
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "My dataset contains date ranges. How shall I publish this in OBIS?",
+        "answers": [
+            "Provide the dates as DwC:startEventDate and DwC:endEventDate",
+            "Provide the start and end date in DwC:eventDate with a / separator.",
+            "Provide the mid-date."
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "Coordinates should be recorded in decimal formats. Which is the correct conversion of 18°30'25\"N – 5°15'E as decimalLongitude, decimalLatitude?",
+        "answers": [
+            "18.50694, -5.25000",
+            "18.50694, 5.25000",
+            "18.30250, 5.15000",
+            "18.30250, -5.15000",
+            "18,50694, 5,25000",
+            "5.25000, 18.50694"
+        ],
+        "answer_text": "",
+        "correct_answer": 5
+    },
+    {
+        "question": "A dataset contains sensitive data (like abundance of a commercial valuable species or an endangered species) and you are not allowed to make these locations public. What should you do?",
+        "answers": [
+            "You may convince them to publish the data without abundance.",
+            "You do not have to provide the exact locations, you can take the center of a grid cell (like 1x1 degrees), and mention the position is converted to the center of a grid cell in DwC:dataGeneralizations.",
+            "Ask if the data can be released when they are more than 5 years old.",
+            "You think it is good that these data are not public, so you leave it as it is."
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "If you have data about dolphin sightings, which vocabulary should you use for the DwC term: basisOfRecord?",
+        "answers": [
+            "LivingSpecimen",
+            "Present",
+            "PreservedSpecimen",
+            "HumanObservation"
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "Which of the Darwin Core terms are mandatory for OBIS?",
+        "answers": [
+            "occurrenceID, scientificName, scientificNameID, eventDate, decimalLatitude, decimalLongitude, basisOfRecord, occurrenceStatus.",
+            "occurrenceID, scientificName, scientificNameID, decimalLatitude, decimalLongitude, dateIdentified, scientificNameAuthorship, basisOfRecord",
+            "occurrenceID, eventID, minimumDepth, eventDate, decimalLatitude, decimalLongitude, country, identifiedBy",
+            "occurrenceID, scientificName, scientificNameID, decimalLatitude, decimalLongitude, identificationRemarks, locationID, materialSampleID"
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "OBIS requires a minimum of 12 DwC terms to be completed in order to publish your data.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "OBIS currently has eight required DwC terms: occurrenceID, eventDate, decimalLongitude, decimalLatitude, scientificName, scientificNameID, occurrenceStatus, basisOfRecord.",
+        "correct_answer": 1
+    },
+    {
+        "question": "What does it mean when individualCount has the following value?",
+        "answers": [
+            {
+                "NULL": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount", 
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            },
+            {
+                "0": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount",
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            },
+            {
+                "100": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount",
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            }
+        ],
+        "answer_text": "",
+        "correct_answer": {
+            "NULL": 1,
+            "0": 2,
+            "100": 0
+        }
+    },
+    {
+        "question": "The dataset you are processing indicates that 'Gadus morhua juvenile' was observed. How does this translate to Darwin Core?",
+        "answers": [
+            "<ul><li>scientificName: Gadus morhua juvenile</li></ul>",
+            "<ul><li>scientificName: Gadus morhua</li><li>lifestage: juvenile</li></ul>"
+        ],
+        "answer_text": "The field scientificName should only contain a taxon name, other information should be split up in other relevant fields. Note that while OBIS allows the use of the field lifestage, it's recommended that this information is stored in the extended measurements or facts extention (eMoF) as this allows the linking to the BODC life stage vocabulary http://vocab.nerc.ac.uk/collection/S11/current",
+        "correct_answer": 1
+    },
+    {
+        "question": "The scientificNameID can be found in WoRMS",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "",
+        "correct_answer": 0
+    },
+    {
+        "question": "What represents the DwC term: locationID?",
+        "answers": [
+            "The name of the location where the sample was taken.",
+            "A reference code provided by the WoRMS web service.",
+            "The event identifier",
+            "An unique and persistent identifier for the location of the record obtained from a gazetteer service, such as www.marineregions.org."
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    }
+]
