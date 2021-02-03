@@ -1,6 +1,6 @@
 # Data quality control using R
 <!-- source: https://obis.org/manual/processing/-->
-```
+```{r}
 install.packages("devtools")
 
 library(devtools)
@@ -18,13 +18,13 @@ The obistools package has a check_onland() function to check if coordinate pairs
 
 Fetch some Madrepora occurrences using robis:
 
-```
+```{r}
 library(robis)
 mad <- occurrence("Madrepora")
 map_leaflet(mad)
 ```
 Then run the check_onland() command. By default the function will return a data frame containing all records on land (another option is to return a data frame with errors):
-```
+```{r mad}
 library(obistools)
 
 land <- check_onland(mad)
@@ -33,7 +33,7 @@ map_leaflet(land)
 ```
 In some cases it makes sense to apply a buffer when checking for records on land. In this case we add a 1000 m buffer zone:
 
-```
+```{r mad}
 land_buffer <- check_onland(mad, buffer = 1000)
 
 map_leaflet(land_buffer)
@@ -42,7 +42,7 @@ map_leaflet(land_buffer)
 As expected this returns less “wrong” records.
 
 Now create a map showing all suspicious records, in orange by default but in red when they are suspicious even with the 1000 m buffer zone:
-```
+```{r land, land_buffer}
 library(ggplot2)
 world <- map_data("world")
 
@@ -58,18 +58,18 @@ The obistools package allows us to match taxa with the World Register of Marine 
 
 First, make sure the finch package is loaded:
 
-```
+```{r}
 library(finch)
 ```
 
 Then read the Darwin Core Archive:
-```
+```{r}
 archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
 occurrence <- archive$data$occurrence.txt
 ```
 Next, we can start the taxon matching procedure by passing our scientific names to the match_taxa() function:
 
-```
+```{r occurrence}
 library(obistools)
 names <- match_taxa(occurrence$scientificName)
 ```
@@ -80,7 +80,7 @@ Type info to see which names need manual action, y to start manual resolution, o
 
 After this procedure, you will end up with a data frame containing the matched name, the WoRMS LSID, and the type of match. Add the LSIDs to your source data as scientificNameID.
 
-```
+```{r occurrence, names}
 occurrence$scientificNameID <- names$scientificNameID
 
 View(names)
@@ -92,20 +92,20 @@ View(names)
 The obistools package has a check_depth() function to check if there are any potential problems with the values in the minimumDepthInMeters and maximumDepthInMeters fields. This function uses a webservice to fetch bathymetry information from various sources.
 
 First download some occurrences from OBIS:
-```
+```{r}
 abrseg <- robis::occurrence("Abra segmentum")
 
 ```
 
 Then use check_depth() with a depthmargin of 10 meters, this will return all records where depth values are 10 meters or more below the bottom depth returned from the webservice:
 
-```
+```{r abrseg}
 problems <- check_depth(abrseg, depthmargin = 10)
 
 ```
 To plot sample depth versus bottom depth, first use lookup_xy() to obtain bathymetry for our points:
 
-```
+```{r problems}
 bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
 
 plot(bathymetry, problems$maximumDepthInMeters)
@@ -123,7 +123,7 @@ The obistools package provides some functionality to make it easier to work with
 
 First load a subset of the Reef Life Survey from IPT:
 
-```
+```{r}
 archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE)
 
 event <- archive$data$event.txt
@@ -136,7 +136,7 @@ Checking parentEventIDs in the Event Core
 
 Use check_eventids() to check if all parentEventIDs in the Event Core have a matching eventID. In the example below, first the original data is checked, then an error is introduced, and then the data is checked again:
 
-```
+```{r event}
 check_eventids(event)
 
 event$parentEventID[event$eventID == "4000691_cryptic"] <- "dummy_1"
@@ -149,7 +149,7 @@ Checking core record identifiers in the extension file
 
 Use check_extension_eventids() to check if identifiers in an extension file have matching eventIDs in the Event Core file. Again, in the example first the correct data is checked and then an error is introduced. The function will return a table of errors (if there are any). The field parameter is the name of the identifier column in the extension file:
 
-```
+```{r event, occurrence}
 check_extension_eventids(event, occurrence, field = "id")
 
 occurrence$id[occurrence$occurrenceID == "48432"] <- "dummy_2"
@@ -165,7 +165,7 @@ Sometimes it’s useful to have a flat occurrence table, i.e. a table of occurre
  first go back to the clean version of the data, then look at the column names before and after flattening:
 
 
-```
+```{r archive}
 event <- archive$data$event.txt
 
 occurrence <- archive$data$occurrence.txt
@@ -185,7 +185,7 @@ The treeStucture() function in the obistools package generates a simplified even
 
 Note that an eventID column is required in the measurements table. In your dataset the extension column pointing to the event records may have another name, so make sure to add eventID.
 
-``
+```{r}
 archive <- finch::dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=nsbs&v=1.6", read = TRUE)
 event <- archive$data$event.txt
 occurrence <- archive$data$occurrence.txt
