@@ -1,0 +1,92 @@
+---
+title: "Mytilus edulis size data"
+author: "Pieter Provoost"
+output:
+  html_document: default
+editor_options: 
+  chunk_output_type: console
+---
+<!--source: https://iobis.github.io/notebooks/size_data/-->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+First load the required packages:
+
+```{r message=FALSE, warning=FALSE, results='hide'}
+install.packages("devtools")
+library(devtools)
+install_github("iobis/robis")
+install.packages("dplyr")
+install.packages("DT")
+install.package("stringr")
+install.packages("ggplot2")
+install.packages("sf")
+install.packages("rnaturalearth")
+
+library(robis)
+library(dplyr)
+library(DT)
+library(stringr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+```
+
+Then use the `occurrence()` function with `mof = TRUE` to get all occurrences for Mytilus edulis, including the associated MeasurementOrFact data.
+
+```{r message=FALSE, warning=FALSE, cache=TRUE}
+occ <- occurrence("Mytilus edulis", mof = TRUE)
+```
+
+The `measurements()` function can be used to create a flat measurements table. Use the `fields` parameter to include occurrence fields in this table.
+
+```{r message = FALSE, warning = FALSE}
+mof <- measurements(occ, fields = c("decimalLongitude", "decimalLatitude", "collectionCode", "catalogNumber", "eventDate", "date_year", "dataset_id", "samplingProtocol", "samplingEffort"))
+
+mof
+```
+
+This dataset includes a large variety of measurement types, let's create a list:
+
+```{r message = FALSE, warning = FALSE}
+types <- mof %>%
+  group_by(measurementType, measurementTypeID, measurementUnit) %>%
+  summarize(records = n(), datasets = length(unique(dataset_id))) %>%
+  arrange(desc(records))
+
+datatable(types)
+```
+
+There seem to be only two types of length measurements, both in mm. Let's select these measurements by their `measurementTypeID`, and convert the measurement values to numbers.
+
+```{r message = FALSE, warning = FALSE}
+size <- mof %>%
+  filter(str_detect(measurementTypeID, "P01/current/OBSINDLX")) %>%
+  mutate(measurementValue = as.numeric(measurementValue))
+         
+size
+```
+
+Now we can plot the size measurements by `collectionCode`:
+
+```{r message = FALSE, warning = FALSE, fig.width=10, fig.height=7}
+ggplot(size) +
+  geom_jitter(aes(collectionCode, measurementValue, color = collectionCode), width = 0.1) +
+  ylab("length (mm)")
+```
+
+And finally here are the measurements on a map:
+
+```{r message = FALSE, warning = FALSE, fig.width=10, fig.height=7}
+world <- ne_countries(scale = "large", returnclass = "sf")
+
+ggplot() + 
+  geom_sf(data = world) +
+  geom_point(data = size, aes(decimalLongitude, decimalLatitude, size = measurementValue, color = collectionCode), pch = 21) +
+  scale_size(range = c(0.1, 8)) +
+  coord_sf(xlim = range(size$decimalLongitude), ylim = range(size$decimalLatitude)) +
+  theme_void()
+
+```
