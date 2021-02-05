@@ -14,23 +14,25 @@ install_github("iobis/obistools")
 install.packages("ggplot2")
 install_github("ropensci/finch")
 
+library(robis)
+library(obistools)
+library(ggplot2)
+library(finch)
+library(obistools)
 ```
 
 ##### Checking points on land
 
-The obistools package has a check_onland() function to check if coordinate pairs are located on land. By default this function uses a web service, but it can optionally work offline (although this is less accurate).
+The obistools package has a `check_onland()` function to check if coordinate pairs are located on land. By default this function uses a web service, but it can optionally work offline (although this is less accurate).
 
 Fetch some Madrepora occurrences using robis:
 
 ```{r}
-library(robis)
 mad <- occurrence("Madrepora")
 map_leaflet(mad)
 ```
-Then run the check_onland() command. By default the function will return a data frame containing all records on land (another option is to return a data frame with errors):
+Then run the `check_onland()` command. By default the function will return a data frame containing all records on land (another option is to return a data frame with errors):
 ```{r mad}
-library(obistools)
-
 land <- check_onland(mad)
 
 map_leaflet(land)
@@ -47,7 +49,6 @@ As expected this returns less “wrong” records.
 
 Now create a map showing all suspicious records, in orange by default but in red when they are suspicious even with the 1000 m buffer zone:
 ```{r land, land_buffer}
-library(ggplot2)
 world <- map_data("world")
 
 ggplot() +
@@ -63,15 +64,12 @@ The obistools package allows us to match taxa with the World Register of Marine 
 First, make sure the finch package is loaded, then read the Darwin Core Archive:
 
 ```{r}
-library(finch)
-
 archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
 occurrence <- archive$data$occurrence.txt
 ```
-Next, we can start the taxon matching procedure by passing our scientific names to the match_taxa() function:
+Next, we can start the taxon matching procedure by passing our scientific names to the `match_taxa()` function:
 
 ```{r occurrence}
-library(obistools)
 names <- match_taxa(occurrence$scientificName)
 ```
 
@@ -88,34 +86,109 @@ View(names)
 
 ```
 
+##### Check required fields
+
+`check_fields()` will check if all OBIS required fields are present in an occurrence table and if any values are missing.This function returns a dataframe of errors (if any):
+
+```{r}
+data <- data.frame(
+  occurrenceID = c("1", "2", "3"),
+  scientificName = c("Abra alba", NA, ""),
+  locality = c("North Sea", "English Channel", "Flemish Banks"),
+  minimumDepthInMeters = c("10", "", "5")
+)
+
+check_fields(data)
+```
+## Plot points on a map
+
+`plot_map()` will generate a `ggplot2` map of occurrence records, `plot_map_leaflet()` creates a Leaflet map.
+
+```{r}
+plot_map(abra, zoom = TRUE)
+
+plot_map_leaflet(abra)
+```
+
 ##### Checking depth values
 
-The obistools package has a check_depth() function to check if there are any potential problems with the values in the minimumDepthInMeters and maximumDepthInMeters fields. This function uses a webservice to fetch bathymetry information from various sources.
+The obistools package has a `check_depth()`, it uses the xylookup web service to identify which records have potentially invalid depths. Multiple checks are performed in this function:
 
-First download some occurrences from OBIS:
+    missing depth column (warning)
+    empty depth column (warning)
+    depth values that can't be converted to numbers (error)
+    values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
+    depth values that are negative for off shore points, after applying the provided shoremargin (error)
+    minimum depth greater than maximum depth (error)
+
+First download some occurrences from OBIS, then use `check_depth()` with a depthmargin of 10 meters, this will return all records where depth values are 10 meters or more below the bottom depth returned from the webservice:
 ```{r}
 abrseg <- robis::occurrence("Abra segmentum")
 
-```
-
-Then use check_depth() with a depthmargin of 10 meters, this will return all records where depth values are 10 meters or more below the bottom depth returned from the webservice:
-
-```{r abrseg}
 problems <- check_depth(abrseg, depthmargin = 10)
-
 ```
-To plot sample depth versus bottom depth, first use lookup_xy() to obtain bathymetry for our points:
+To plot sample depth versus bottom depth, first use `lookup_xy()` to obtain bathymetry for our points:
 
 ```{r problems}
 bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
 
-plot(bathymetry, problems$maximumDepthInMeters)
-
-abline(0, 1, lty = 2)
+plot(bathymetry, problems$maximumDepthInMeters) +
+abline(0, 1, lty = 2)+
 abline(10, 1, col = "red")
 
 plot_map_leaflet(problems)
 
+```
+To print a report of the depth check:
+```{r}
+report <- check_depth(abra, report=T, depthmargin = 50)
+head(report)
+```
+## Check outliers
+
+`check_outliers_species` and `check_outliers_dataset` use the qc-service web service to identify which records are statistical outliers. For species outlier checks are performed for both environmental data (bathymetry, sea surface salinity and sea surface temperature) as well as spatially. Outliers are identified as all points that deviate more then six times the median absolute deviation (MAD) or three times the interquartile range (IQR) from the median. The `check_outliers_species` requires that the scientificNameID is filled in. When the species is already a known species in OBIS then the median, MAD and IQR from the known records are used for comparing the new species records. For datasets, only the spatial outliers are identified. Spatial outliers are detected based on the distance to the geographical centroid of all unique coordinates. The list in the extra field of the debug level output in the report provides all relevant statistics on which the outlier analysis is based. The `report` also gives an overview of these outliers. Outliers can be plotted with `plot_outliers(report)`
+
+```{r abra}
+report <- check_outliers_dataset(abra, report=T)
+head(report)
+
+plot_outliers(report)
+
+?check_outliers_species
+```
+## Check eventID and parentEventID
+
+`check_eventids()` checks if both `eventID()` and `parentEventID` fields are present in an event table, and if all `parentEventID`s have a corresponding `eventID`.
+
+```{r}
+data <- data.frame(
+  eventID = c("a", "b", "c", "d", "e", "f"),
+  parentEventID = c("", "", "a", "a", "bb", "b"),
+  stringsAsFactors = FALSE
+)
+check_eventids(data)
+```
+## Check eventID in an extension
+
+`check_extension_eventids()` checks if all `eventID`s in an extension have matching `eventID`s in the core table.
+
+```{r}
+event <- data.frame(
+  eventID = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  parentEventID = c(NA, "cruise_1", "cruise_1", "station_1", "station_1", "station_2", "station_2", "sample_3", "sample_3"),
+  eventDate = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  decimalLongitude = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  decimalLatitude = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+
+occurrence <- data.frame(
+  eventID = c("sample_1", "sample_1", "sample_2", "sample_28", "sample_3", "sample_4", "subsample_1", "subsample_1"),
+  scientificName = c("Abra alba", "Lanice conchilega", "Pectinaria koreni", "Nephtys hombergii", "Pectinaria koreni", "Amphiura filiformis", "Desmolaimus zeelandicus", "Aponema torosa"),
+  stringsAsFactors = FALSE
+)
+
+check_extension_eventids(event, occurrence)
 ```
 
 ##### Working with OBIS-ENV-DATA
@@ -179,6 +252,67 @@ names(occurrence)
 names(flat)
 
 ```
+## Calculate centroid and radius for WKT geometries
+
+`calculate_centroid()` calculates a centroid and radius for WKT strings. This is useful for populating `decimalLongitude`, `decimalLatitude` and `coordinateUncertaintyInMeters`.
+
+```{r}
+wkt <- c(
+  "POLYGON ((2.53784 51.12421, 2.99377 51.32031, 3.34534 51.39578, 2.82349 51.85614, 2.27417 51.69980, 2.53784 51.12421))",
+  "POLYGON ((3.15582 42.23564, 3.13248 42.14202, 3.22037 42.11249, 3.26019 42.21530, 3.15582 42.23564))"
+)
+
+calculate_centroid(wkt)
+```
+## Map column names to Darwin Core terms
+
+`map_fields()` changes column names using a terms map.
+
+```{r}
+data <- data.frame(
+  id = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  date = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  locality = rep("North Sea", 9),
+  lon = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  lat = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+
+mapping <- list(
+  decimalLongitude = "lon",
+  decimalLatitude = "lat",
+  datasetName = "dataset",
+  eventID = "id",
+  eventDate = "date"
+)
+
+map_fields(data, mapping)
+```
+## Check eventDate
+
+```{r}
+data <- data.frame(eventDate = c(
+  "2016",
+  "2016-01",
+  "2016-01-02",
+  "2016-01-02 12",
+  "2016-01-02 12:34",
+  "2016-01-02 12:34:48",
+  "2016-01-02T13:00:00+01:00",
+  "2016-01-02T13:00:00+0100",
+  "2016-01-02T13:00:00+01",
+  "2016-01-02T13:00:00Z",
+  "2016-01-02 13:00:00/2016-01-02 14:00:00",
+  "2016-01-02 13:00:00/14:00:00",
+  "2016-01-02/05",
+  "2016-01-01 13u40",
+  "2016/01/03",
+  " ",
+  NA
+), stringsAsFactors = FALSE)
+
+check_eventdate(data)
+```
 
 ##### Visualizing dataset structure
 
@@ -195,5 +329,25 @@ emof$eventID <- emof$id # adding eventID
 
 tree <- treeStructure(event, occurrence, emof)
 exportTree(tree, "tree.html")
+```
+## Data quality report 
+<!--not working-->
+`report()` generates a basic data quality report.
+<!--
+```{r}
+report(abra)
+?report
+```
+-->
+## Lookup XY
 
+`lookup_xy` returns basic spatial information for a given set of points. Currently three main things are returned: information from vector data (areas), information from rasters (grids) and the shoredistance.
+
+```{r}
+xydata <- lookup_xy(abra, shoredistance = TRUE, grids = TRUE, areas = TRUE)
+
+head(xydata)
+
+ggplot(xydata, aes(sssalinity, sstemperature, color=bathymetry)) +
+    geom_point(alpha=0.5)
 ```

@@ -1,5 +1,5 @@
 ---
-title: "robis_visualizations"
+title: "robis_visualizations"   
 output: html_document
 ---
 # Visualizing OBIS data
@@ -68,29 +68,25 @@ ggplot() +
 ```
 <!--this ones doesnt show anything much, and the aes is messy-->
 
-The geom_bar() function can be used to create a graph. To try this, first fetch a bit more data from OBIS:
+The geom_bar() function can be used to create a graph. To try this, first fetch a bit more data from OBIS, and create a simple bar graph:
 
 ```{r}
 dor <- occurrence("Doridoidea")
 
-```
-
-Now create a simple bar graph:
-
-```{r dor}
 ggplot() +
  geom_bar(data = dor,stat='count', aes(x = year), binwidth = 2)
 ```
 
-Binning the data by year doesnt always work, so to give a better display, we will create a new column using dplyr mutate(), and do a bit of math to create 10 year bins for the data.
+Binning the data by year doesn't always display nicely, so to give a better display, we will create a new column using dplyr mutate(), and do a bit of math to create 10 year bins for the data.
 
 ```{r dor}
 library(dplyr)
 
-binned_dor <- dor %>% mutate(yearBins=round(as.integer(year)/10)*10 )
+binned_dor <- dor %>% mutate(yearBins=round(as.integer(year),digits=-1) )
 
+                             
 ggplot() +
- geom_bar(data = binned_dor,stat='count', aes(x = yearBins), binwidth = 2)
+ geom_bar(data = binned_dor,stat='count', aes(x = yearBins))
 
 ```
 
@@ -98,7 +94,7 @@ By adding fill to the aesthetic, we can color the bars based on the family, and 
 
 ```{r binned_dor}
 ggplot() +
- geom_histogram(data = binned_dor, stat="count", aes(x = yearBins, fill = family), binwidth = 2) +
+ geom_histogram(data = binned_dor, stat="count", aes(x = yearBins, fill = family)) +
  scale_fill_brewer(palette = "Spectral") +
  xlim(c(1950, 2017)) 
 ```

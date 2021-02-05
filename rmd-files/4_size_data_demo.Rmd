@@ -20,7 +20,7 @@ library(devtools)
 install_github("iobis/robis")
 install.packages("dplyr")
 install.packages("DT")
-install.package("stringr")
+install.packages("stringr")
 install.packages("ggplot2")
 install.packages("sf")
 install.packages("rnaturalearth")
@@ -88,5 +88,4 @@ ggplot() +
   scale_size(range = c(0.1, 8)) +
   coord_sf(xlim = range(size$decimalLongitude), ylim = range(size$decimalLatitude)) +
   theme_void()
-
 ```

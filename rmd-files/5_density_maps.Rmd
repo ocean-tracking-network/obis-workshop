@@ -1,260 +1,78 @@
 ---
-title: "Record density maps for South Pacific and Arctic"
+title: "Gobal record density map"
 author: "Pieter Provoost"
 output:
   html_document: default
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
+<!--source: https://iobis.github.io/notebooks/global_density_map/-->
+<!-- data source: https://obis.org/manual/access/, Full OBIS export 2020-07-27-->
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-Load packages and configure the grid resolution and source filename:
+Loading packages:
 
 ```{r, message = FALSE, warning = FALSE}
-install.packages("rnaturalearthhires",
-                 repos = "http://packages.ropensci.org",
-                 type = "source")
 library(dplyr)
 library(ggplot2)
-library(dggridR)
 library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
-library(prettygrids)
 library(geosphere)
 library(stringr)
+library(readr)
+
 world <- ne_countries(scale = "medium", returnclass = "sf")
-
-resolution <- 9
-filename <- "occurrence_minimal_20200212"
+filename <- "occurrence.csv"
 ```
 
-Use the `dggridR` package to create a discrete global grid, and fetch the grid cell surface area to be included in the map title:
+## Data preparation
+
+First create a global grid using `sf::st_make_grid`:
 
 ```{r, message = FALSE, warning = FALSE}
-dggs <- dgconstruct(projection = "ISEA", res = resolution, resround = "up")
-area <- dggetres(dggs)$area_km[resolution + 1]
-area_str <- format(signif(area, 2), big.mark = ",")
-deg_per_km <- destPoint(c(0, 0), 90, 1000)[1,1]
-square_side_km <- sqrt(area)
-square_side_deg <- square_side_km * deg_per_km
-square_side_deg_str <- format(signif(square_side_deg, 2), big.mark = ",")
+geom <- st_sfc(st_polygon(list(rbind(c(-180, -90), c(180, -90), c(180, 90), c(-180, 90), c(-180, -90)))), crs = 4326)
+grid <- st_as_sf(st_make_grid(geom, cellsize = 1, square = TRUE))
 ```
 
-This notebook uses a A CSV file with occurrence records exported from the database database. Alternatively the `robis` R package can be used, but downloading the entire database can take a while. This downloads the zipped CSV file and aggregates the data into locations with number of records:
+This notebook uses a A CSV file with occurrence records exported from the database database. Download the latest export from [https://obis.org/manual/access](https://obis.org/manual/access). Only the coordinate columns are read using `readr::read_csv()`.
+
+**Warning**: because intersection is very slow in `sf` I'm rounding coordinates here instead of doing an actual intersection with the grid. If you are not using a 1 degree rectangular grid, adjust accordingly.
 
 ```{r, message = FALSE, warning = FALSE}
-if (!file.exists("grouped.temp")) {
-  if (!file.exists("data.zip")) {
-    download.file(paste0("https://download.obis.org/export/", filename, ".zip"), "data.zip")
-  }
-  df_raw <- read.csv(unz("data.zip", paste0(filename, ".csv")), stringsAsFactors = FALSE)
-  df_grouped <- df_raw %>%
-    group_by(decimallongitude = round(decimallongitude, 2), decimallatitude = round(decimallatitude, 2), speciesid) %>%
-    summarize(records = n(), species = length(unique(speciesid)))
-  save(df_grouped, file = "grouped.temp")
-  file.remove("data.zip")
-} else {
-  load("grouped.temp")
-}
+df <- read_csv(filename, col_type = cols_only(decimallongitude = col_double(), decimallatitude = col_double()))
+
+df_sf <- df %>%
+  mutate(decimallongitude = floor(decimallongitude) + 0.5, decimallatitude = floor(decimallatitude) + 0.5) %>%
+  group_by(decimallongitude, decimallatitude) %>%
+  summarize(n = n()) %>%
+  st_as_sf(coords = c("decimallongitude", "decimallatitude"), crs = 4326)
 ```
 
-Next we assign cell IDs to each location and caluclate statistics per cell:
+Now we can join the point layer with the grid.
 
 ```{r, message = FALSE, warning = FALSE}
-df_grouped$cell <- dgtransform(dggs, df_grouped$decimallatitude, df_grouped$decimallongitude)
-stats <- df_grouped %>%
-  group_by(cell) %>%
-  summarise(records = sum(records), species = length(unique(speciesid)))
+grid_density <- grid %>%
+  st_join(df_sf)
 ```
 
-## Maps
+## Map
 
 ```{r, message = FALSE, warning = FALSE}
-map_theme <- theme(
-  axis.ticks.length = unit(0, "pt"),
-  line = element_blank(), rect = element_blank(),
-  axis.text = element_blank(), axis.title = element_blank()
-)
+ggplot() + 
+  geom_sf(data = grid_density, aes(fill = n), size = 0, color = NA) +
+  geom_sf(data = world, fill = "#eeeeee", color = "#000000", size = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    trans = "log10",
+    na.value = "#eeeeee",
+    name = "records"
+  ) +
+  coord_sf(crs = st_crs("ESRI:54030")) +
+  theme_void()
 
-map_scale_records <- scale_fill_viridis_c(
-  option = "plasma",
-  trans = "log10",
-  name = "Records",
-  breaks = c(1, 10, 100, 1000, 10000),
-  labels = function(x) format(x, scientific = FALSE),
-  limits = c(1, 100000),
-  oob = scales::squish
-)
-
-map_scale_species <- scale_fill_viridis_c(
-  option = "plasma",
-  trans = "log10",
-  name = "Species",
-  labels = function(x) format(x, scientific = FALSE)
-)
-
-make_subtitle <- function(type, projection, marineregions = FALSE) {
-  s <- paste0("Number of ", type, " per ISEA3H grid cell of approximately ", area_str, " square km (this corresponds to a ", square_side_deg_str, " by ", square_side_deg_str, " degree cell at the equator).\n", projection, ". Ocean Biogeographic Information System (OBIS), 2020.")
-  if (marineregions) {
-    s <- paste0(s, " Maritime boundaries from marineregions.org.")
-  }
-  return(s)
-}
-```
-
-## Pacific centered Robinson projection
-
-Depending on the projection the grids produced by `dggridR` can cause artefacts in your map. Here we are using the `prettygrids::make_grid` utility function (still under development) to fix some of these problems.
-
-```{r, message = FALSE, warning = FALSE}
-grid_pac <- make_grid(offset = -180, res = resolution) %>%
-  merge(stats, by.x = "cell", by.y = "cell")
-
-crs <- "+proj=robin +lon_0=180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-bbox <- st_bbox(st_as_sfc(st_bbox(c(xmin = 18, xmax = 248, ymin = -55, ymax = 55), crs = 4326)) %>% st_transform(crs))
-```
-
-### Records
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_pac %>% st_transform(crs), aes(fill = records), size = 0, color = NA) +
-  geom_sf(data = world %>% prepare_grid(offset = -180) %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  coord_sf(crs = crs, xlim = c(bbox$xmin, bbox$xmax), ylim = c(bbox$ymin, bbox$ymax)) +
-  map_theme +
-  map_scale_records +
-  labs(
-    title = "Number of records",
-    subtitle = make_subtitle("records", "Pacific centered Robinson projection")
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("records_pacific_", resolution,".png"), width = 14, height = 10)
-```
-
-### Species
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_pac %>% st_transform(crs), aes(fill = species), size = 0, color = NA) +
-  geom_sf(data = world %>% prepare_grid(offset = -180) %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  coord_sf(crs = crs, xlim = c(bbox$xmin, bbox$xmax), ylim = c(bbox$ymin, bbox$ymax)) +
-  map_theme +
-  map_scale_species +
-  labs(
-    title = "Number of species",
-    subtitle = make_subtitle("species", "Pacific centered Robinson projection")
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("species_pacific_", resolution,".png"), width = 14, height = 10)
-```
-
-## Pacific centered Robinson projection - US
-
-```{r, message = FALSE, warning = FALSE}
-bbox_usa <- st_bbox(st_as_sfc(st_bbox(c(xmin = 130, xmax = 297, ymin = -30, ymax = 70), crs = 4326)) %>% st_transform(crs))
-usa <- st_read("eez_v11_0_360_dissolved_simplified005.gpkg", crs = 4326) %>%
-  filter(SOVEREIGN1 == "United States")
-```
-
-### Records
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_pac %>% st_transform(crs), aes(fill = records), size = 0, color = NA) +
-  geom_sf(data = world %>% prepare_grid(offset = -180) %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  geom_sf(data = usa %>% st_transform(crs), fill = NA, color = "#000000", size = 1) +
-  coord_sf(crs = crs, xlim = c(bbox_usa$xmin, bbox_usa$xmax), ylim = c(bbox_usa$ymin, bbox_usa$ymax)) +
-  map_theme +
-  map_scale_records +
-  labs(
-    title = "Number of records",
-    subtitle = make_subtitle("records", "Pacific centered Robinson projection", marineregions = TRUE)
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("records_us_", resolution,".png"), width = 14, height = 10)
-```
-
-### Species
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_pac %>% st_transform(crs), aes(fill = species), size = 0, color = NA) +
-  geom_sf(data = world %>% prepare_grid(offset = -180) %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  geom_sf(data = usa %>% st_transform(crs), fill = NA, color = "#000000", size = 1) +
-  coord_sf(crs = crs, xlim = c(bbox_usa$xmin, bbox_usa$xmax), ylim = c(bbox_usa$ymin, bbox_usa$ymax)) +
-  map_theme +
-  map_scale_species +
-  labs(
-    title = "Number of species",
-    subtitle = make_subtitle("species", "Pacific centered Robinson projection", marineregions = TRUE)
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("species_us_", resolution,".png"), width = 14, height = 10)
-```
-
-## Lambert azimuthal equal-area projection
-
-```{r, message = FALSE, warning = FALSE}
-north <- st_set_crs(st_as_sf(as(raster::extent(-180, 180, 0, 90), "SpatialPolygons")), 4326)
-grid_ortho <- make_grid(offset = NA, res = resolution) %>% 
-  merge(stats, by.x = "cell", by.y = "cell") %>%
-  filter(st_intersects(geometry, north, sparse = FALSE))
-
-crs <- "+proj=laea +lat_0=52 +lon_0=0 +x_0=4321000 +y_0=3210000 +datum=WGS84 +units=m +no_defs"
-bbox <- st_sfc(st_polygon(list(matrix(c(-140, 40, -60, 40, 60, 40, 140, 40, -140, 40), ncol = 2, byrow = TRUE))), crs = 4326)
-bbox_trans <- bbox %>% st_transform(crs)
-```
-
-### Records
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_ortho %>% st_transform(crs), aes(fill = records), size = 0, color = NA) +
-  geom_sf(data = world %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  coord_sf(crs = crs,
-           xlim = c(min(st_coordinates(bbox_trans)[,1]), max(st_coordinates(bbox_trans)[,1])),
-           ylim = c(min(st_coordinates(bbox_trans)[,2]), max(st_coordinates(bbox_trans)[,2]))) +
-  map_theme +
-  map_scale_records +
-  labs(
-    title = "Number of records",
-    subtitle = make_subtitle("records", "Lambert azimuthal equal-area projection")
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("records_arctic_", resolution,".png"), width = 14, height = 10)
-```
-
-### Species
-
-```{r, message = FALSE, warning = FALSE}
-ggplot() +
-  geom_sf(data = grid_ortho %>% st_transform(crs), aes(fill = species), size = 0, color = NA) +
-  geom_sf(data = world %>% st_transform(crs), fill = "#cccccc", color = "#999999", size = 0.1) +
-  coord_sf(crs = crs,
-           xlim = c(min(st_coordinates(bbox_trans)[,1]), max(st_coordinates(bbox_trans)[,1])),
-           ylim = c(min(st_coordinates(bbox_trans)[,2]), max(st_coordinates(bbox_trans)[,2]))) +
-  map_theme +
-  map_scale_species +
-  labs(
-    title = "Number of species",
-    subtitle = make_subtitle("species", "Lambert azimuthal equal-area projection")
-  )
-```
-
-```{r, include = FALSE}
-ggsave(file = paste0("species_arctic_", resolution,".png"), width = 14, height = 10)
+ggsave(file = "records.png", width = 14, height = 10)
 ```
