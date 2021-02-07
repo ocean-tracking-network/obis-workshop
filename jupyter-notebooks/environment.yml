@@ -5,6 +5,7 @@ dependencies:
 - requests
 - pip:
   - folium
+  - python-dwca-reader
 channels:
   - defaults
   - conda-forge
