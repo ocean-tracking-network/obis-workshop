@@ -1,0 +1,20 @@
+---
+title: "Assignment 2 - Global distribution of Lagis species"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Global distribution of Lagis species
+
+For this assignment, create a map showing the distributions of the species in the trumpet worm genus Lagis. Can you spot any suspicious occurrences? If so, try to identify them.
+
+```{r }
+
+
+
+```
+
+
