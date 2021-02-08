@@ -89,7 +89,7 @@
         "correct_answer": 1
     },
     {
-        "question": "Coordinates should be recorded in decimal formats. Which is the correct conversion of 18°30'25\"N – 5°15'E as decimalLongitude, decimalLatitude?",
+        "question": "Coordinates should be recorded in decimal formats. Which is the correct conversion of 18&deg; 30'25\"N - 5&deg; 15'E as decimalLongitude, decimalLatitude?",
         "answers": [
             "18.50694, -5.25000",
             "18.50694, 5.25000",
