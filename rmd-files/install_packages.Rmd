@@ -1,0 +1,42 @@
+---
+title: "install_packages.Rmd"
+output: html_document
+---
+
+Install required packages
+
+```{r setup, include=FALSE}
+install.packages("devtools")
+
+library(devtools)
+install_github("iobis/robis")
+install_github("iobis/obistools")
+install_github("ropensci/finch")
+
+install.packages("dplyr")
+install.packages("DT")
+install.packages("stringr")
+install.packages("sf")
+install.packages("ggplot2")
+install.packages("leaflet")
+install.packages("rnaturalearth")
+install.packages("rnaturalearthdata")
+```
+
+
+Test install step by loading the packages
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(geosphere)
+library(stringr)
+library(readr)
+library(leaflet)
+library(robis)
+library(obistools)
+library(finch)
+```

@@ -18,8 +18,9 @@ install_github("iobis/robis")
 install.packages("ggplot2")
 install.packages("dplyr")
 install.packages("leaflet")
+```
 
-
+```{r}
 library(robis)
 molram <- occurrence("Mola ramsayi")
 

@@ -13,6 +13,18 @@ editor_options:
 knitr::opts_chunk$set(error = TRUE)
 ```
 
+Install packages:
+
+```{r}
+install.packages("dplyr")
+install.packages("stringr")
+install.packages("sf")
+install.packages("ggplot2")
+install.packages("rnaturalearth")
+install.packages("rnaturalearthdata")
+
+```
+
 Loading packages:
 
 ```{r, message = FALSE, warning = FALSE}

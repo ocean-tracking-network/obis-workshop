@@ -12,7 +12,7 @@ editor_options:
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-First load the required packages:
+Run this cell if you are missing the required packages:
 
 ```{r message=FALSE, warning=FALSE, results='hide'}
 install.packages("devtools")
@@ -24,7 +24,11 @@ install.packages("stringr")
 install.packages("ggplot2")
 install.packages("sf")
 install.packages("rnaturalearth")
+```
 
+First load the required packages:
+
+```{r}
 library(robis)
 library(dplyr)
 library(DT)
