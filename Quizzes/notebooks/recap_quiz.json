@@ -1,1 +1,167 @@
-[{"question": "Suppose you monitor biodiversity using 1 by 1 metre quadrats and measure environmental variables (e.g. temperature and salinity) for each location. Which DwC term links the species occurrences with the abiotic measurements?", "answers": ["measurementType", "eventID", "occurrenceID", "parentEventID"], "answer_text": "The eventID from the Event Core links the species occurrences to the sampling events and the abiotic measurements to the sampling events.", "correct_answer": 1}, {"question": "Which DwC term links your occurrence record and your biotic measurements (e.g. body length, wet weight biomass, counts)?", "answers": ["parentEventID", "measurementTypeID", "occurrenceID", "eventID"], "answer_text": "The occurrenceID is a unique ID for each species occurrence and is used to link the occurrence extension (or occurrence core) with the extended MeasurementOrFact extension.", "correct_answer": 2}, {"question": "If you have wet weight and length measurements of all your specimen records, you should create an Occurrence Core file and an ExtendedMeasurementorFact Extension.", "answers": ["True", "False"], "answer_text": "", "correct_answer": 0}, {"question": "Your dataset represents a multiple station survey holding species occurrences and environmental data for each station. You also have the sampling protocol for each station and sample. How many files will you have after organising this dataset into the OBIS-ENV-DATA format?", "answers": ["OBIS cannot deal with all these data types", "Two", "Three", "Five", "One"], "answer_text": "One for the sampling events (eventCore), one for the species occurrences (occurrence extension), one for the measurements and sampling facts (extended MeasurementOrFact extension).", "correct_answer": 2}, {"question": "If you have data about dolphin sightings, which vocabulary should you use for the DwC term: basisOfRecord?", "answers": ["LivingSpecimen", "Present", "PreservedSpecimen", "HumanObservation"], "answer_text": "", "correct_answer": 3}, {"question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?", "answers": ["associatedTaxa", "identificationQualifier", "bibliographicCitation", "identificationReferences"], "answer_text": "", "correct_answer": 1}, {"question": "A dataset contains sensitive data (like abundance of a commercial valuable species or an endangered species) and you are not allowed to make these locations public. What should you do?", "answers": ["You may convince them to publish the data without abundance.", "You do not have to provide the exact locations, you can take the center of a grid cell (like 1x1 degrees), and mention the position is converted to the center of a grid cell in DwC:dataGeneralizations.", "Ask if the data can be released when they are more than 5 years old.", "You think it is good that these data are not public, so you leave it as it is."], "answer_text": "", "correct_answer": 1}, {"question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?", "answers": ["associatedTaxa", "identificationQualifier", "bibliographicCitation", "identificationReferences"], "answer_text": "", "correct_answer": 1}, {"question": "The OBIS quality control process focuses on:", "answers": ["Checking for possible errors in the species nomenclature.", "Uploading the data into the IPT.", "Checking for possible errors in taxonomy, geographic coordinates, depth, and data formats.", "Checking the number of records present in an Occurrence Core file."], "answer_text": "", "correct_answer": 2}, {"question": "When will a taxon name have ambiguous matches in the WoRMS taxon match tool (WoRMS), i.e. multiple matches are possible? In case of...", "answers": ["Scientific name is not accepted", "near_1 match type", "Homonyms", "Typing error"], "answer_text": "The same genus-species combination can exist in different Kingdoms.", "correct_answer": 2}, {"question": "You always need to correct occurrences with geographic coordinates located on land.", "answers": ["True", "False"], "answer_text": "You should first get in contact with the data provider and ask him/her to review and update the geographical coordinates if necessary. It is important that the original source file is corrected first. Note also that there are several reasons why a record can fall on land, e.g. the midpoint of a WKT, midpoint of an island, only the name of the country is provided and that country borders more than one sea, the species is a seabird, fossil record, etc..", "correct_answer": 1}, {"question": "You always need to correct occurrences with geographic coordinates located on land.", "answers": ["True", "False"], "answer_text": "You should first get in contact with the data provider and ask him/her to review and update the geographical coordinates if necessary. It is important that the original source file is corrected first. Note also that there are several reasons why a record can fall on land, e.g. the midpoint of a WKT, midpoint of an island, only the name of the country is provided and that country borders more than one sea, the species is a seabird, fossil record, etc..", "correct_answer": 1}, {"question": "An Inactive OBIS Node can avoid removal of OBIS node status by submitting a successful action plan.", "answers": ["True", "False"], "answer_text": "An action plan reviewed and accepted by the OBIS-Executive Committee can restore an OBIS status.", "correct_answer": 0}, {"question": "NODC's have to apply to become an OBIS node?", "answers": ["True", "False"], "answer_text": "A letter expressing your interest to become an OBIS node is required", "correct_answer": 0}, {"question": "What is Clause 1 of IOC's data exchange policy?", "answers": ["right to determine the terms, in a manner consistent with int conventions", "Member States shall provide timely, free and unrestricted access to all data, associated metadata and products generated under the auspices of IOC programmes", "Member States shall build capacity in developing countries", "archive your data in NODCs, etc."], "answer_text": "", "correct_answer": 1}, {"question": "NODC's have to apply to become an OBIS node?", "answers": ["True", "False"], "answer_text": "A letter expressing your interest to become an OBIS node is required", "correct_answer": 0}]
+[
+    {
+        "question": "Suppose you monitor biodiversity using 1 by 1 metre quadrats and measure environmental variables (e.g. temperature and salinity) for each location. Which DwC term links the species occurrences with the abiotic measurements?",
+        "answers": [
+            "measurementType",
+            "eventID",
+            "occurrenceID",
+            "parentEventID"
+        ],
+        "answer_text": "The eventID from the Event Core links the species occurrences to the sampling events and the abiotic measurements to the sampling events.",
+        "correct_answer": 1
+    },
+    {
+        "question": "Which DwC term links your occurrence record and your biotic measurements (e.g. body length, wet weight biomass, counts)?",
+        "answers": [
+            "parentEventID",
+            "measurementTypeID",
+            "occurrenceID",
+            "eventID"
+        ],
+        "answer_text": "The occurrenceID is a unique ID for each species occurrence and is used to link the occurrence extension (or occurrence core) with the extended MeasurementOrFact extension.",
+        "correct_answer": 2
+    },
+    {
+        "question": "If you have wet weight and length measurements of all your specimen records, you should create an Occurrence Core file and an ExtendedMeasurementorFact Extension.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "",
+        "correct_answer": 0
+    },
+    {
+        "question": "Your dataset represents a multiple station survey holding species occurrences and environmental data for each station. You also have the sampling protocol for each station and sample. How many files will you have after organising this dataset into the OBIS-ENV-DATA format?",
+        "answers": [
+            "OBIS cannot deal with all these data types",
+            "Two",
+            "Three",
+            "Five",
+            "One"
+        ],
+        "answer_text": "One for the sampling events (eventCore), one for the species occurrences (occurrence extension), one for the measurements and sampling facts (extended MeasurementOrFact extension).",
+        "correct_answer": 2
+    },
+    {
+        "question": "If you have data about dolphin sightings, which vocabulary should you use for the DwC term: basisOfRecord?",
+        "answers": [
+            "LivingSpecimen",
+            "Present",
+            "PreservedSpecimen",
+            "HumanObservation"
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?",
+        "answers": [
+            "associatedTaxa",
+            "identificationQualifier",
+            "bibliographicCitation",
+            "identificationReferences"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "A dataset contains sensitive data (like abundance of a commercial valuable species or an endangered species) and you are not allowed to make these locations public. What should you do?",
+        "answers": [
+            "You may convince them to publish the data without abundance.",
+            "You do not have to provide the exact locations, you can take the center of a grid cell (like 1x1 degrees), and mention the position is converted to the center of a grid cell in DwC:dataGeneralizations.",
+            "Ask if the data can be released when they are more than 5 years old.",
+            "You think it is good that these data are not public, so you leave it as it is."
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?",
+        "answers": [
+            "associatedTaxa",
+            "identificationQualifier",
+            "bibliographicCitation",
+            "identificationReferences"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "The OBIS quality control process focuses on:",
+        "answers": [
+            "Checking for possible errors in the species nomenclature.",
+            "Uploading the data into the IPT.",
+            "Checking for possible errors in taxonomy, geographic coordinates, depth, and data formats.",
+            "Checking the number of records present in an Occurrence Core file."
+        ],
+        "answer_text": "",
+        "correct_answer": 2
+    },
+    {
+        "question": "When will a taxon name have ambiguous matches in the WoRMS taxon match tool (WoRMS), i.e. multiple matches are possible? In case of...",
+        "answers": [
+            "Scientific name is not accepted",
+            "near_1 match type",
+            "Homonyms",
+            "Typing error"
+        ],
+        "answer_text": "The same genus-species combination can exist in different Kingdoms.",
+        "correct_answer": 2
+    },
+    {
+        "question": "You always need to correct occurrences with geographic coordinates located on land.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "You should first get in contact with the data provider and ask him/her to review and update the geographical coordinates if necessary. It is important that the original source file is corrected first. Note also that there are several reasons why a record can fall on land, e.g. the midpoint of a WKT, midpoint of an island, only the name of the country is provided and that country borders more than one sea, the species is a seabird, fossil record, etc..",
+        "correct_answer": 1
+    },
+    {
+        "question": "You always need to correct occurrences with geographic coordinates located on land.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "You should first get in contact with the data provider and ask him/her to review and update the geographical coordinates if necessary. It is important that the original source file is corrected first. Note also that there are several reasons why a record can fall on land, e.g. the midpoint of a WKT, midpoint of an island, only the name of the country is provided and that country borders more than one sea, the species is a seabird, fossil record, etc..",
+        "correct_answer": 1
+    },
+    {
+        "question": "An Inactive OBIS Node can avoid removal of OBIS node status by submitting a successful action plan.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "An action plan reviewed and accepted by the OBIS-Executive Committee can restore an OBIS status.",
+        "correct_answer": 0
+    },
+    {
+        "question": "NODC's have to apply to become an OBIS node?",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "A letter expressing your interest to become an OBIS node is required",
+        "correct_answer": 0
+    },
+    {
+        "question": "What is Clause 1 of IOC's data exchange policy?",
+        "answers": [
+            "right to determine the terms, in a manner consistent with int conventions",
+            "Member States shall provide timely, free and unrestricted access to all data, associated metadata and products generated under the auspices of IOC programmes",
+            "Member States shall build capacity in developing countries",
+            "archive your data in NODCs, etc."
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "NODC's have to apply to become an OBIS node?",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "A letter expressing your interest to become an OBIS node is required",
+        "correct_answer": 0
+    }
+]
