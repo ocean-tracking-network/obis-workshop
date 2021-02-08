@@ -13,7 +13,9 @@ install_github("iobis/robis")
 install_github("iobis/obistools")
 install.packages("ggplot2")
 install_github("ropensci/finch")
+```
 
+```{r}
 library(robis)
 library(obistools)
 library(ggplot2)
