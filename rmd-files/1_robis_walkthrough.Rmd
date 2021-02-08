@@ -113,7 +113,8 @@ The ggplot2 package can be used to create nice visualizations. We’ll go into g
 ```{r islands}
 ggplot() + 
  geom_bar(data = islands, stat = "count",aes(x = year, fill = phylum), binwidth = 5) +
- scale_fill_brewer(palette = "Paired")
+ scale_fill_brewer(palette = "Paired") +
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 
