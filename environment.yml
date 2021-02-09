@@ -1,0 +1,11 @@
+name: root
+dependencies:
+- jupyter
+- pandas
+- requests
+- pip:
+  - folium
+  - python-dwca-reader
+channels:
+  - defaults
+  - conda-forge
