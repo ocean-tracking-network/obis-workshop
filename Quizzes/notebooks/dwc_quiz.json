@@ -132,7 +132,7 @@
             "occurrenceID, scientificName, scientificNameID, decimalLatitude, decimalLongitude, identificationRemarks, locationID, materialSampleID"
         ],
         "answer_text": "",
-        "correct_answer": 3
+        "correct_answer": 0
     },
     {
         "question": "OBIS requires a minimum of 12 DwC terms to be completed in order to publish your data.",
