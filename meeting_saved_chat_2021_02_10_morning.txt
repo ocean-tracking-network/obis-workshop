@@ -1,0 +1,111 @@
+12:07:31 From  Samantha  to  naomi tress (OTN - facilitator)(Direct Message) : Good morning could you please tell me what I need to have ready and copied over for today?
+12:11:31 From  Samantha  to  Everyone : I don't have my own dataset, I was under the impression you could provide one in that case?
+12:17:24 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/ioos/bio_data_guide/tree/master/Standardizing%20Marine%20Biological%20Data/datasets/example_script_with_fake_data
+12:19:47 From  Brian Jones (OTN)  to  Everyone : https://pypi.org/project/sampledata/
+12:20:57 From  Brian Jones (OTN)  to  Everyone : https://www.mockaroo.com/
+12:22:24 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.frontiersin.org/articles/10.3389/fmars.2021.620702/full
+12:23:04 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.frontiersin.org/files/Articles/620702/fmars-08-620702-HTML-r1/image_m/fmars-08-620702-g002.jpg
+12:25:05 From  Jon Pye (OTN - Facilitator)  to  Everyone : do try to login to the IPTs and see if your credentials will work
+12:26:25 From  Brian Jones (OTN)  to  Everyone : the login for the Demo IPT at 129.173.48.161:8080/ipt/ is your emails and workshop as the password
+12:30:12 From  Brian Jones (OTN)  to  Everyone : brb
+12:31:44 From  naomi tress (OTN - facilitator)  to  Everyone : "Tough Questions"How do we deal with records where the taxa is not recorded (40 yr old plankton sampling) -Tim Van Der Stap How is eDNA metabarcoding data handled?  Is it considered within OBIS? -Kim HowlandPresence and absence are poorly represented in DwC, where occurrence with an absence of the species in question is represented as an occurrence. - Claude Nozeres When to use MoF vs. sex/lifestage entries in occurrences, what about with abundance measurements? - Tim Van Der Staap What is the benefit of sharing extra details about sampling regimes etc etc, when most of the existing data doesn’t have this level of precision?  - Zach MonteithAssociating the measurements of only some fish subsampled from a catch event, i.e. selections for further examination
+12:31:52 From  Samantha  to  naomi tress (OTN - facilitator)(Direct Message) : I'm trying to access the fake data, it's a .csv, but copies over as a link if I drag it into a folder. If I open it and fork it, it copies as a single cell into a spreadsheet.  Can you give me a hand?
+12:32:02 From  naomi tress (OTN - facilitator)  to  Everyone : probably will let tim speak for himself...
+12:32:39 From  Tim Van Der Stap  to  Everyone : We asked the question on SBMD Slack Group, and Abby mentioned that she had previously worked on this dataset that might be insightful: https://www.gbif.org/dataset/91641b5c-7afa-4262-9fe0-d22d067ce299
+12:32:53 From  Tim Van Der Stap  to  Everyone : But unfortunately she couldn't figure out anymore how she did it exactly
+12:33:18 From  naomi tress (OTN - facilitator)  to  Jon Pye (OTN - Facilitator)(Direct Message) : can you move me to breakout room 1 pls
+12:34:56 From  naomi tress (OTN - facilitator)  to  Samantha(Direct Message) : I messed up the breakout rooms, can you come back to the main?
+12:35:45 From  naomi tress (OTN - facilitator)  to  Samantha(Direct Message) : i know what you need to do, or at least what worked for me with that before, if you know how to rename a file in the file explorer, you can change the file ending to .csv
+12:35:57 From  naomi tress (OTN - facilitator)  to  Samantha(Direct Message) : ignore the warning and open the file as jon instructed you
+12:36:46 From  Samantha  to  naomi tress (OTN - facilitator)(Direct Message) : OK I'll try that.
+12:43:28 From  Johan Jung  to  Everyone : Fortran.. it's been a while I heard that. haha reminds me of the name Cobol … I was learning Python, is there any IDE looking good as RStudio for Python?
+12:45:02 From  Jon Pye (OTN - Facilitator)  to  Everyone : Spyder, PyCharm, VS Code are all good IDEs
+12:45:09 From  Johan Jung  to  Everyone : thanks!
+12:45:10 From  Jon Pye (OTN - Facilitator)  to  Everyone : Atom and VSCode are good and language agnostic
+12:45:51 From  naomi tress (OTN - facilitator)  to  Samantha(Direct Message) : let me know if that doesn't work, we will try something else
+12:50:09 From  Jon Pye (OTN - Facilitator)  to  Everyone : pardon my eating, lunch hour here  :)
+12:51:27 From  Jon Pye (OTN - Facilitator)  to  Everyone : http://129.173.48.161:8080/ipt/
+12:51:36 From  Jon Pye (OTN - Facilitator)  to  Everyone : http://ipt.iobis.org/obiscanada/
+12:52:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : yes, demo IPT has the PWD 'workshop'
+12:53:36 From  naomi tress (OTN - facilitator)  to  Everyone : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'test your logins!
+12:55:12 From  naomi tress (OTN - facilitator)  to  Everyone : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'test your logins!
+12:57:59 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/tdwg/dwc-for-biologging
+13:00:04 From  naomi tress (OTN - facilitator)  to  Everyone : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'test your logins!
+13:02:04 From  Samantha  to  naomi tress (OTN - facilitator)(Direct Message) : figured out another way - was a small dataset, so I just copied and pasted a lot.  
+13:02:18 From  Jon Pye (OTN - Facilitator)  to  Everyone (in Waiting Room) : Hey VTU, who're you?
+13:03:03 From  naomi tress (OTN - facilitator)  to  Everyone (in Waiting Room) : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'test your logins!
+13:03:30 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://twitter.com/MikaelThalen/status/1359209202292428800?s=20
+13:04:57 From  Johan Jung  to  Everyone : Hahaha it's hilarious !
+13:05:12 From  Sheila Atchison (DFO-wpg)  to  Everyone : I'm prepared to go forward with it - omg
+13:06:00 From  Janet Mossman  to  Everyone : can someone put the links to the ipt in the chat?
+13:06:13 From  Jon Pye (OTN - Facilitator)  to  Everyone : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'
+13:06:17 From  Janet Mossman  to  Everyone : thank you
+13:19:17 From  Evan Morien  to  Everyone : Sorry I missed the first 5 min this morning, should I be able to log in at the test site? I can only log into the real site.
+13:19:27 From  naomi tress (OTN - facilitator)  to  Everyone : demo ipt: http://129.173.48.161:8080/ipt/obis can ipt: http://ipt.iobis.org/obiscanada/demo IPT has the PWD 'workshop'
+13:19:50 From  naomi tress (OTN - facilitator)  to  Everyone : and youre email from the workshop registration should work
+13:19:54 From  Evan Morien  to  Everyone : Great thanks I was just missing the pw
+13:20:06 From  naomi tress (OTN - facilitator)  to  Everyone : great
+13:24:26 From  Brett Johnson  to  Everyone : For resource contact I often use the main author and then add another resource contact that is just data@hakai.org…
+13:26:07 From  claudenozeres  to  Everyone : unicorn? :)
+13:27:19 From  Tim Van Der Stap  to  Everyone : I thought he was building up the suspense for a second lhere
+13:27:58 From  naomi tress (OTN - facilitator)  to  Everyone : equus monocornus?
+13:50:19 From  Janet Mossman  to  Everyone : I would be interested in the code
+13:50:37 From  naomi tress (OTN - facilitator)  to  Everyone : thanks janet
+14:10:32 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.frontiersin.org/articles/10.3389/fmars.2021.620702/full
+14:11:45 From  Jon Pye (OTN - Facilitator)  to  Everyone : identificationRemarks is the field for us from our convo yesterday
+14:14:20 From  Maria Cornthwaite  to  Everyone : https://www.goosocean.org/
+14:14:29 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.goosocean.org/index.php?option=com_content&view=article&id=14&Itemid=114
+14:15:33 From  Maria Cornthwaite  to  Everyone : Also this - https://cioos.ca/.  I believe we have folk at the Institute of Ocean Sciences involved.
+14:17:23 From  Janet Mossman  to  Everyone : yes will datasets be published multiple times or will they simply kink to each other?
+14:17:31 From  Janet Mossman  to  Everyone : link lol
+14:21:19 From  Janet Mossman  to  Everyone : will cioos be checking to ensure that there is not duplication between online databases for the same dataset which may be hosted in multiple locations?
+14:22:38 From  Jeff Cullis  to  Everyone : we'd essentially be relying on OBIS Canada to ensure there isn't duplication - that would be the first place incoming data to CIOOS would go
+14:22:50 From  claudenozeres  to  Everyone : Ah! The 2 IPTs in OBIS Canada are VLIZ (Belgium) and CMN (Ottawa): http://ipt.nature.ca/  https://obis.org/node/7dfb2d90-9317-434d-8d4e-64adf324579a
+14:23:15 From  Janet Mossman  to  Everyone : Will CIOOS not be linking to additional online databases other than OBIS?
+14:23:30 From  claudenozeres  to  Everyone : good q.
+14:23:44 From  Janet Mossman  to  Everyone : like open data Canada?
+14:27:07 From  Tim Van Der Stap  to  Everyone : Building once, publishing multiple times.. I like that
+14:29:12 From  Amy Tabata  to  Everyone : does goos use the Darwin core terms where they overlap?
+14:29:19 From  Jon Pye (OTN - Facilitator)  to  Everyone : once upon a time, ERDDAP was able to read data layers from an IPT. There's legacy code around it.
+14:30:21 From  Jon Pye (OTN - Facilitator)  to  Everyone : Amy: it's operating a level beyond that, it's looking for data quality standards and I would say DarwinCore family of standards is one way to arrive at those standards.
+14:33:51 From  Tim Van Der Stap  to  Everyone : GOOS is more of a framework identifying what some of the core parameters are to measure the ocean (EOV - essential ocean variables) and how these parameters can best be measured, following best practices. It's not really a data repository where you can search for datasets
+14:53:13 From  Heidi van Vliet (DFO)  to  Everyone : Winter had found the island... its snowing in Nanaimo!
+14:53:33 From  claudenozeres  to  Everyone : can do local hill boarding!
+14:53:48 From  Jackie Waldron (DFO)  to  Everyone : It's snowing here in Sidney too Heidi!!!
+14:53:48 From  claudenozeres  to  Everyone : Even Vic is chilly!
+14:54:42 From  claudenozeres  to  Everyone : https://open.canada.ca/data/en/dataset/de50ac30-ab0d-4bf2-b9af-362977edde3a
+14:54:57 From  Nick Bekolay  to  Everyone : https://open.canada.ca/data/en/dataset/7ac5fe02-308d-4fff-b805-80194f8ddeb4
+14:55:18 From  claudenozeres  to  Everyone : compare that OpenData one with this from Arctic OBIS: https://obis.org/dataset/f3e2bdd3-d495-421a-9182-92432ef24c79
+14:55:19 From  Zach Monteith (Hakai Institute)  to  Everyone : Its been very lightly snowing on Quadra all morning, but the forecast was calling for ~5cm today
+14:55:48 From  Maria Cornthwaite  to  Everyone : https://open.canada.ca/data/en/dataset/c48669a3-045b-400d-b730-48aafe8c5ee6
+14:55:55 From  Janet Mossman  to  Everyone : just light snow in nanaimo so far
+14:56:09 From  Maria Cornthwaite  to  Everyone : https://obis.org/dataset/5e6ee2aa-8155-452b-97e3-14d2835c85a0
+14:56:49 From  Jon Pye (OTN - Facilitator)  to  Everyone : Description: Working group formed to check in on progress with the datasets brought to the IOOS DMAC Code Sprint session, identify new datasets, share experiences and challenges, and collaborate on solutions.Link to notes:  https://docs.google.com/document/d/1JfXHFXhP0rB8juAK3-KvOtqtwDofPwewoAB_ZyFwSwYLink to GitHub:  https://github.com/ioos/bio_data_guideVicky Rowley and Abby Benson are inviting you to a scheduled Zoom meeting.Join Zoom Meetinghttps://ucsd.zoom.us/j/304000280
+14:56:56 From  Maria Cornthwaite  to  Everyone : Here's the Groundfish synoptic trawl data on open Canada which will be on OBIS when we figure out the subsample issues...https://open.canada.ca/data/en/dataset/a278d1af-d567-4964-a109-ae1e84cbd24a
+14:57:09 From  naomi tress (OTN - facilitator)  to  Everyone : thanks for the info!
+14:57:58 From  Jackie Waldron (DFO)  to  Everyone : Zooplankton Database Open Maps record: https://open.canada.ca/data/en/dataset/9447ecf8-a7f7-4904-8ab0-3c597c534c4b 
+15:22:38 From  Janet Mossman  to  Everyone : does obis incorporate datasets with some privacy filters at all if the owner doesn't want all of the dataset shared such as specific locations?
+15:23:16 From  naomi tress (OTN - facilitator)  to  Everyone : you could adjust the data record, dataGeneralization
+15:24:02 From  Janet Mossman  to  Everyone : is there any way that obis can control the download of datasets?
+15:24:41 From  Janet Mossman  to  Everyone : does it specify who is downloading the data?
+15:25:30 From  claudenozeres  to  Everyone : Not sure—but if by web portal, you have to provide your email, so that would be a records
+15:26:04 From  Janet Mossman  to  Everyone : thanks
+15:27:05 From  Janet Mossman  to  Everyone : can obis host metadata and link to another forum without hosting the dataset itself?
+15:27:51 From  claudenozeres  to  Everyone : Example: http://ipt.iobis.org/obiscanada/resource?r=dfo_pac_lingcodscuba_sog
+15:34:24 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.gbif.org/publisher/55897143-3f69-42f1-810d-ae94b55fde24
+15:38:16 From  claudenozeres  to  Everyone : http://ipt.iobis.org/obiscanada/resource?r=cws_eastcoastseabirdsatc
+15:38:30 From  claudenozeres  to  Everyone : CWS: http://ipt.iobis.org/obiscanada/resource?r=cws_atlantic_colonydbase
+15:38:37 From  Janet Mossman  to  Everyone : doe obis work with provincial government at all?
+15:39:00 From  Janet Mossman  to  Everyone : does
+15:39:05 From  claudenozeres  to  Everyone : I would think Prov. would be with GBIF—CBIF
+15:40:14 From  claudenozeres  to  Everyone : Academically, several are on Canadensys: https://community.canadensys.net/
+15:45:08 From  Jon Pye (OTN - Facilitator)  to  Everyone : Description: Working group formed to check in on progress with the datasets brought to the IOOS DMAC Code Sprint session, identify new datasets, share experiences and challenges, and collaborate on solutions.Link to notes:  https://docs.google.com/document/d/1JfXHFXhP0rB8juAK3-KvOtqtwDofPwewoAB_ZyFwSwYLink to GitHub:  https://github.com/ioos/bio_data_guideVicky Rowley and Abby Benson are inviting you to a scheduled Zoom meeting.Join Zoom Meetinghttps://ucsd.zoom.us/j/304000280
+15:49:41 From  Tim Van Der Stap  to  Everyone : Oh I wasn't aware of that, that's good to know Zach!
+15:49:56 From  naomi tress (OTN - facilitator)  to  Everyone : need to request access to the google notes, so click the link a little early!
+15:54:15 From  Janet Mossman  to  Everyone : so im curious about how the datasets hosted by slgo are linked to obis? is it just the metadata?
+15:54:50 From  claudenozeres  to  Everyone : For biodiversity, currently are duplicates (for DFO).
+15:54:56 From  claudenozeres  to  Everyone : Not DwC.
+15:55:08 From  Maria Cornthwaite  to  naomi tress (OTN - facilitator)(Direct Message) : An email when you get back would be great.  maria.cornthwaite@dfo-mpo.gc.ca
+15:55:24 From  naomi tress (OTN - facilitator)  to  Maria Cornthwaite(Direct Message) : will do
+15:56:51 From  claudenozeres  to  Everyone : https://ogsl.ca/bio/?lg=en
+15:57:07 From  Janet Mossman  to  Everyone : thanks
