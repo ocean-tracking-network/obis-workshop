@@ -1,0 +1,32 @@
+---
+title: "Assignment 3 - Distinguishing ecotypes under the same valid name"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Distinguishing ecotypes classified under the same valid name
+
+Atlantic cod (Gadus morhua) is endemic to the Atlantic. It traversed the Arctic and became another dominant schooling species in the Pacific (Gadus macrocephalus). They then crossed back to the Atlantic, but in presence of the dominant resident, G. morhua, they became a niche species, solitary and nearshore, as the rock cod (Gadus ogac). ( 10.1126/sciadv.aat8788 , https://cdnsciencepub.com/doi/10.1139/z98-194 ) Recently, the name of G. ogac was considered non-valid by WoRMS and thus the valid name appears as Gadus macrocephalus, or Pacific cod, across all 3 oceans.
+
+How then to distinguish related by different ecotypes in records?
+
+There are a few approaches you might take:
+
+##### From occurrences:
+* Spatially
+* Environment (temperature, depth)
+* Original scientific name
+
+##### From MoF: 
+* by density, where low abundance/biomass, could be the other variety/subspecies?
+
+```{r }
+
+
+
+```
+
+

@@ -1,0 +1,28 @@
+---
+title: "Assignment 4 - Identification is certain; confirmation is still necessary because of changed names"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Identification is certain; confirmation is still necessary because of changed names
+
+Finding new species in the Arctic is important, even if non-invasive, as indicators of environmental change.
+Pacific sand lance was the name of species called Ammodytes hexapterus. Recently, it was genetically detected in the Arctic and thus an indicator of potential change (https://link.springer.com/article/10.1007/s00300-017-2141-0
+). The identification is not in doubt. But does this need confirmation? Use select or filters to uncover the pattern of different Ammodytes records across the 3 oceans of Canada.
+
+*Tip: review species names of Ammodytes hexapterus—common name is now Arctic sand lance. Pacific sand lance is now recognized as a new species, Ammodytes personatus. So old records of Pacific sand lanc as A. hexapterus are actually of A. personatus.*
+
+*Tip: compare genetic results from BOLDsystems with occurrence records for Ammodytes spp.*
+
+**Bonus: Ammodytes hexapterus is a historical name — at one time it was used for all, then was later split. Some records may have been updated using new information. Trace records (tip: compare from museum and fisheries surveys) for OriginalScientificName as may have been submitted to OBIS/GBIF.**
+
+```{r }
+
+
+
+```
+
+

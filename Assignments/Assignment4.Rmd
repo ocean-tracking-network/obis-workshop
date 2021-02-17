@@ -1,0 +1,27 @@
+---
+title: "Assignment 4 - How to establish baselines of invasive species?"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## How to establish baselines of invasive species?
+
+One use of occurrence data is having records of species that change at times and places. Examples include the green crab (Carcinus maenas), violet tunicates (Botrylloides violaceus), and another tunicate — Ciona intestinalis. With global warming, one might expect to find that these species may spread north. 
+
+Using OBIS environmental records, examine the temperature and occurrence records of Ciona intestinalis. One record appears in the Arctic. Is there evidence to refute it?
+
+*Tip: Is there evidence for a related, but endemic species in the region?*
+
+**Bonus:** contact data source of Ciona record for more information or updates.
+**Bonus:** repeat exercise with Botrylloides violaceus.
+
+```{r }
+
+
+
+```
+
+
