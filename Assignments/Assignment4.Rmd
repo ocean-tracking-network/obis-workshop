@@ -1,6 +1,7 @@
 ---
 title: "Assignment 4 - How to establish baselines of invasive species?"
 output: html_document
+author: Claude Nozères
 ---
 
 ```{r setup, include=FALSE}

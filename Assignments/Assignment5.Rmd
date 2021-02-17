@@ -1,6 +1,7 @@
 ---
-title: "Assignment 4 - Identification is certain; confirmation is still necessary because of changed names"
+title: "Assignment 5 - Identification is certain; confirmation is still necessary because of changed names"
 output: html_document
+author: Claude Nozères
 ---
 
 ```{r setup, include=FALSE}

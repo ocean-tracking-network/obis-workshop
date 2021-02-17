@@ -1,6 +1,7 @@
 ---
 title: "Assignment 3 - Distinguishing ecotypes under the same valid name"
 output: html_document
+author: Claude Nozères
 ---
 
 ```{r setup, include=FALSE}

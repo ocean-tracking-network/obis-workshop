@@ -1,0 +1,35 @@
+---
+title: "Assignment 7 - Identification is certain (precise), but inaccurate) because other species not noticed"
+output: html_document
+author: Claude Nozères
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Identification is certain (precise), but inaccurate) because other species not noticed
+
+An analysis of environmental parameters with shrimp species in the Gulf of St. Lawrence suggested two different cluster groupings based on temperature for the shrimp Pandalus montagui in the southern Gulf of St. Lawrence, but not seen in the northern Gulf occurrences (https://www.int-res.com/abstracts/meps/v596/p95-112/
+). 
+
+Historical occurrence and literature by taxonomists indicate (http://www.marinespecies.org/aphia.php?p=sourcedetails&id=3064
+) presence of another, warmer water species, in the southern Gulf, Dichelopandalus leptocerus, which has not been reported in fisheries surveys in recent decades because biologists did not notice the similar-looking shrimp. The use of digital cameras has shown why it was mistaken, as has been reported in citizen science and available in GBIF (https://inaturalist.ca/observations?place_id=any&subview=grid&taxon_id=459562
+). 
+
+A recent review of frozen specimens off of Nova Scotia confirmed both species were present but mistakenly reported as P. montagui. (https://www.researchgate.net/publication/325079607_Cruise_Report_for_the_CCGS_Alfred_Needler_Maritimes_Region_Research_Vessel_Summer_Multispecies_Survey_June_28_to_August_14_2017_Benthic_Invertebrates
+)
+
+Using environmental parameters of US records, examine occurrences of P. montagui in Atlantic Canada for other suitable catch locations (of temperature and depth), in particular for the Gulf of St. Lawrence and Newfoundland.
+
+**Bonus: what DFO regions have 1) shrimp data 2) coastal data? Contact sources to find out if areas with no public records on OBIS may have data not-yet published (tip: Quebec and Gulf have not made shrimp data public yet).**
+
+**Bonus: Species is currently not sequenced, but can a related European species be used for eDNA detection of Dichelopandalus. Locate specimen sources of the shrimp and publish sequences on BOLDsystems or GenBank so detection can be made possible with eDNA.**
+
+```{r }
+
+
+
+```
+
+
