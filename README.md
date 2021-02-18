@@ -43,43 +43,43 @@ Workshop Schedule/Outline
 
 Intro to Darwin Core  (PPT 02)
 
-     History of DarwinCore  
+* History of DarwinCore  
 
-     Terms, definitions, Resources for End Users
+* Terms, definitions, Resources for End Users
   
-     Occurrence, Location, Time, and Quantity in Darwin Core
+* Occurrence, Location, Time, and Quantity in Darwin Core
 
-     Occurrence Core and Event Core
+* Occurrence Core and Event Core
 
-     Quiz - DwC Terms  (DwC Quiz.ipynb)
+* Quiz - DwC Terms  (DwC Quiz.ipynb)
 
 -1hr Lunch Break-
 
 Darwin Core II  (PPT 03)
 
-     Darwin Core Archives (DwC-A) 
+* Darwin Core Archives (DwC-A) 
         
-        Using the R package `obistools` for creating archives
+    * Using the R package `obistools` for creating archives
           
-     Minimum required information for a DwC-A     
+* Minimum required information for a DwC-A     
      
-     How to represent DwC schemas and types
+    * How to represent DwC schemas and types
          
-     Occurrence Core + MeasurementOrFact
+    * Occurrence Core + MeasurementOrFact
 
-        Examining a MoF table in R
+    * Examining a MoF table in R
 
 -15m Break-
 
 Darwin Core III  (PPT 03)
 
-     Representing Event Core in DwC Archives 
+* Representing Event Core in DwC Archives 
               
-     OBIS-ENV-DATA
+* OBIS-ENV-DATA
         
-        Working with OBIS-ENV archives in R
+    * Working with OBIS-ENV archives in R
               
-     (Quiz - Data Formats Quiz.ipynb)
+    * (Quiz - Data Formats Quiz.ipynb)
 
 Day 1 Q+A and Feedback
 
@@ -90,7 +90,7 @@ Ecological Metadata Language and OBIS  (PPT 04)
 
 *Hands-on session 1*
 
-    Data processing, taxon matching, QC using the robis and obistools R packages
+* Data processing, taxon matching, QC using the robis and obistools R packages
 
 -15m Break-
 
@@ -100,40 +100,40 @@ Ecological Metadata Language and OBIS  (PPT 04)
 
 WoRMS
 
-    Accessing WoRMS webservices (REST API)
+* Accessing WoRMS webservices (REST API)
 
 OBIS
 
-    Using the OBIS Data mapper to discover OBIS held datasets
+* Using the OBIS Data mapper to discover OBIS held datasets
 
 -15m Break-
 
-    OBIS API v3 – using the REST API  
+* OBIS API v3 – using the REST API  
     
-    Using the robis and obistools packages to discovery OBIS-held datasets
+* Using the robis and obistools packages to discovery OBIS-held datasets
     
     
 **Day 3**    
     
 Publishing your data via OBIS  (PPT 05)
 
-    Process of submitting/updating DwC archives to OBIS Canada
-        OBIS IPT Walkthrough
-        Verification of logins
+* Process of submitting/updating DwC archives to OBIS Canada
+    * OBIS IPT Walkthrough
+    * Verification of logins
 
-    OBIS, OBIS Canada and institutions that contribute to it
+    * OBIS, OBIS Canada and institutions that contribute to it
 
-    Contributing data to an OBIS Node
+    * Contributing data to an OBIS Node
     
 -15m Break-
 
-    OBIS Guidelines on Data Sharing and Use
+OBIS Guidelines on Data Sharing and Use
     
-    Motivations for sharing data
+* Motivations for sharing data
     
-    Licensing your dataset, CC licenses, OBIS default data licens, implications
+* Licensing your dataset, CC licenses, OBIS default data licens, implications
 
-    (Quiz)
+* (Quiz)
 
 -1hr Lunch Break-
 
