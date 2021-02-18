@@ -29,19 +29,19 @@ Deliver curriculum via OceanTeacher Global Academy and/or GitHub to provide a pe
 
 ### Schedule:
 
-**Day 1**
+##### Day 1
 
-Welcome, Introductions, goals for the workshop  
+**Welcome, Introductions, goals for the workshop**
 
-Intro to OBIS  (PPT 01)
+**Intro to OBIS  (PPT 01)**
 
-Intro to WoRMS
+**Intro to WoRMS**
 
-Workshop Schedule/Outline
+**Workshop Schedule/Outline**
 
 -15m Break-
 
-Intro to Darwin Core  (PPT 02)
+**Intro to Darwin Core  (PPT 02)**
 
 * History of DarwinCore  
 
@@ -55,7 +55,7 @@ Intro to Darwin Core  (PPT 02)
 
 -1hr Lunch Break-
 
-Darwin Core II  (PPT 03)
+**Darwin Core II  (PPT 03)**
 
 * Darwin Core Archives (DwC-A) 
         
@@ -71,7 +71,7 @@ Darwin Core II  (PPT 03)
 
 -15m Break-
 
-Darwin Core III  (PPT 03)
+**Darwin Core III**  (PPT 03)
 
 * Representing Event Core in DwC Archives 
               
@@ -81,12 +81,12 @@ Darwin Core III  (PPT 03)
               
     * (Quiz - Data Formats Quiz.ipynb)
 
-Day 1 Q+A and Feedback
+**Day 1 Q+A and Feedback**
 
 
-**Day 2**
+##### Day 2
 
-Ecological Metadata Language and OBIS  (PPT 04)
+**Ecological Metadata Language and OBIS**  (PPT 04)
 
 *Hands-on session 1*
 
@@ -98,11 +98,11 @@ Ecological Metadata Language and OBIS  (PPT 04)
 
 -1hr Lunch Break-
 
-WoRMS
+**WoRMS**
 
 * Accessing WoRMS webservices (REST API)
 
-OBIS
+**OBIS**
 
 * Using the OBIS Data mapper to discover OBIS held datasets
 
@@ -115,7 +115,7 @@ OBIS
     
 **Day 3**    
     
-Publishing your data via OBIS  (PPT 05)
+**Publishing your data via OBIS**  (PPT 05)
 
 * Process of submitting/updating DwC archives to OBIS Canada
     * OBIS IPT Walkthrough
@@ -127,7 +127,7 @@ Publishing your data via OBIS  (PPT 05)
     
 -15m Break-
 
-OBIS Guidelines on Data Sharing and Use
+**OBIS Guidelines on Data Sharing and Use**
     
 * Motivations for sharing data
     
@@ -139,19 +139,19 @@ OBIS Guidelines on Data Sharing and Use
 
 *Hands-on Session 2*
 
-Mapping (user-provided) dataset into parseable DwC-A / EML package and submitting to OBIS Canada
+**Mapping (user-provided) dataset into parseable DwC-A / EML package and submitting to OBIS Canada**
 
 -15m Break-
 
 *Hands-on Session 2 cont.*
 
-Data mapping Check-in/report, Day 3 Q+A and Feedback
+**Data mapping Check-in/report, Day 3 Q+A and Feedback**
 
 **Day 4**
 
 *Hands-on Session 3*  (3_visualizations.rmd)
 
-Finding, collecting, visualizing and analyzing data from DwC archives provided from OBIS's data portal or via robis (Binder/JuPyTeR notebook session)
+**Finding, collecting, visualizing and analyzing data from DwC archives provided from OBIS's data portal or via robis (Binder/JuPyTeR notebook session)**
 
 
 
@@ -161,15 +161,13 @@ Finding, collecting, visualizing and analyzing data from DwC archives provided f
 
 -1hr Lunch Break-
 
-Contributing to OBIS and OBIS Canada
+**Contributing to OBIS and OBIS Canada**
 
-    As a data contributor
+* As a data contributor
     
-    As a collections manager
+* As a collections manager
     
-    As a software developer
-    
-    (Quiz)
+* As a software developer
 
 *Discussion / Hands-on session 2 or 3 cont.*
 
@@ -179,11 +177,11 @@ Recap Quiz
 
 *Hands-on session 2 or 3 cont.*
 
-Continuing Engagement w/ OBIS and OBIS Canada, Day 4 Q+A, and Feedback
+**Continuing Engagement w/ OBIS and OBIS Canada, Day 4 Q+A, and Feedback**
 
-Question and Answer, Wrap-up and Next Steps  
+**Question and Answer, Wrap-up and Next Steps** 
 
-Answer questions, evaluate workshop content, plan necessary follow-ups
+**Answer questions, evaluate workshop content, plan necessary follow-ups**
 
 
 Useful Links
