@@ -20,8 +20,7 @@ Many thanks to Ward Appeltans, Leen Vandepitte, Pieter Provoost, Daphnis De Poot
 
 Give attendees an idea of what OBIS is and how it functions, why and how to become compliant with OBIS data and metadata formatting and data policy, how OBIS reporting pipelines work. Allow time to investigate solutions to meeting OBIS-compliance from user-held datasets and work in groups with support from trained bioinformaticians to produce DarwinCore archives fit for ingestion into OBIS nodes, especially OBIS-Canada 
 
-Highlight the utility of providing data to OBIS Canada (and onward to OBIS), learn how to create 
-Darwin Core Archives.  
+Highlight the utility of providing data to OBIS Canada (and onward to OBIS), learn how to create Darwin Core Archives.  
 
 Provide our own institutionally held project data and metadata in EML/DwC-A format to OBIS Canada for publication/aggregation.  
 
@@ -30,105 +29,163 @@ Deliver curriculum via OceanTeacher Global Academy and/or GitHub to provide a pe
 
 ### Schedule:
 
-**Day 1**
+##### Day 1
 
-Welcome, Introductions, goals for the workshop  
+**Welcome, Introductions, goals for the workshop**
 
-Intro to OBIS
+**Intro to OBIS  (PPT 01)**
 
-Intro to WoRMS
+**Intro to WoRMS**
 
-Intro to Darwin Core 
+**Workshop Schedule/Outline**
 
-     History of DarwinCore  
-    
-     (Quiz)
+-15m Break-
+
+**Intro to Darwin Core  (PPT 02)**
+
+* History of DarwinCore  
+
+* Terms, definitions, Resources for End Users
   
-Occurrence Core and Event Core
+* Occurrence, Location, Time, and Quantity in Darwin Core
 
-     Terms, definitions, Resources for End Users
-  
-     Occurrence, Location, Time, and Quantity in Darwin Core
+* Occurrence Core and Event Core
 
+* Quiz - DwC Terms  (DwC Quiz.ipynb)
 
-Darwin Core II  
+-1hr Lunch Break-
 
-     Darwin Core Archives – 
+**Darwin Core II  (PPT 03)**
+
+* Darwin Core Archives (DwC-A) 
+        
+    * Using the R package `obistools` for creating archives
           
-     How to represent DwC schemas and types
+* Minimum required information for a DwC-A     
+     
+    * How to represent DwC schemas and types
+         
+    * Occurrence Core + MeasurementOrFact
 
-     Minimum required information for a DwC-A
+    * Examining a MoF table in R
+
+-15m Break-
+
+**Darwin Core III**  (PPT 03)
+
+* Representing Event Core in DwC Archives 
               
-     Occurrence Core + MeasurementOrFact
-
-     Representing Event Core in DwC Archives 
+* OBIS-ENV-DATA
+        
+    * Working with OBIS-ENV archives in R
               
-     OBIS-ENV-DATA
-              
-     (Quiz)
+    * (Quiz - Data Formats Quiz.ipynb)
+
+**Day 1 Q+A and Feedback**
 
 
-**Day 2**
+##### Day 2
 
-
-Ecological Metadata Language and OBIS
-
-     (Quiz)
+**Ecological Metadata Language and OBIS**  (PPT 04)
 
 *Hands-on session 1*
 
-Data processing, taxon matching, QC using the robis and obistools R packages
+* Data processing, taxon matching, QC using the robis and obistools R packages
 
-WoRMS
+-15m Break-
 
-    Accessing WoRMS webservices (REST API)
+*Hands-on session 1 cont.*
 
-OBIS
+-1hr Lunch Break-
 
-    Using the OBIS Data mapper to discover OBIS held datasets
+**WoRMS**
 
-    OBIS API v3 – using the REST API  
+* Accessing WoRMS webservices (REST API)
+
+**OBIS**
+
+* Using the OBIS Data mapper to discover OBIS held datasets
+
+-15m Break-
+
+* OBIS API v3 – using the REST API  
     
-    Using the robis and obistools packages to discovery OBIS-held datasets
+* Using the robis and obistools packages to discovery OBIS-held datasets
     
     
 **Day 3**    
     
-Publishing your data via OBIS
+**Publishing your data via OBIS**  (PPT 05)
 
-    Process of submitting/updating DwC archives to OBIS Canada
-    
-    Contributing data to an OBIS Node
-    
-    OBIS Guidelines on Data Sharing and Use
-    
-    Motivations for sharing data
-    
-    Licensing your dataset, CC licenses, OBIS default data licens, implications
+* Process of submitting/updating DwC archives to OBIS Canada
+    * OBIS IPT Walkthrough
+    * Verification of logins
 
-    Researcher control of additional restrictions w/ licensing
+    * OBIS, OBIS Canada and institutions that contribute to it
+
+    * Contributing data to an OBIS Node
+    
+-15m Break-
+
+**OBIS Guidelines on Data Sharing and Use**
+    
+* Motivations for sharing data
+    
+* Licensing your dataset, CC licenses, OBIS default data licens, implications
+
+* (Quiz)
+
+-1hr Lunch Break-
 
 *Hands-on Session 2*
 
-Mapping (user-provided) dataset into parseable DwC-A / EML package and submitting to OBIS Canada
+**Mapping (user-provided) dataset into parseable DwC-A / EML package and submitting to OBIS Canada**
 
+-15m Break-
+
+*Hands-on Session 2 cont.*
+
+**Data mapping Check-in/report, Day 3 Q+A and Feedback**
 
 **Day 4**
 
-*Hands-on Session 3*
+*Hands-on Session 3*  (3_visualizations.rmd)
 
-Finding, collecting, visualizing and analyzing data from DwC archives provided from OBIS's data portal or via robis (Binder/JuPyTeR notebook session)
+**Finding, collecting, visualizing and analyzing data from DwC archives provided from OBIS's data portal or via robis (Binder/JuPyTeR notebook session)**
 
-Contributing to OBIS and OBIS Canada
 
-    As a data contributor
+
+-15m Break-
+
+*Hands-on Session 3 Cont.
+
+-1hr Lunch Break-
+
+**Contributing to OBIS and OBIS Canada**
+
+* As a data contributor
     
-    As a collections manager
+* As a collections manager
     
-    As a software developer
-    
-    (Quiz)
+* As a software developer
 
-Question and Answer, Wrap-up and Next Steps  
+*Discussion / Hands-on session 2 or 3 cont.*
 
-Answer questions, evaluate workshop content, plan necessary follow-ups
+-15m Break-
+
+Recap Quiz
+
+*Hands-on session 2 or 3 cont.*
+
+**Continuing Engagement w/ OBIS and OBIS Canada, Day 4 Q+A, and Feedback**
+
+**Question and Answer, Wrap-up and Next Steps** 
+
+**Answer questions, evaluate workshop content, plan necessary follow-ups**
+
+
+Useful Links
+
+* https://classroom.oceanteacher.org/enrol/index.php?id=430 Ocean Teacher related course
+* https://youtu.be/4rVEkWOhkoM Introduction to IOC, IODE, OBIS, OTGA by Ward Appeltans.
+* http://ipt.iobis.org/obiscanada/ OBIS Canada
