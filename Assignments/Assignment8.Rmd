@@ -1,0 +1,26 @@
+---
+title: "Assignment 8 - Detecting trends in vulnerable marine taxa - and uncovering data-deficient areas for analysis"
+output: html_document
+author: Claude Nozères
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Detecting trends in vulnerable marine taxa - and uncovering data-deficient areas for analysis
+
+Much effort is underway to document and understand deepwater taxa such as corals and sponges. Sponges are difficult to identify, and were not always recorded in DFO groundfish trawl surveys. A number of fishing-excluded areas have been established. While research trawls continue in most if not all areas, a recent modelling exercise concluded these were unlikely to have significant impact (http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-5/Fs70-5-2020-007-eng.pdf
+). 
+
+All DFO regions have published annual groundfish trawl survey data on OBIS (note: Quebec does not yet publish invertebrate data—currently being corrected for identifications). Are there areas, or taxa, of sponges that indicate trends in catch biomass for certain areas--or depths? Are trends evident in past five years, compared ot 10 years ago?
+
+**Bonus: use species occurences cubes: https://www.biorxiv.org/content/10.1101/2020.03.23.983601v1**
+
+```{r }
+
+
+
+```
+
+

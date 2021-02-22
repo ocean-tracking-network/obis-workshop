@@ -1,0 +1,25 @@
+---
+title: "Assignment 6 - Identification is uncertain, and names have also changed!"
+output: html_document
+author: Claude Nozères
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Identification is uncertain, and names have also changed!
+
+A similar situation to the previous assignment may be explored with redfish (Sebastes spp.) in the Northwest Atlantic. Currently, 3 species are recognized—2 beaked species that are common (S. fasciatus, S. mentella) but very difficult to distinguish morphologically, and a third, unbeaked and less-common one (Sebastes norvegicus). A biologist may want to know if historical records of species of Sebastes vary in the distribution in Atlantic Canada.
+
+What are some of the pitfalls of examining occurrence records over time and space for these species? Locate an example that illustrates the issue.
+
+*Tip: all redfishes were once known as Sebastes marinus, for which the valid name is now Sebastes norvegicus. So past records show a common species was widespread, but then shrunk, when the 2 other species names came into use.*
+
+```{r }
+
+
+
+```
+
+
