@@ -1,0 +1,191 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+![](marine_region.jpg)
+# Marine Regions RESTful API Walkthrough
+MarineRegion's REST API can be accessed using R httr package. All API calls to marineregions can return either a JSON file or a XML depending on the extension specified in the call. The below examples exclusively use the json extension since the output is easier for R to parse.
+
+the Recommended version of R is R 3.6+ which can be downloaded from https://www.r-project.org/ 
+
+```{r}
+# Import the required R packages
+library(httr)
+library(jsonlite)
+library(container)
+library(dplyr)
+library(tidyr)
+```
+
+Initialize the base URL for Marine Regions. This variable is unchanged for every api call 
+```{r}
+MARINE_REGIONS_URL <- "https://marineregions.org/rest"
+API_EXT <- "json" # sets the return format for every MarineRegion API query (json or xml)
+```
+
+
+## Get Gazetteer Records by Name
+By Name, with 'like' (defaults to True if not included)¶
+When the argument for 'like' (bool) is not provided, the gazetteer API will match everything before and after your search term.
+
+The argument 'fuzzy' (bool) will use the Levenshtein algorithm to match nearest records. By default this is set as 'false'
+
+Note: Boolean values should be set using 'true' or 'false' R strings.
+```{r}
+# Quering using the country Belgian as the location value
+location <- 'Belgian'
+
+# /getGazetteerRecordsByName.json
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByName.',API_EXT,'/',URLencode(location),'/'))
+fromJSON(content(req, 'text'))
+```
+
+### By Name, without 'like'
+When setting like to false ensure you provide the exact name of Gazetteer resource as it appears in MarineRegions
+```{r}
+# Setting the location and like value
+location = "Belgian 24 NM"
+like = 'false' #Defaults to true
+
+# /getGazetteerRecordsByName.json
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByName.',API_EXT,'/',URLencode(location),'/',like,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Get Multiple Gazetteers By Name
+Multiple name search entries can be sent to the getGazetteerRecordsByNames.json call, but first, you must provide the boolean values for both the like and fuzzy query slot path.
+```{r}
+# Lets keep the defaults for like and fuzzy
+like <- 'false' 
+fuzzy <- 'false'
+
+# build a slash separated list of names to query by
+names <- URLencode("Canadian Coast/Mexican Coast/Norwegian Coast")
+ 
+req = GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByNames.',API_EXT,'/',like,'/',fuzzy,'/',names,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Getting Gazetteers by Sources¶
+Querying the getGazetteerSources will provide you will a list of MarineRegions source information. There are no arguments or query strings needed for this API call.
+```{r}
+# Getting the list of gazetteer sources
+
+# /getGazetteerSources
+req = GET(paste0(MARINE_REGIONS_URL,'/getGazetteerSources.',API_EXT,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Get Gazetteers from a Specific Source
+If you know the name exact source name you can use that value in the call to getGazetteerRecordsBySource to return only the gazetteer records from that source.
+```{r}
+# Picking only the gazetteer records for SAIL
+source <- "SAIL"
+
+# /getGazetteerSources
+req = GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsBySource.', API_EXT,'/',source,'/'))
+sail_locations <- fromJSON(content(req, 'text'))
+```
+
+```{r}
+# Drawing a map of all the locations listed by source SAIL
+popup <- paste0(sail_locations$preferredGazetteerName, "<br/>MRGID: ", sail_locations$MRGID)
+
+# For every point that has a location lets map those points to the map 
+leaflet() %>%
+  addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
+  addCircleMarkers(popup=popup, lat = sail_locations$latitude, lng =  sail_locations$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300", clusterOptions = markerClusterOptions())
+```
+## Get Gazetteer by MGRID
+A MarineRegions MGRID is used to query for a specific Gazetteer record.
+
+### Gazetteer Records
+Returns the gazetteer records for a given MGRID
+
+```{r}
+mgrid <- "3293" # MGRID for Belgian Exclusive Economic Zone
+
+# /getGazetteerRecordByMRGID
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordByMRGID.',API_EXT,'/',mgrid,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Gazetteer Names¶
+Just returns the name values for a MGRID
+
+```{r}
+mgrid <- "3293" # MGRID for Belgian Exclusive Economic Zone
+
+# /getGazetteerNamesByMRGID
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerNamesByMRGID.',API_EXT,'/',mgrid,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Get Gazetteer Relations by MGRID
+Returns related Gazetteer records given a valid MGRID.
+
+Relations are defined by the type variable.
+
+
+```{r}
+# What are all the marine regions related to Belgian Exclusive Economic Zone?
+mgrid <- "3293"
+direction <- 'both' #Must be upper, lower, or both
+rtype <- 'all' #Must be either partof,partlypartof,adjecentto,similarto,administrativepartof,influencedby or all
+
+# /getGazetteerRelationsByMRGID/MGRID/direction/rtype
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRelationsByMRGID.',API_EXT,'/',mgrid,'/',direction,'/',rtype))
+related_belgian_eco_zone <- fromJSON(content(req, 'text'))
+related_belgian_eco_zone
+```
+
+```{r}
+# Drawing a map of the gazetteer records related to the Belgian Exclusive Economic Zone
+popup <- paste0(related_belgian_eco_zone$preferredGazetteerName, "<br/>MRGID: ", related_belgian_eco_zone$MRGID)
+
+# For every point that has a location lets map those points to the map 
+leaflet() %>%
+  addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
+  addCircleMarkers(popup=popup, lat = related_belgian_eco_zone$latitude, lng =  related_belgian_eco_zone$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300")
+```
+
+### Get Gazetteer WMSes
+The WMS records contain URLs to layers that can be used in GIS packages such as ArcGIS and QGIS.
+```{r}
+mgrid <- "3293"
+
+# /getGazetteerWMSes/MGRID/
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerWMSes.',API_EXT,'/',mgrid,'/'))
+fromJSON(content(req, 'text'))
+```
+
+### Get Gazetteer Records by Latitude/Longitude
+Return Gazetteer records within the default radius of a specific lat/lon
+
+```{r}
+lat = 45.0 #Double, from 0 to 90
+lon = 0 #Double, from -180 to 180
+#Default radius is 5 degrees for both lat and lon
+
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByLatLong.',API_EXT,'/',lat,'/',lon,'/'))
+map_points <- fromJSON(content(req, 'text'))
+map_points
+
+# Drawing a map of the gazetteer records related to the Belgian Exclusive Economic Zone
+popup <- paste0(map_points$preferredGazetteerName, "<br/>MRGID: ", map_points$MRGID)
+
+# For every point that has a location lets map those points to the map 
+leaflet() %>%
+  addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
+  addCircleMarkers(popup=popup, lat = map_points$latitude, lng =  map_points$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300")
+
+```
+
+### Get Gazetteer Types
+Retrieve all the Gazetteer Types along with their descriptions.
+```{r}
+#/getGazetteerTypes
+req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerTypes.',API_EXT,'/'))
+fromJSON(content(req, 'text'))
+```
