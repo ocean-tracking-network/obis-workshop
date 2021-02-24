@@ -1,49 +1,0 @@
-14:12:51 From  Evan Morien - Hakai Inst. Genomics Working Grp.  to  Everyone : I brought one but still not sure exactly how to get it in there
-14:13:18 From  Maria Cornthwaite  to  Everyone : I brought some but it's just a snippet and not at all formatted for Darwin core.
-14:13:41 From  Maria Cornthwaite  to  Everyone : I actually really want to know how to direct link to a sql server database.
-14:14:08 From  Maria Cornthwaite  to  Everyone : that would be awesome!!
-14:14:16 From  Zach Monteith (Hakai Institute)  to  Everyone : I’m also interested in that if we have any take away from the database linking at the end
-14:14:17 From  Heidi van Vliet (DFO)  to  Everyone : I have a dataset
-14:14:39 From  Maria Cornthwaite  to  Everyone : I do have some OBIS-y views built already in my sql db.
-14:14:42 From  Samantha  to  Everyone : I wouldn't mind a sample dataset. 
-14:15:09 From  Jeff Cullis  to  Everyone : I was looking at the Hakai salmon sample dataset that Brett may have provided
-14:15:35 From  Johan Jung  to  Everyone : I'd like to see how to link to sql server as well.
-14:16:15 From  Justin Belluz  to  Everyone : I have a dataset (phyto-microscopy) I have been working up, but no one else has looked at. It would be good to get some eyes on it to see issues.
-14:16:17 From  Janet Mossman  to  Everyone : can we choose a room based on the type of dataset?
-14:16:41 From  Janet Mossman  to  Everyone : that would be good :)
-14:16:59 From  Janet Mossman  to  Everyone : I also have a seining dataset but that cannot be shared at this point
-14:20:33 From  Amy Tabata (DFO)  to  Everyone : can I join brett  as well as that is really similar to most of  my main data
-14:21:08 From  Tim Van Der Stap  to  Everyone : Heidi I'll join your channel, I'm working on zooplankton data as well :)
-14:21:31 From  Henry Ye  to  Everyone : I'd be interested in joining the SQL one (mainly on linking it to IPT) 
-14:21:55 From  Jeff Cullis  to  Everyone : I'll join Brett's group as well
-14:35:34 From  Jackie Waldron (DFO)  to  Everyone : If there's room in Heidi's group, I'd like to join.
-14:37:06 From  OTN Data Centre  to  Everyone : kk making a note
-14:44:01 From  OTN Data Centre  to  Everyone : a good spot to start with R coding https://datacarpentry.org/R-ecology-lesson/
-14:44:28 From  Janet Mossman  to  Everyone : and look up r cheatsheets lol
-14:44:29 From  claudenozeres  to  Everyone : Great tip! They do workshops—and lessons online are great
-14:45:11 From  Evan Morien - Hakai Inst. Genomics Working Grp.  to  Everyone : The workshops are great, I definitely learned a lot from them when I started using R years back
-14:45:47 From  claudenozeres  to  Everyone : https://rstudio.com/resources/cheatsheets/
-14:46:32 From  Maria Cornthwaite  to  Everyone : I learned ggplot with R Cookbook stuff.  Lots of good "recipes" to produce desired outcomes. http://www.cookbook-r.com/Graphs/
-14:47:26 From  claudenozeres  to  Everyone : https://r4ds.had.co.nz/
-15:14:49 From  naomi tress (OTN)  to  Everyone : https://www.marineregions.org/gazetteer.php?p=details&id=23524
-15:15:08 From  Tim Van Der Stap  to  Everyone : View(df$...)
-15:15:19 From  Tim Van Der Stap  to  Everyone : View(unique(df$...)
-15:15:40 From  naomi tress (OTN)  to  Everyone : From this results, distinct coordinates can be obtained using the distinct() function:```{r lagaus}data %>% select(var1, var2) %>% distinct()
-15:16:23 From  Tim Van Der Stap  to  Everyone : one more bracket Heidi
-15:23:52 From  naomi tress (OTN)  to  Everyone : brb
-15:26:58 From  Tim Van Der Stap  to  Everyone : %>% select(- … )
-15:29:11 From  Heidi van Vliet (DFO)  to  Everyone : https://dwc.tdwg.org/terms/#dwc:eventDate
-15:32:29 From  naomi tress (OTN)  to  Everyone : https://rawgit.com/rstudio/cheatsheets/master/lubridate.pdf
-15:32:37 From  Tim Van Der Stap  to  Everyone : mutate(Time = format(time, "%H:%M:%S"),         eventDate = format_iso_8601(as.POSIXct(paste(date, Time),                                                format = "%Y-%m-%d %H:%M:%S",                                                tz = "America/Los_Angeles"))
-15:42:02 From  naomi tress (OTN)  to  Everyone : @jon looking to determine PST or PDT based on the date so we can add the timezone to eventDate
-15:44:56 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/case_when
-15:49:01 From  naomi tress (OTN)  to  Heidi van Vliet (DFO)(Direct Message) : might have found the trick for "is it daylight savings?"...
-15:49:03 From  naomi tress (OTN)  to  Heidi van Vliet (DFO)(Direct Message) : x <- ymd("2012-03-26")dst(x)
-15:49:33 From  naomi tress (OTN)  to  Heidi van Vliet (DFO)(Direct Message) : dst {lubridate}
-15:51:37 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://forms.gle/uoWmAWZqQvMX9z2f8
-15:55:54 From  Jon Pye (OTN - Facilitator)  to  Everyone : P01
-15:56:13 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://www.bodc.ac.uk/resources/vocabularies/vocabulary_search/
-15:56:46 From  Jon Pye (OTN - Facilitator)  to  Everyone : I do search text within P01
-15:56:52 From  Jon Pye (OTN - Facilitator)  to  Everyone : and then expand from there
-15:59:56 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/nvs-vocabs/P01
-16:00:12 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/nvs-vocabs/P01/issues/42

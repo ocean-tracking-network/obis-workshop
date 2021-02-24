@@ -1,231 +1,0 @@
-11:53:13 From  Jon Pye (OTN - Facilitator)  to  Everyone : if any of them want to join the mailing list for that meeting just send me an email albenson@usgs.gov
-11:57:13 From  Yinghuan Niu  to  Everyone : Hope you get better soon.
-11:57:20 From  Yinghuan Niu  to  Everyone : Patrick
-11:57:37 From  Patrick Martin  to  Everyone : Thanks!
-12:00:06 From  Jon Pye (OTN - Facilitator)  to  Everyone : download.file("http://ipt.vliz.be/eurobis/archive.do?r=nsbs")data <- read.table(unz(temp, "occurrence.txt"), sep="\t", header=TRUE, stringsAsFactors=FALSE)View(data) # inspect the data
-12:00:13 From  Yinghuan Niu  to  Everyone : But this makes me :D while I'm watching this video the author looks like you.
-12:01:14 From  Jon Pye (OTN - Facilitator)  to  Everyone : what video?
-12:02:09 From  Yinghuan Niu  to  Everyone : https://vimeo.com/218307423
-12:20:54 From  naomi tress (OTN - facilitator)  to  Everyone : if any want to join the mailing list for that meeting just send me an email albenson@usgs.gov
-12:36:58 From  naomi tress (OTN - facilitator)  to  Everyone (in Waiting Room) : amy not sure why its stuck on admitting you, maybe quit and rejoin?
-12:37:27 From  naomi tress (OTN - facilitator)  to  Everyone : if any want to join the mailing list for that meeting just send me an email albenson@usgs.gov
-12:51:53 From  naomi tress (OTN - facilitator)  to  Everyone : worms::wm_name2id_(name, ...) would be another package to use
-12:52:06 From  naomi tress (OTN - facilitator)  to  Everyone : function I mean
-12:57:01 From  Johan Jung  to  Everyone : Jon you need a thermos jacket, I keep feeling sorry
-12:58:50 From  naomi tress (OTN - facilitator)  to  Everyone : if any want to join the mailing list for that meeting just send me an email albenson@usgs.gov
-13:04:09 From  Maria Cornthwaite  to  Everyone : Quit for the day and went off to carry on painting a new/old house...!!
-13:04:40 From  naomi tress (OTN - facilitator)  to  Everyone : inside of it I hope!
-13:06:41 From  Maria Cornthwaite  to  Everyone : I think I got the main chat
-13:07:27 From  Jon Pye (OTN - Facilitator)  to  Everyone : jonpye@gmail.com if you please! wonderful that we got these chats saved!
-13:07:27 From  naomi tress (OTN - facilitator)  to  Everyone : otndc@dal.ca
-13:08:43 From  Jon Pye (OTN - Facilitator)  to  Everyone : if any want to join the mailing list for that meeting just send me an email albenson@usgs.gov
-13:11:43 From  Tim Van Der Stap  to  Everyone : Oh that sounds great Naomi!
-13:12:11 From  naomi tress (OTN - facilitator)  to  Tim Van Der Stap(Direct Message) : let m e know your email, I can add you
-13:12:33 From  Tim Van Der Stap  to  naomi tress (OTN - facilitator)(Direct Message) : tim.vanderstap@hakai.org :) yeah I'd love some feedback on coding issues I regularly have :)
-13:13:15 From  claudenozeres  to  Everyone : Are folks using R to prepare DwC?
-13:13:17 From  naomi tress (OTN - facilitator)  to  Tim Van Der Stap(Direct Message) : sounds great
-13:13:25 From  claudenozeres  to  Everyone : (archives)
-13:14:29 From  Maria Cornthwaite  to  Everyone : I'll use a bit of R just to manipulate the tables my SQL code pops out.  Maybe to do the WoRMS checking too.
-13:15:10 From  claudenozeres  to  Everyone : Thanks Maria—that was what I wondering. Is R for prelim. manip.? But is it ALSO to do archives?
-13:15:20 From  claudenozeres  to  Everyone : For taxonomy, I find it difficult to resolve in R...
-13:16:52 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop/blob/master/rmd-files/check_scinames_w_worms.R
-13:17:06 From  Maria Cornthwaite  to  Everyone : I envision using the IPT to actually build the archive from tables which will have all the right fields for easy matching.  We already have the aphia ids in our db so it will hopefully be like the example that was worked through this morning.
-13:18:39 From  claudenozeres  to  Everyone : Was an example this morning?
-13:23:45 From  Diana Cardoso (Maritimes, DFO)  to  Everyone : GitHub of DFO/BIO R  workshops https://github.com/AtlanticR/bioRworkshops
-13:24:12 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/iobis/notebook-mof-types
-13:25:23 From  Heidi van Vliet (DFO)  to  Everyone : https://reports.obis.org/moftypes/
-13:25:55 From  claudenozeres  to  Everyone : I have a biodiversity project done in 4 type (not ready for IPT yet)
-
-UW photos at transects at depth
-UW photos over transects across depths (shore to 30 m)
-Dredges at different depth transects (5, 10, 15m)
-Van Venn grab at stations
-Large IKU grabs at stations
-
-So best to prob. publish as 5 datasets, but link with metadata, I suppose.
-Still mulling about MoFs (events) to build for this. No measurements, just counts
-So occurrences are easy.
-
-Also, what to do about all the images!…
-13:28:04 From  Tim Van Der Stap  to  Everyone : I'd be keen on a vis-demo!
-13:28:14 From  claudenozeres  to  Everyone : vis!
-13:28:20 From  Evan Morien  to  Everyone : I’d like the vis demo at some point as well
-13:28:26 From  Maria Cornthwaite  to  Everyone : yep
-13:30:27 From  Jon Pye (OTN - Facilitator)  to  Everyone : claude: the top level events seem ready-made and we can spider out the specifics from there, if we were looking to aggregate these into a single data package instead of many. if we keep things separate I think we still have a [cruise] -> [station] -> [cast] sort of structure in each one?
-13:31:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : images are fun, we could consider the multimedia extension?
-13:31:24 From  Tim Van Der Stap  to  Everyone : I believe there were terms within DwC to reference stillImages?
-13:31:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : this might be a good template for the image data: https://github.com/tdwg/dwc-for-biologging/tree/master/use-cases/camtrap-dp
-13:31:37 From  claudenozeres  to  Everyone : Thanks Jon, yes, I have to think about the event structure because some are points, lines...
-13:32:30 From  Jon Pye (OTN - Facilitator)  to  Everyone : (Peter, the use case author, has been getting into frictionless data lately, and I haven't learned how to double-structure DwC-A ++ frictionless datapackages but I think it might become something people do regularly in the future.
-13:33:37 From  Jon Pye (OTN - Facilitator)  to  Everyone : In this part of the world, a legend is a really cool person.
-13:34:22 From  claudenozeres  to  Everyone : ooh…dorids are tricky… :)
-13:38:27 From  Jon Pye (OTN - Facilitator)  to  Everyone : maybe there was less data back then, it was cooler looking?
-13:39:39 From  claudenozeres  to  Everyone : Could synonyms be a factor?
-13:40:12 From  Evan Morien  to  Everyone : Anything you can code into a column with discrete values can be used as a factor for facet_grid
-13:41:11 From  Evan Morien  to  Everyone : I use it a lot for doing community composition plots for different groups of samples in microbial ecology sequencing experiments
-13:42:22 From  naomi tress (OTN - facilitator)  to  Everyone : https://obis.org/#/dataset/5ad45acd-40ba-4cfe-922d-e06372045e82
-13:43:39 From  naomi tress (OTN - facilitator)  to  Everyone : https://www.obis.org/dataset/4948203e-5c4f-4454-9e49-074f408afb9b
-13:43:47 From  Evan Morien  to  Everyone : Sorry can you show that code change again
-13:43:52 From  Evan Morien  to  Everyone : Line 134
-13:43:58 From  naomi tress (OTN - facilitator)  to  Everyone : <a href=\"http://www.obis.org/dataset/", abrseg$dataset_id, "\">OBIS dataset page</a>")
-13:45:41 From  Jon Pye (OTN - Facilitator)  to  Everyone : patchwork
-13:46:35 From  Tim Van Der Stap  to  Everyone : Do you guys often use the Shiny (app)?
-13:46:59 From  Jon Pye (OTN - Facilitator)  to  Everyone : we used to, but we haven't in the past few years.
-13:47:49 From  Maria Cornthwaite  to  Everyone : Some users at the Pacific Biological Station.
-13:52:26 From  Evan Morien  to  Everyone : I learned to use shiny in a workshop years back but I haven’t used it recently.
-13:56:08 From  Evan Morien  to  Everyone : Yeah when constructing reference databases from genbank sequences, a critical step is finding sequences that don’t fit in bc they are mislabeled (you can align them and do it manually, or if you want to do it for hundreds or thousands of sequences, you can use a model built from sequences you know are representative of your gene)
-14:00:45 From  Maria Cornthwaite  to  Everyone : I promise...when I finish my pacific Groundfish survey datasets there will be some more PCod occurrences in the Pacific!
-14:09:13 From  Tim Van Der Stap  to  Everyone : ESRI maps?
-14:10:20 From  naomi tress (OTN - facilitator)  to  Everyone : https://www.esri.com/en-us/home
-14:13:06 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://storymaps.arcgis.com/stories/4afb9aefc2ff43fd81db3f74ddbf05d0
-14:13:27 From  Jon Pye (OTN - Facilitator)  to  Everyone : swipe block is not what I would have called it
-14:14:49 From  Brian Jones (OTN)  to  Everyone : adding this "+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))" can rotate the xaxis labels
-14:16:02 From  claudenozeres  to  Everyone : Try doing multi species on Sebastes for atlantic—over time :)
-14:38:47 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://tidyr.tidyverse.org/reference/separate.html
-14:39:20 From  naomi tress (OTN - facilitator)  to  Everyone : run ?separate for the same doc
-14:39:47 From  Evan Morien  to  Everyone : We used unite yesterday for encoding a portion of my event ID
-14:41:37 From  Evan Morien  to  Everyone : Here, just eating off camera
-14:42:04 From  naomi tress (OTN - facilitator)  to  Everyone : me too!
-14:43:02 From  Janet Mossman  to  Everyone : is anyone uploading a dataset to obis?
-14:56:26 From  naomi tress (OTN - facilitator)  to  Everyone : http://www.marinespecies.org/aphia.php?p=match
-15:01:13 From  naomi tress (OTN - facilitator)  to  Everyone : http://www.marinespecies.org/aphia.php?p=taxdetails&id=137683
-15:05:24 From  naomi tress (OTN - facilitator)  to  Everyone : http://www.marinespecies.org/aphia.php?p=taxdetails&id=107502
-15:43:15 From  claudenozeres  to  Everyone : Dichelopandalus leptocerus
-15:43:51 From  naomi tress (OTN - facilitator)  to  Everyone : http://www.marinespecies.org/aphia.php?p=taxdetails&id=158356
-15:43:55 From  claudenozeres  to  Everyone : https://inaturalist.ca/observations?place_id=any&subview=grid&taxon_id=459563
-16:07:17 From  Jon Pye (OTN - Facilitator)  to  Everyone : Evan, Henry is this link at all helpful? https://github.com/iobis/Project-team-Genetic-Data/blob/main/Guidelines/Guidelines-for-metabarcoding-data.md
-16:10:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/iobis/Project-team-Genetic-Data/blob/main/Guidelines/Guidelines-for-quantitative-PCR-data.md
-16:57:55 From  claudenozeres  to  Everyone : Is it possible to hear from the breakout rooms their findings? Curious about SQL, and what other folks (code solutions?) I learned from Naomi and Sheila about taxon matching.
-16:58:08 From  Jon Pye (OTN - Facilitator)  to  Everyone : that would be a good thing to do next, yeah
-17:01:13 From  Zach Monteith  to  Everyone : I have to leave for meeting at 13:30, but I’ll come back in when I’m done
-17:02:15 From  naomi tress (OTN - facilitator)  to  Everyone : @claude we will get brian to talk about it, hes the lead programmer for otn and has made so many parts of my job easier with worms and more
-17:07:02 From  Zach Monteith  to  Everyone : https://github.com/ioos/bio_data_guide
-17:07:39 From  Zach Monteith  to  Everyone : And here’s the seagrass specific directory with the code I was working on
-17:07:40 From  Zach Monteith  to  Everyone : https://github.com/ioos/bio_data_guide/tree/master/Standardizing%20Marine%20Biological%20Data/datasets/hakai_seagrass_data
-17:08:32 From  claudenozeres  to  Everyone : do people use GitHub to post raw data—as a temp, I suppose? Not as an archive?
-17:08:50 From  Brett Johnson  to  Everyone : I do yep!
-17:09:07 From  claudenozeres  to  Everyone : Thanks! I had that question from others—I agree.
-17:09:12 From  Brett Johnson  to  Everyone : Usually my git repos have a raw_data folder
-17:09:19 From  Evan Morien  to  Everyone : Yeah the max file size is something like 50 or 100Mb but anything under that you can use GitHub for
-17:09:22 From  claudenozeres  to  Everyone : Zach here, too.
-17:09:30 From  Brett Johnson  to  Everyone : And then the script reads those, and spits out a processed_data folder
-17:10:18 From  Maria Cornthwaite  to  Everyone : Reproducible work flows also make subsequent updates to your data sets (e.g. on an annual basis) a much less daunting task.  Especially if someone else might do the updates in future.
-17:10:36 From  Zach Monteith  to  Everyone : Yes, I sometimes (project, datasource dependant) include a raw_data folder in my repos
-17:12:20 From  Sheila Atchison (DFO-wpg)  to  Everyone : Can you share the measurement types for fork length and weight (g) or where you found them?
-17:14:51 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/nvs-vocabs/P01/blob/master/The_BODC_P01_PUV_semantic_model_Aug2019.pdf
-17:15:21 From  Amy Tabata (DFO)  to  Everyone : I think we came to this one for fork length  http://vocab.nerc.ac.uk/collection/P01/current/FL01XX01/
-17:17:10 From  Amy Tabata (DFO)  to  Everyone : and wet_weigth
-17:17:12 From  Amy Tabata (DFO)  to  Everyone : http://vocab.nerc.ac.uk/collection/P01/current/NEWCXX02/
-17:18:52 From  Brett Johnson  to  Everyone : Here is what I used for weight http://vocab.nerc.ac.uk/collection/P01/current/SPWGXX01/
-17:19:01 From  Brett Johnson  to  Everyone : For measurementTypeID
-17:19:10 From  Jon Pye (OTN - Facilitator)  to  Everyone : those are reasonable I would think
-17:19:28 From  Maria Cornthwaite  to  Everyone : We have data in our database that has a weight type of "frozen and thawed" and a whole variety of other kinds of weights.  Fortunately most datasets just use "whole round weight".
-17:20:12 From  claudenozeres  to  Everyone : different weights are sometimes important in datasets. Fresh, gutted, frozen...
-17:20:42 From  Sheila Atchison (DFO-wpg)  to  Everyone : Fantastic, thanks.
-17:20:46 From  Brett Johnson  to  Everyone : totally... It might be important to get more detailed terms in NERC for those
-17:21:46 From  claudenozeres  to  Everyone : Good to know—what to do, or not—db connect
-17:22:47 From  Jon Pye (OTN - Facilitator)  to  Everyone : yammed ham
-17:22:50 From  Brian Jones (OTN)  to  Everyone : I'm sure DFO would frown upon someone using a SSH tunnel to get past the firewall
-17:22:57 From  naomi tress (OTN - facilitator)  to  Everyone : lubridate::dst
-17:23:59 From  claudenozeres  to  Everyone : Then is fun to use CG ship time on groundfish surveys—like, Atlantic time on Teleost ship—when in Eastern zone ;)
-17:24:44 From  naomi tress (OTN - facilitator)  to  Everyone : a good argument for a universal time constant...
-17:24:44 From  Brian Jones (OTN)  to  Everyone : https://regex101.com/ - Naomi let me know about this service
-17:25:33 From  claudenozeres  to  Everyone : good point, Heidi! Same dataset formats, phew!
-17:29:08 From  Maria Cornthwaite  to  Everyone : For those of us in DFO thinking of dual publishing to open data or open maps, I would think that keeping the MOFs separate would retain a greater degree of simplicity in terms of building a comprehensible open data dataset.
-17:29:18 From  Jon Pye (OTN - Facilitator)  to  Everyone : true!
-17:29:26 From  Jackie Waldron (DFO)  to  Everyone : I think you're correct Maria
-17:30:37 From  Maria Cornthwaite  to  Everyone : Not a species name issue, but our GFBio database spells latitude as "Lattitude"...
-17:32:07 From  Jon Pye (OTN - Facilitator)  to  Everyone : oof
-17:33:30 From  Tim Van Der Stap  to  Everyone : https://github.com/tdwg/dwc/issues/181
-17:33:44 From  claudenozeres  to  Everyone : thanks Tim!
-17:45:33 From  claudenozeres  to  Everyone : Along with regular meetings, could have a place (or be notified?) of updates to OBIS Canada? Or Canadian publications citing it? A Canadian guide would be great, too.
-17:46:47 From  Amy Tabata (DFO)  to  Everyone : i like thte idea of a git hub with a couple case examples that are worked through, and then also a place for back and forth code sharing tricks or trying to be consistent between group with terms etc.  
-17:46:50 From  Jon Pye (OTN - Facilitator)  to  Everyone : DwC isn't Everest, but it's still faster if you have a guide :)
-17:48:14 From  Jon Pye (OTN - Facilitator)  to  Everyone : hey that's the academia thing too!
-17:48:36 From  naomi tress (OTN - facilitator)  to  Everyone : id come to that
-17:48:47 From  Brett Johnson  to  Everyone : Is anyone here on this? Looks like it’s not really being used but could be a good platfrom https://github.com/OBISCanada
-17:49:20 From  Tim Van Der Stap  to  Everyone : "1 contribution last year" haha
-17:50:35 From  naomi tress (OTN - facilitator)  to  Everyone : there are a lot of memes and cats
-17:50:37 From  Brian Jones (OTN)  to  Everyone : a little bit better than MSN
-17:50:44 From  Heidi van Vliet (DFO)  to  Everyone : There is an OBIS slack group
-17:50:54 From  Jon Pye (OTN - Facilitator)  to  Everyone : wry smiles from all the OTN staff as I say I like Slack.
-17:52:33 From  Janet Mossman  to  Everyone : lol
-17:59:19 From  Jon Pye (OTN - Facilitator)  to  Everyone : that's a pretty big stick...
-18:01:10 From  Tim Van Der Stap  to  Everyone : Out of curiosity, is there a 'competitor' to OBIS? Another repository for marine taxonomic data?
-18:01:59 From  Jon Pye (OTN - Facilitator)  to  Everyone : FishBase?
-18:02:09 From  Jon Pye (OTN - Facilitator)  to  Everyone : not really 1:1
-18:02:55 From  claudenozeres  to  Everyone : GBIF—museums and universities.
-18:03:13 From  Jon Pye (OTN - Facilitator)  to  Everyone : true, but they've got the sharing agreement now
-18:04:00 From  Tim Van Der Stap  to  Everyone : Interesting, didn't know about FishBase!
-18:04:24 From  naomi tress (OTN - facilitator)  to  Everyone : worms will often link to fishbase records
-18:04:28 From  Jon Pye (OTN - Facilitator)  to  Everyone : Tim you're the kind of guy who watches a Coke commercial and goes and buys a Pepsi, aren't you. :P
-18:05:00 From  Tim Van Der Stap  to  Everyone : I'm more of a Fanta guy but other than that yeah ;-)
-18:11:01 From  claudenozeres  to  Everyone : FishBase is the source for WoRMS
-18:11:30 From  claudenozeres  to  Everyone : (are name authorities, not occurrences—GBIF, OBIS)
-18:12:17 From  Tim Van Der Stap  to  Everyone : Me too Brett +1
-18:12:28 From  Jeff Cullis  to  Everyone : Me as well!
-18:12:39 From  claudenozeres  to  Everyone : +1
-18:13:15 From  naomi tress (OTN - facilitator)  to  Everyone : hopefully there are some tacos left for me!
-18:14:00 From  Sheila Atchison (DFO-wpg)  to  Everyone : My apologies - I have to go as the kids are home now. Thank you all for the fantastic an informative discussions!
-18:33:33 From  Evan Morien  to  Everyone : Just working really hard inventing mass transit all over again lol
-18:33:56 From  claudenozeres  to  Everyone : Mary was social media before that was a thing. She helped pushed folks like me to do posters, conferences, etc. Perhaps we can do a newsletter (as a publication—I know page layout), or a place on a website (Hakai ?), with a monthly ‘OBIS Canada—spotlight on a dataset, where we summarize what is interesting about a published set. And a list of recent uploads. I’d be very happy to write stories behind the data. Or use cases with data. An example: for the Saguenay Marine park, I was asked by Mary to generate an up to date checklist of taxa using OBIS. And for our genetics folks, I was asked, what ARE the species in the Gulf of St. Lawrence. So I looked to OBIS and WoRMS to compile a list. https://www.researchgate.net/publication/319422884_Preliminary_checklist_of_marine_animal_species_of_the_Gulf_of_St_Lawrence_Canada_based_on_4_sources
-Now I update them. But would rather maintain checklists elsewhere—like a Git repo.
-18:34:43 From  claudenozeres  to  Everyone : (I’d be very happy to volunteer for all outreach :)
-18:35:37 From  Janet Mossman  to  Everyone : lol nanaimo is not far off from that
-18:36:22 From  Janet Mossman  to  Everyone : I find their city planning unique
-18:36:44 From  naomi tress (OTN - facilitator)  to  Everyone : abby already got back to me about going to the biologging meetings
-18:37:08 From  Jon Pye (OTN - Facilitator)  to  Everyone : hit me with an emote if you're back and ready to quiz!
-18:38:27 From  Brian Jones (OTN)  to  Everyone : https://mybinder.org/v2/gh/ocean-tracking-network/obis-workshop/HEAD?filepath=Quizzes%2Fnotebooks%2FRecap%20Quiz.ipynb
-18:38:38 From  Brett Johnson  to  Everyone : Claude, Hakai media might be interested in publishing a little blog post and or maybe even a short video eventually
-18:39:15 From  claudenozeres  to  Everyone : cool!
-18:39:44 From  Brett Johnson  to  Everyone : I’ll mention in and see what Eric (our director) thinks
-18:39:55 From  Maria Cornthwaite  to  Everyone : @Melissa - wasn't DFO communications doing something about a recent data publication (NuSEDS??)?
-18:40:36 From  Janet Mossman  to  Everyone : is this the same quiz as the first day lol
-18:42:03 From  Tim Van Der Stap  to  Everyone : Yeah I'm seeing the same questions as well haha
-18:42:04 From  Melissa Nottingham  to  Everyone : @ maria DFO communications just sent out a general announcement about OBIS not dataset specific 
-18:42:10 From  Brian Jones (OTN)  to  Everyone : it's a combo of all the quizzes
-18:42:44 From  Jon Pye (OTN - Facilitator)  to  Everyone : a superquiz?
-18:44:27 From  Evan Morien  to  Everyone : Yeah 11 and 12 are doubled up
-18:44:51 From  Janet Mossman  to  Everyone : did better on this one :)
-18:48:43 From  naomi tress (OTN - facilitator)  to  Everyone : roommates are causing a ruckus, ill be on mute for a bit
-18:49:10 From  Jon Pye (OTN - Facilitator)  to  Everyone : Folks if you're done quizzing, here's the link to the last feedback of the week: https://forms.gle/o7ZozvAfSpBBuVcJ9  Let us know what you think, what we should change, what worked well!
-18:49:43 From  naomi tress (OTN - facilitator)  to  Everyone : this one is more than 3 qs, sorry
-18:49:49 From  Jon Pye (OTN - Facilitator)  to  Everyone : we will have a good 45 to do more dataset work.
-19:11:31 From  naomi tress (OTN - facilitator)  to  Everyone : im going to surf around for ppl that might need a hand.
-19:18:18 From  Tim Van Der Stap  to  Everyone : grepl("[[:digit:]]", mywords)
-19:22:24 From  Tim Van Der Stap  to  Everyone : http://www.endmemo.com/r/grepl.php
-19:22:36 From  Tim Van Der Stap  to  Everyone : useful link if you want to continue working with grepl
-19:25:24 From  naomi tress (OTN - facilitator)  to  Everyone : theres also readr that might be useful
-19:34:44 From  Tim Van Der Stap  to  Everyone : https://github.com/nvs-vocabs/S11/issues/14
-19:35:27 From  naomi tress (OTN - facilitator)  to  Tim Van Der Stap(Direct Message) : library(stringr)?str_split_fixed
-19:35:44 From  Tim Van Der Stap  to  naomi tress (OTN - facilitator)(Direct Message) : I'll note those!
-19:36:37 From  Tim Van Der Stap  to  Everyone : brb
-19:40:59 From  Tim Van Der Stap  to  Everyone : measurementValueID = case_when(      measurementValue == "M" ~ "http://vocab.nerc.ac.uk/collection/S10/current/S103/",      measurementValue == "F" ~ "http://vocab.nerc.ac.uk/collection/S10/current/S102/",      measurementValue == "adult" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1116/",       measurementValue == "C6" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1116/",      measurementValue == "C5" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1112/",      measurementValue == "C4" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1110/",      measurementValue == "C3" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S118/",      measurementValue == "C2" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S117/",      measurementValue == "C1" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S111/",      measurementValue == "juvenile" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1127/",      measurementValue == "calyptopsis" ~ "http://vocab.nerc.ac.uk/collection/S11/cur
-19:41:25 From  Tim Van Der Stap  to  Everyone : measurementValue == "egg" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1122/",      measurementValue == "larva" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1128/",      measurementValue == "nauplius" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1130/",      measurementValue == "napulius" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1130/",      measurementValue == "zoea" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1137/",      measurementValue == "furcillia" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1123/",      measurementValue == "neochaete" ~ " ",      measurementValue == "trochophore" ~ " ",      measurementValue == "veliger" ~  " ",      measurementValue == "paralarva" ~ " ",      measurementValue == "eudoxid" ~ " ",      measurementValue == "<0.5mm|<1mm" ~ "http://vocab.nerc.ac.uk/collection/S11/current/S1152/"
-19:41:26 From  Jackie Waldron (DFO)  to  Everyone : Heidi - cyphonautes is a life stage too
-19:43:40 From  Jackie Waldron (DFO)  to  Everyone : and mysis and zoea and protozoea (or calyptopis)
-19:44:18 From  Jackie Waldron (DFO)  to  Everyone : and preflexion
-19:46:22 From  Heidi van Vliet (DFO)  to  Everyone : https://reports.obis.org/moftypes/
-19:52:04 From  Zach Monteith  to  Everyone : Claude - I just found this online image repository; seems like its mostly microscopy, but maybe would be willing to take other types of images? Or maybe there are other similar resources?
-19:52:12 From  Zach Monteith  to  Everyone : https://idr.openmicroscopy.org/
-19:52:29 From  naomi tress (OTN - facilitator)  to  Everyone : feedback form https://forms.gle/o7ZozvAfSpBBuVcJ9
-19:53:02 From  Evan Morien  to  Everyone : Absolutely grateful not to get up at 6am
-19:53:10 From  Tim Van Der Stap  to  Everyone : haha same
-19:53:10 From  Janet Mossman  to  Everyone : agreed
-19:53:16 From  claudenozeres  to  Everyone : Thanks Zach. Images are a thing for future discussion…like genomic datasets...
-19:53:27 From  Nick Bekolay  to  Everyone : Thanks, Zach
-19:53:50 From  Amy Tabata (DFO)  to  Everyone : Thanks to all involved!
-19:54:03 From  Nick Bekolay  to  Everyone : Claude, I hear that IML has trained AI to ID zooplankton. I'll have to look into this in more detail
-19:54:23 From  Melissa Nottingham  to  Everyone : Thank-you everyone for being here and taking the time to learn together
-19:54:34 From  claudenozeres  to  Everyone : Yeah, there are some —there is github!
-19:54:39 From  Tim Van Der Stap  to  Everyone : Thanks everyone, this has been an awesome workshop!
-19:54:43 From  Brian Jones (OTN)  to  Everyone : with snow tires this time
-19:55:58 From  claudenozeres  to  Everyone : (for AI on plankton images)
-19:56:13 From  claudenozeres  to  Everyone : example: https://www.viametoolkit.org/
-19:56:25 From  Jeff Cullis  to  Everyone : Yes, thanks everyone, I agree it was a great workshop!
-19:56:30 From  Johan Jung  to  Everyone : thank you everyone!
-19:56:46 From  Amy Tabata (DFO)  to  Everyone : Nice being here with you all this week. 
-19:56:54 From  claudenozeres  to  Everyone : thanks everyone!
-19:56:56 From  Janet Mossman  to  Everyone : thanks everyone!
-19:57:11 From  Justin Del Bel Belluz  to  Everyone : Thank you everyone!
-19:57:49 From  Maria Cornthwaite  to  Everyone : OBISCanada@dfo-mpo.gc.ca is the generic email which I promise to check, but feel free to contact me directly.  maria.cornthwaite@dfo-mpo.gc.ca

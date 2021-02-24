@@ -1,300 +1,0 @@
-12:13:57 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://obis.org/manual/intror/#packages
-12:16:26 From  Brian Jones (OTN)  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop
-12:16:37 From  Brian Jones (OTN)  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop/blob/master/rmd-files/install_packages.Rmd
-12:24:50 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://rstudio.com/products/rstudio/download/
-12:34:13 From  Yinghuan Niu  to  Everyone : Please download and install Rtools 4.0 from https://cran.r-project.org/bin/windows/Rtools/.Downloading GitHub repo iobis/robis@HEADThese packages have more recent versions available.It is recommended to update all of them.Which would you like to update?1: All                                2: CRAN packages only                 3: None                               4: systemfonts (1.0.0 -> 1.0.1) [CRAN]5: dplyr       (1.0.3 -> 1.0.4) [CRAN]Enter one or more numbers, or an empty line to skip updates:1systemfonts (1.0.0 -> 1.0.1) [CRAN]dplyr       (1.0.3 -> 1.0.4) [CRAN]
-12:37:53 From  Pauline Chauvet  to  Everyone : library(udunits2)udunits system database read from C:/Users/Cédric/Documents/R/win-library/4.0/udunits2/share/udunits/udunits2.xml
-12:59:30 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://obis.org/manual/intror/
-13:04:47 From  Nick Bekolay  to  Everyone : Can you post a link to that zip file again?
-13:04:57 From  naomi tress  to  Everyone : Feedback  https://forms.gle/tv52A6H3Vyrp7tAn9
-13:06:24 From  naomi tress  to  Everyone : zip file is under the green button https://github.com/ocean-tracking-network/obis-workshop
-13:06:35 From  Amy Tabata  to  Everyone : nick...click green code button to grab zip file https://github.com/ocean-tracking-network/obis-workshop
-13:07:11 From  Nick Bekolay  to  Everyone : Thank you
-13:23:21 From  Janet Mossman  to  Everyone : I have a quick question about yesterdays content
-13:27:45 From  Jon Pye (OTN - Facilitator)  to  Everyone : gonna try and fix some mic issues, brb.
-13:33:09 From  Jon Pye (OTN - Facilitator)  to  Everyone : i'm gonna mute when not talking cause i'm scared i'm throwing feedback :)
-13:35:36 From  Samantha  to  Everyone : I have the file tab, but it's not opening in the screen
-13:35:55 From  naomi tress  to  Everyone : how do you mean Samantha?
-13:36:29 From  Yinghuan Niu  to  Everyone : Select File menu in R studio then open file
-13:36:29 From  Samantha  to  Everyone : do I hit 'insert'?
-13:36:53 From  Yinghuan Niu  to  Everyone : Select the path to the file 1_robis_walkthrough.Rmd
-13:37:39 From  Samantha  to  Everyone : I did and it popped up at the top.  
-13:38:09 From  Jon Pye (OTN - Facilitator)  to  Everyone : ok, can you see the contents of the 1_robis_walkthrough.Rmd?
-13:38:30 From  Samantha  to  Everyone : No
-13:38:35 From  Samantha  to  Everyone : I think I need one :)
-13:39:19 From  Jon Pye (OTN - Facilitator)  to  Everyone : sam and naomi, do you wanna head into BR 1 and take a look?
-13:45:21 From  naomi tress  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop/archive/master.zip
-13:49:27 From  naomi tress  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop/blob/master/rmd-files/1_robis_walkthrough.Rmd
-13:57:14 From  naomi tress  to  Samantha(Direct Message) : I tested the rest of the rmd files, downloading the zip and extracting them, the content of the file was there, so I am not sure why your version is blank
-13:57:49 From  naomi tress  to  Samantha(Direct Message) : we can ask more people at the break and as a backup, I can help you find the content of the next file before we start 02
-13:58:01 From  Evan Morien  to  Everyone : I’d like to ask a very basic question. Is there an overall goal for the tutorial, like a hypothetical research question, or are we just showing each function and what it can do?
-13:59:19 From  naomi tress  to  Everyone : this is a basic walkthrough of the tool, so that everyone can be familiar before we work through actual datasets
-14:03:10 From  Evan Morien  to  Everyone : Sorry another question, in that last command where we filtered for biomass measurements, there is also measurementType “sediment” in the table. Does that count  as another biomass measurement?
-14:14:02 From  Evan Morien  to  Everyone : Actually is the column we are adding called “year”?
-14:14:22 From  Tim Van Der Stap  to  Everyone : Looking at the mutate function, yeah
-14:16:49 From  Maria Cornthwaite  to  Everyone : view() doesn't work on my system.  what package am I missing??
-14:16:59 From  Maria Cornthwaite  to  Everyone : doh!
-14:17:00 From  Zach Monteith (Hakai Institute)  to  Everyone : Lubridate is also a fantastic R package if you need to deal with dates
-14:18:02 From  Evan Morien  to  Everyone : You could also use gsub to grab the year from the first field of each date in the original date column
-14:18:28 From  Evan Morien  to  Everyone : Or split I think
-14:19:00 From  Zach Monteith (Hakai Institute)  to  Everyone : Yeah, gsub is also a nice flexible option
-14:19:18 From  Jon Pye (OTN - Facilitator)  to  Everyone : gsub's nice because it works with any string
-14:19:28 From  claudenozeres  to  Everyone : Odd question—but what are we querying here—OBIS only? Seems to include GBIF data, too (which is good), but unexpected?
-14:19:29 From  Jon Pye (OTN - Facilitator)  to  Everyone : if we wanted things to fail on non-datelike objects, lubridate's a good one
-14:19:33 From  Samantha  to  naomi tress(Direct Message) : 2_data_qc.Rmd is also blank.
-14:20:48 From  Tim Van Der Stap  to  Everyone : Isn't gsub() mostly used to replace, rather than extract from a string?
-14:21:05 From  Zach Monteith (Hakai Institute)  to  Everyone : Yes, but you can replace parts you don’t want with nothing
-14:21:13 From  naomi tress  to  Samantha(Direct Message) : are you ok doing the copy paste again? I haven't come up with a better solution unfortunately
-14:21:18 From  Evan Morien  to  Everyone : Yup, that’s right
-14:21:22 From  Tim Van Der Stap  to  Everyone : Ah yeah makes sense
-14:21:35 From  Samantha  to  naomi tress(Direct Message) : Yes that's fine, I'm wondering what I've done wrong. 
-14:32:23 From  Nick Bekolay  to  naomi tress(Direct Message) : Thanks, Naomi!
-14:32:42 From  naomi tress  to  Nick Bekolay(Direct Message) : youre welcome!
-14:35:51 From  claudenozeres  to  Everyone : Maybe try another example instead of year for the demo. Like, create column with source DB (OBIS, GBIF..:)
-14:38:29 From  Jon Pye (OTN - Facilitator)  to  Everyone : went ahead and selected the entries that came from that iNat dataset, all from NZ
-14:39:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : gonna go put the datasetID into OBIS just to see what it does
-14:39:14 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://obis.org/dataset/23c15f33-94a8-4e3e-bb76-5d5b0bf203f8
-14:39:47 From  Evan Morien  to  Everyone : If anyone is was curious, to get year only from the eventDate column, with current formatting (- delimiter) using gsub: lag_withyear <-lag %>% mutate(year = gsub("-.*","",eventDate))
-14:40:44 From  Jon Pye (OTN - Facilitator)  to  Everyone : so alas, i don't think we have GBIF-search capability, i think we have a partial duplication of a GBIF dataset in this dataset :(
-14:41:34 From  claudenozeres  to  Everyone : Ah! Yes.
-14:46:50 From  Jon Pye (OTN - Facilitator)  to  Everyone : map_data is a function provided by ggplot2 that gives some simple geographic layers.
-14:49:04 From  Janet Mossman  to  Everyone : my rstudio seems to be stuck on the first chunk
-14:49:39 From  Jeff Cullis  to  Everyone : yeah I had to do a lot of installs for this second workbook
-14:49:47 From  Evan Morien  to  Everyone : I’m just getting a dialog on multiple matches
-14:50:01 From  naomi tress  to  Everyone : evan that's normal
-14:50:14 From  Janet Mossman  to  Everyone : ive got the spinny wheel of death
-14:50:16 From  Evan Morien  to  Everyone : Yeah I am just not sure what it’s asking me
-14:50:22 From  naomi tress  to  Everyone : janet is it stuck or still processing (check your console)
-14:50:34 From  naomi tress  to  Everyone : evan that's next!
-14:50:39 From  Evan Morien  to  Everyone : Ok I will wait then
-14:50:53 From  naomi tress  to  Everyone : the text below the code has explanation too if that helps
-14:51:10 From  Samantha  to  Everyone : I'm stuck on taxon matching
-14:52:29 From  Brett Johnson  to  Everyone : Is match_taxa from finch?
-14:52:52 From  Zach Monteith (Hakai Institute)  to  Everyone : obistools
-14:53:34 From  Heidi van Vliet (DFO)  to  Everyone : install.packages("worrms")
-14:54:27 From  Brian Jones (OTN)  to  Everyone : https://github.com/ropensci/worrms
-14:54:46 From  claudenozeres  to  Everyone : rOpenSci for several of these: https://ropensci.org/packages/taxonomy/
-14:55:22 From  naomi tress  to  Kimberly Howland(Direct Message) : kim are you having trouble?
-14:55:42 From  Kimberly Howland  to  naomi tress(Direct Message) : getting the following error
-14:55:53 From  Kimberly Howland  to  naomi tress(Direct Message) : Show in New WindowClear OutputExpand/Collapse OutputShow in New WindowClear OutputExpand/Collapse OutputError in fortify(data) : object 'world' not found
-14:56:09 From  Kimberly Howland  to  naomi tress(Direct Message) : for line 54
-14:56:55 From  naomi tress  to  Kimberly Howland(Direct Message) : can you paste line 54?
-14:57:11 From  Evan Morien  to  Everyone : Sorry so, it’s just asking you for a number so you can visually inspect the multiple matches?
-14:57:47 From  Kimberly Howland  to  naomi tress(Direct Message) : world <- map_data("world")
-14:58:08 From  naomi tress  to  Kimberly Howland(Direct Message) : did you install all your packages?
-14:58:56 From  Kimberly Howland  to  naomi tress(Direct Message) : still trying to get rtools installed
-14:59:26 From  Justin Del Bel Belluz  to  Everyone : I found the first time I was selecting names I ran it through the console so I could see the options - I found it tough when ran through the notebook as you can't easily see until selections have been made.
-14:59:28 From  Kimberly Howland  to  naomi tress(Direct Message) : I think all package are installed unless having an older version of rtools has created issues
-15:00:21 From  naomi tress  to  Kimberly Howland(Direct Message) : can you type and run library(ggplot2)
-15:00:25 From  Tim Van Der Stap  to  Everyone : So 0 is row 1?
-15:01:16 From  Kimberly Howland  to  naomi tress(Direct Message) : will try installing Rtools again - our IT guy was trying but was having trouble maintaining a connection to my computer
-15:01:31 From  naomi tress  to  Kimberly Howland(Direct Message) : ok sorry to not be of more help
-15:03:21 From  Brett Johnson  to  Everyone : No. I just checked and it looks like 1 =1 and 2 =2 So not zero indexed…
-15:04:04 From  Tim Van Der Stap  to  Everyone : Thanks Brett!
-15:04:05 From  Evan Morien  to  Everyone : Sorry everyone, I just re-ran the check names and this time it actually presented me the options in the console, earlier it didn’t, that’s why I had so many questions. Sorry about that!
-15:04:19 From  naomi tress  to  Everyone : no worries evan
-15:07:11 From  Heidi van Vliet (DFO)  to  Everyone : what package is check_fields from?
-15:07:23 From  Tim Van Der Stap  to  Everyone : I believe obistools
-15:07:25 From  Zach Monteith (Hakai Institute)  to  Everyone : obistools
-15:07:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : you can run ?check_fields if you're curious
-15:07:48 From  Jon Pye (OTN - Facilitator)  to  Everyone : always good to run ?function_name to find out about a new function
-15:08:32 From  Heidi van Vliet (DFO)  to  Everyone : thanks!
-15:09:47 From  Brian Jones (OTN)  to  Everyone : just had to turn it off and on again
-15:09:50 From  Brian Jones (OTN)  to  Everyone : :P
-15:09:52 From  Janet Mossman  to  Everyone : thanks for the help Jon!
-15:10:15 From  Jon Pye (OTN - Facilitator)  to  Everyone : anytime!
-15:16:24 From  Maria Cornthwaite  to  Everyone : So is the idea that a data contributor would publish their data in draft form and then run these sorts of quality control functions prior to making public, or is this just something one would do prior to utilizing occurrence data that's already published?
-15:17:11 From  Jon Pye (OTN - Facilitator)  to  Everyone : we could do either. In fact we could point dwca_read at a local DwC archive
-15:17:53 From  Jon Pye (OTN - Facilitator)  to  Everyone : I suppose if we're not making eml by hand we're still building things on an IPT
-15:18:25 From  Jon Pye (OTN - Facilitator)  to  Everyone : but we don't have to publish them in order to work through these checks, and in fact the IPT does some of these checks when you try and map the files to DwC terms and publish a version.
-15:25:12 From  Zach Monteith (Hakai Institute)  to  Everyone : Link 159 pulls up the help for a different function than used above (check_outliers_species). They appear to look the same, but check_outliers_species doesn’t seem to work if you try it in line 154
-15:25:55 From  Justin Del Bel Belluz  to  Everyone : So the failed records are species that are in unexpected regions?
-15:26:52 From  Jon Pye (OTN - Facilitator)  to  Everyone : yeah, it's dataset-referenced, not referenced externally
-15:32:54 From  Zach Monteith (Hakai Institute)  to  Everyone : Its in the cache for me
-15:32:55 From  Brett Johnson  to  Everyone : It was cached for me
-15:33:10 From  Evan Morien  to  Everyone : no
-15:35:28 From  Tim Van Der Stap  to  Everyone : so in that mof, id = measurementID?
-15:36:44 From  Jon Pye (OTN - Facilitator)  to  Everyone : eventID
-15:36:50 From  Jon Pye (OTN - Facilitator)  to  Everyone : I was wondering as well
-15:37:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : it is repeated in mof, so i'm fairly certain it's eventID
-15:37:03 From  Tim Van Der Stap  to  Everyone : Because I thought the IPT autogenerated the id column?
-15:37:21 From  claudenozeres  to  Everyone : I have same issue with screen now, too.
-15:37:25 From  Jon Pye (OTN - Facilitator)  to  Everyone : yeah, it isnt' an autogenerated UUID
-15:38:09 From  Evan Morien  to  Everyone : Also have the screen issue, since the first tutorial
-15:38:21 From  Evan Morien  to  Everyone : Think it’s to do with Rmd
-15:39:19 From  Julie Dionne (SLGO)  to  Everyone : I used to put the individual count in the occurrence core file instead of the mof (in the mof I put weight, length,  etc), is this a less good practice?
-15:40:00 From  Jon Pye (OTN - Facilitator)  to  Everyone : not less good, but i think that ENV DATA wants us to do it a different way now. it's a shift in what our best practice is. it's on my list of things to ask on Thursday :)
-15:41:26 From  Brett Johnson  to  Everyone : Hit the double chevron on that code chuck to make it disappear?
-15:41:44 From  Maria Cornthwaite  to  Everyone : A note about counts - in our groundfish surveys we don't actually record counts in our data unless we have just a few individuals.  We really only use weights, so all our counts will be zeros.
-15:41:57 From  Evan Morien  to  Everyone : Actually if you toggle from R markdown to R script and back again (lower right corner of script window) it will get rid of that white rectangle
-15:42:44 From  Brian Jones (OTN)  to  Everyone : 👍
-15:44:12 From  Maria Cornthwaite  to  Everyone : Is coordinate uncertainty like a radius of those points?
-15:47:44 From  Jon Pye (OTN - Facilitator)  to  Everyone : it's a field for ensuring that we capture the potential imprecision in the location data
-15:48:13 From  Jon Pye (OTN - Facilitator)  to  Everyone : my coord uncertainties for detections can be 1km or more
-15:48:45 From  Jon Pye (OTN - Facilitator)  to  Everyone : (acoustic detections)
-15:49:25 From  Maria Cornthwaite  to  Everyone : I'm just wondering where it comes from...our coordinates would be start and end locations of a trawl from the vessel's gps.
-15:49:41 From  Zach Monteith (Hakai Institute)  to  Everyone : The accuracy of the gps in that case
-15:49:58 From  Maria Cornthwaite  to  Everyone : That's not something we record...
-15:50:07 From  claudenozeres  to  Everyone : Is more for other sources, I would say, to show uncertainty.
-15:50:23 From  claudenozeres  to  Everyone : Especially for historical datasets with place names only.
-15:50:28 From  Zach Monteith (Hakai Institute)  to  Everyone : I have examples where I have start points for fixed distance transects, but no end points (since on scuba); I use the transect distance as the coordinate uncertainty
-15:50:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : i think there's a finer-points argument about whether and how to record potential GPS imprecision, but yeah, it's more used for less accurate ways of locating data points
-15:50:53 From  Maria Cornthwaite  to  Everyone : Oh ok.  I somehow got the idea it was a mandatory field.
-15:51:03 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/tdwg/dwc/issues/309 <- where allt he best Darwin core term arguments happen
-15:57:05 From  Jon Pye (OTN - Facilitator)  to  Everyone : "It is better to be vaguely correct than precisely wrong."
-15:57:50 From  Janet Mossman  to  Everyone : lunch :)
-15:57:53 From  Maria Cornthwaite  to  Everyone : Definitely lunch time!!
-15:59:11 From  Evan Morien  to  Everyone : WoRMS I’m very interested in, I want to know how good the annotations/taxonomies for protists are. Having correct taxonomies for protist species is important for the data I work with
-15:59:14 From  Jon Pye (OTN - Facilitator)  to  Everyone : spocc
-15:59:48 From  claudenozeres  to  Everyone : https://rdrr.io/cran/spocc/
-16:04:26 From  claudenozeres  to  Everyone : Evan, what aspects on protists are you wondering about? There are sub-registers in WoRMS, like this: http://www.marinespecies.org/foraminifera/
-16:04:40 From  claudenozeres  to  Everyone : Full list on WoRMS: http://www.marinespecies.org/subregisters.php
-16:05:13 From  Nick Bekolay  to  Everyone : Applying the measurementID correctly will be a great point to iron out before the end of the workshop. Whoever's attending the OBIS Slack meeting on Thursday should table this for discussion
-16:08:16 From  Evan Morien  to  Everyone : For single celled Eukaryotes, many databases have poor or out of date labels for phylum, class, or other taxonomic ranks. This is often the case for NCBI, although at least their database is relatively comprehensive. I’m hoping that WoRMS is both comprehensive in species coverage for protists, as well as having up to date taxonomy strings for protist clades
-16:10:44 From  Jon Pye (OTN - Facilitator)  to  Everyone : gonna check on the family, will be back to monitor chat shortly :)
-16:10:46 From  Jon Pye (OTN - Facilitator)  to  Everyone : enjoy lunch!
-16:21:31 From  Evan Morien  to  Everyone : Need to reboot my computer but I’ll be back after the break is done
-16:24:22 From  Jon Pye (OTN - Facilitator)  to  Everyone : excellent see you then!
-17:08:01 From  naomi tress  to  Everyone : the code is in obis-workshop/jupyter-notebooks/Worms API Walkthrough.ipynb
-17:10:36 From  Evan Morien  to  Everyone : Is there anything special or unique about a rust API? Do we need to know what rust is?
-17:10:49 From  Zach Monteith (Hakai Institute)  to  Everyone : REST*
-17:11:03 From  Heidi van Vliet (DFO)  to  Everyone : Is this just an alternative to R?
-17:11:12 From  Jon Pye (OTN - Facilitator)  to  Everyone : nothing terribly special about it, it's a webservice that will return responses according to the URL form you send it
-17:11:19 From  Evan Morien  to  Everyone : Thanks Zach I was hearing Rust haha
-17:11:40 From  Jon Pye (OTN - Facilitator)  to  Everyone : it's not an alternative to R, but it's something that could be implemented in R as well as Python (packages for R implementations are things like httr and jsonlite)
-17:12:00 From  Janet Mossman  to  Everyone : is this the same as web scraping?
-17:12:02 From  Jon Pye (OTN - Facilitator)  to  Everyone : we don't do our REST stuff in R, and we wanted to be a bit language agnostic so we did this part in Python to show it could be done
-17:12:22 From  Jon Pye (OTN - Facilitator)  to  Everyone : Janet: very similar. web scrapes might be of static content, but this is going to modify its response to us based on what we send it in the URL
-17:12:41 From  Janet Mossman  to  Everyone : ok so more interactive then and less automated
-17:12:56 From  Jon Pye (OTN - Facilitator)  to  Everyone : yeah, if you have something specific to ask, it will give you back just what you ask for in the URL
-17:27:05 From  Nick Bekolay  to  Everyone : Has there been any discussion to date about incorporating Canadian fisheries management areas into marineregions.org?
-17:27:35 From  Jon Pye (OTN - Facilitator)  to  Everyone : good Q, I don't know the answer to that one.
-17:28:36 From  naomi tress  to  Everyone : NAFO areas are in there
-17:28:53 From  naomi tress  to  Everyone : https://www.marineregions.org/sources.php under fishing zones
-17:29:14 From  Maria Cornthwaite  to  Everyone : Nick, we should pass that question to that group in dfo that is working on getting that official shape file set up for open maps.
-17:29:35 From  Amy Tabata  to  Everyone : I have to hop out for an appointment.  I'll catch back up with you in a bit.  
-17:30:01 From  claudenozeres  to  Everyone : The standard ones are EEZ, NAFO, LME, MEOW. For national areas, have to ask. For example, Gulf of St. Lawrence is based on the IHO area, but not really accurate.
-17:30:40 From  naomi tress  to  Everyone : ICES is also in there, based on the listings
-17:31:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : the more of our relevant information we can pack into these data systems, the more they can become relevant to our workflows :)
-17:31:04 From  claudenozeres  to  Everyone : Yes—I was thinking of Can. specific
-17:31:18 From  naomi tress  to  Everyone : of course
-17:32:42 From  Jon Pye (OTN - Facilitator)  to  Everyone : And later, we'll do something similar with OBIS :)
-17:36:40 From  Jon Pye (OTN - Facilitator)  to  Everyone : http://www.cmar.csiro.au/datacentre/taxamatch.htm
-17:37:47 From  Jon Pye (OTN - Facilitator)  to  Everyone : of note is the long time it takes to fuzzymatch against a large dataset, so as time goes on it may become more prohibitive to apply a taxamatch match to a larger WoRMS db.
-17:45:11 From  Brian Jones (OTN)  to  Everyone : we run it in our workflow as we receive researcher metadata
-17:45:25 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://mapper.obis.org/
-17:58:47 From  naomi tress  to  Everyone : ```Assignment 1 - Exploring deep-water corals in OBISOn the deep-water coral page on Wikipedia we read this:    The habitat of deep-water corals, also known as cold-water corals, extends to deeper, darker parts of the oceans than tropical corals, ranging from near the surface to the abyss, beyond 2,000 metres where water temperatures may be as cold as 4 °C. Deep-water corals belong to the Phylum Cnidaria and are most often stony corals (Scleractinia), but also include black and horny corals (Antipatharia) and soft corals (Alcyonacea) including the Gorgonians.For this assignment:Use robis to retrieve deep-water coral occurrences below 2000 m from OBIS Find how the occurrences are distributed among the different orders```
-17:59:58 From  Brian Jones (OTN)  to  Everyone : https://github.com/sckott/pyobis
-18:00:26 From  Brian Jones (OTN)  to  Everyone : haven't been maintained in a few years
-18:00:45 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://pypi.org/project/pytaxize/
-18:07:25 From  Evan Morien  to  Everyone : This works for the assignment, if anyone wants to do a single call instead of a call for each listed clade: corals <- occurrence("Anthozoa", startdepth=2000). That’s all deep water samples from the clade that contains all corals.
-18:07:45 From  Evan Morien  to  Everyone : Reruns ~60k records
-18:07:50 From  Evan Morien  to  Everyone : returns*
-18:08:47 From  Heidi van Vliet (DFO)  to  Everyone : This also works:deepcorals <- occurrence(c("Scleractinia","Antipatharia","Alcyonacea"), startdepth = 2000)
-18:13:03 From  Brett Johnson  to  Everyone : I used the same code basically Heidi, except I used enddepth = 2000 and it wanted to download 966316 records.
-18:13:30 From  Brett Johnson  to  Everyone : Rather than 42734 records with enddepth = 2000
-18:13:31 From  Zach Monteith (Hakai Institute)  to  Everyone : Evan, I think anthozoa is too general, and you’ll end up with additional orders
-18:13:56 From  Zach Monteith (Hakai Institute)  to  Everyone : Yeah, I have ~42000 records with the three orders
-18:14:07 From  Evan Morien  to  Everyone : I’ve got some oddball ones in here, but I’m curious about them, tbh. I’ll do an additional filter to make sure the depth is actually below 2000 for each sample
-18:14:22 From  Evan Morien  to  Everyone : Actiniaria                  Alcyonacea                Antipatharia                        3253                       31515                        9078            Corallimorpharia Octocorallia incertae sedis                Penicillaria                         263                           1                           7                Pennatulacea                Scleractinia                  Spirularia                       12621                        2141                         620                  Zoantharia                         114
-18:14:30 From  Justin Del Bel Belluz  to  Everyone : How long did it take to query? I'm on quite a few minutes now.
-18:14:38 From  Evan Morien  to  Everyone : Abt 2 min on my end
-18:14:46 From  Zach Monteith (Hakai Institute)  to  Everyone : It took ~1 minute for me
-18:14:49 From  Heidi van Vliet (DFO)  to  Everyone : Problem with grouping them together is map_leaflet doesn't distinguish between the three orders (unless I just can't figure it out)
-18:14:57 From  naomi tress  to  Everyone : startdepth	the minimum depth below the sea surface.enddepth	the maximum depth below the sea surface.
-18:15:07 From  Jackie Waldron (DFO)  to  Everyone : Same time for me between 1 and 2 minutes
-18:15:22 From  Tim Van Der Stap  to  Everyone : I would use startdepth = 2000 as well
-18:15:24 From  Justin Del Bel Belluz  to  Everyone : shoot ok. Somethings up on mine then.'
-18:18:41 From  Tim Van Der Stap  to  Everyone : Interesting Zach, mine is: species <- c("Scleractinia", "Antipatharia", "Alcyonacea")deepcorals <- robis::occurrence(species, startdepth = 2000)table(deepcorals$order)
-18:18:43 From  Tim Van Der Stap  to  Everyone : same results though
-18:21:14 From  Evan Morien  to  Everyone : I also made a plot, it does look like yours but I guess it’s the default colour (magenta)
-18:21:50 From  Heidi van Vliet (DFO)  to  Everyone : I was trying to separate the orders with colour
-18:22:38 From  claudenozeres  to  Everyone : Note: also need to have Pennatulacea in list :)
-18:25:15 From  Evan Morien  to  Everyone : Yeah I have about 12k records for that clade in my bigger query
-18:37:46 From  Brian Jones (OTN)  to  Everyone : https://mybinder.org/v2/gh/ocean-tracking-network/obis-workshop/HEAD?filepath=jupyter-notebooks%2FOBIS%20API%20v3%20Walkthrough.ipynb
-18:38:57 From  Brian Jones (OTN)  to  Everyone : Testing a binder buildout
-18:38:59 From  claudenozeres  to  Everyone : Or you could dockerize it, and keep it for use (workshops)?
-18:39:31 From  Brian Jones (OTN)  to  Everyone : might allow people to follow along and build their own queries
-18:41:46 From  claudenozeres  to  Everyone : AWS? Some use it.
-18:43:59 From  Evan Morien  to  Everyone : If anyone wants, here’s just some code I fiddled with over the break, as I was curious what orders were present outside those mentioned in the assignment below 2000m
-18:44:02 From  Evan Morien  to  Everyone : p <- ggplot(corals, aes(x = order, y= depth))
-p + geom_point(size = 1) + 
-  geom_point(aes(colour = factor(order)), size = 1) +
-  scale_fill_brewer(palette = "Paired") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
-18:44:18 From  Evan Morien  to  Everyone : corals <- occurrence("Anthozoa", startdepth=2000) #anthozoa is all corals. That’s the call though
-18:44:47 From  claudenozeres  to  Everyone : Hydrozoa corals are in Pacific region.
-18:45:26 From  claudenozeres  to  Everyone : https://inaturalist.ca/observations/59908576
-18:47:05 From  Zach Monteith (Hakai Institute)  to  Everyone : Stylister are locally abundant on the west coast if you’re in the right spot
-18:47:30 From  Zach Monteith (Hakai Institute)  to  Everyone : stylaster*
-18:47:48 From  claudenozeres  to  Everyone : (but I perhaps none below 2000 m:)
-18:52:23 From  naomi tress  to  Everyone : library(robis)library(ggplot2)coral <- occurrence("Cnidaria", startdepth = 2000)world <- map_data("world")ggplot() + geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "#dddddd") + geom_point(data = coral, aes(x = decimalLongitude, y = decimalLatitude, color = order)) + coord_fixed(1)
-18:52:28 From  naomi tress  to  Everyone : pretty colours
-18:52:42 From  naomi tress  to  Everyone : data is a little suspicious
-18:54:01 From  Evan Morien  to  Everyone : neat
-18:56:35 From  naomi tress  to  Everyone : subbing in coral <- occurrence(c("Scleractinia","Antipatharia","Alcyonacea"), startdepth = 2000)makes it more believable
-18:58:40 From  Heidi van Vliet (DFO)  to  Everyone : Thanks Naomi :)
-19:03:58 From  Jon Pye (OTN - Facilitator)  to  Everyone : possibly useful for automating some reporting
-19:04:25 From  Heidi van Vliet (DFO)  to  Everyone : Is the sharescreen frozen for anyone else?
-19:04:37 From  Tim Van Der Stap  to  Everyone : It's good here
-19:04:53 From  Heidi van Vliet (DFO)  to  Everyone : Its stuck on 4 for me
-19:07:07 From  Heidi van Vliet (DFO)  to  Everyone : All good for me now
-19:09:58 From  Jon Pye (OTN - Facilitator)  to  Everyone : hope nick's computer is restarting OK
-19:11:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : pandas dataframes == tibbles for Python people
-19:21:04 From  Amy Tabata  to  Everyone : i like pretty maps!
-19:22:56 From  Jon Pye (OTN - Facilitator)  to  Everyone : Pieter is of course the man behind robis and obistools
-19:23:01 From  Jon Pye (OTN - Facilitator)  to  Everyone : and the obis database.
-19:23:05 From  Jon Pye (OTN - Facilitator)  to  Everyone : actually i hope they're paying him well
-19:25:09 From  Evan Morien  to  Everyone : Can’t find the occurrence.csv in the folder I cloned from github
-19:25:10 From  Evan Morien  to  Everyone : hmm
-19:25:15 From  Jon Pye (OTN - Facilitator)  to  Everyone : i think that was our mistake
-19:25:31 From  Evan Morien  to  Everyone : OH
-19:25:37 From  Tim Van Der Stap  to  Everyone : ah
-19:25:43 From  Jon Pye (OTN - Facilitator)  to  Everyone : it's a big file
-19:25:58 From  Jon Pye (OTN - Facilitator)  to  Everyone : the all caps OH has me rolling
-19:26:11 From  Evan Morien  to  Everyone : 54gb is huge!
-19:26:26 From  Jon Pye (OTN - Facilitator)  to  Everyone : just a ridiculously big file. but it was retrieved from OBIS, eventually.
-19:27:36 From  Evan Morien  to  Everyone : 3/54ths done reading file. Glad there is that counter below
-19:30:42 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://forms.gle/SbbNLJmcR68q3RE4A
-19:34:06 From  Maria Cornthwaite  to  Everyone : What time zone is that 1pm meeting?
-19:34:10 From  Jon Pye (OTN - Facilitator)  to  Everyone : 1pm Pacific
-19:34:40 From  Tim Van Der Stap  to  Everyone : Can you post the link here (again)?
-19:34:42 From  Jon Pye (OTN - Facilitator)  to  Everyone : Fork it if you need to be absolutely sure you get a copy
-19:34:49 From  Maria Cornthwaite  to  Everyone : Ok.  sorry I can't be there.  I have a meeting already from 1-2 that I can't miss.
-19:34:50 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://github.com/ocean-tracking-network/obis-workshop
-19:37:29 From  Zach Monteith (Hakai Institute)  to  Everyone : The GitHub for the Marine Biological Data Working Group (that Jon is currently talking about) is here: https://github.com/ioos/bio_data_guide
-19:37:46 From  Diana Cardoso (Maritimes, DFO)  to  Everyone : thanks
-19:38:18 From  claudenozeres  to  Everyone : thanks!
-19:38:48 From  Jon Pye (OTN - Facilitator)  to  Everyone : https://forms.gle/SbbNLJmcR68q3RE4A
-19:40:36 From  Janet Mossman  to  Everyone : this is a worms question
-19:40:52 From  Janet Mossman  to  Everyone : is there a way of searching obis or worms for common names?
-19:41:05 From  Janet Mossman  to  Everyone : to extract scientific names?
-19:43:00 From  Nick Bekolay  to  Everyone : Is this rougheye/blackspotted?
-19:43:42 From  Zach Monteith (Hakai Institute)  to  Everyone : I have the same issue with juvenile rockfish: black/yellowtail; copper/quillback/brow
-19:48:01 From  Janet Mossman  to  Everyone : I ask because some datasets I work with only have common names and it is time intensive to match them to scientific names in worms
-19:48:23 From  Jon Pye (OTN - Facilitator)  to  Everyone : at least i'm not in phytoplankton anymore :)
-19:48:49 From  Justin Del Bel Belluz  to  Everyone : Is it something you could add to taxonRemarks or identificationQualifier?
-19:49:14 From  Janet Mossman  to  Everyone : yes two molas!
-19:49:17 From  Jon Pye (OTN - Facilitator)  to  Everyone : i like the idea of using taxonRemarks, i guess the question is who would see it/ would the search terms be smart enough to find it when people are querying using all these tools.
-19:51:16 From  Zach Monteith (Hakai Institute)  to  Everyone : I like that idea, at least you can make an attempt to preserve that information
-19:51:56 From  claudenozeres  to  Everyone : good point about taxonremarks!
-19:53:32 From  Justin Del Bel Belluz  to  Everyone : I've tried to use it a bit with phytoplankton data - just to preserved information where there is uncertainty in classifications
-19:58:28 From  Amy Tabata  to  Everyone : hey janet - re common name lookups - i know that the taxize package could do a common nanme to sci name function.  others said that thae package wasn't working well with current  r versions,, so i would guesss the worms package would have a similar function. 
-19:59:06 From  Janet Mossman  to  Everyone : ok thanks will look into it Amy!
-19:59:44 From  Heidi van Vliet (DFO)  to  Everyone : I tried using common names in the worrms package and it just gave me an error (interested if someone can get it to work though!)
-19:59:56 From  Jon Pye (OTN - Facilitator)  to  Everyone : i'll have a look at it tonight :)
-19:59:59 From  claudenozeres  to  Everyone : ooh!
-20:00:16 From  claudenozeres  to  Everyone : common names are tricky—depends on country?
-20:00:30 From  Tim Van Der Stap  to  Everyone : Heidi, did you try the e.g. worrms::wm_records_common(name = 'dolphin') function?
-20:01:06 From  Heidi van Vliet (DFO)  to  Everyone : yes, I can't remember what data I sued, probably a list which is why it might not have worked
-20:01:18 From  Heidi van Vliet (DFO)  to  Everyone : used*
-20:01:51 From  Tim Van Der Stap  to  Everyone : I also found it helps playing around with the fuzzy = TRUE qualifier
-20:01:54 From  claudenozeres  to  Everyone : could send me list (everyone!)—I love researching them and getting back results. Better than Netflix!
-20:02:37 From  claudenozeres  to  Everyone : Thanks Evan for those questions!
-20:02:40 From  Diana Cardoso (Maritimes, DFO)  to  Everyone : Thanks everyone!
-20:02:41 From  Janet Mossman  to  Everyone : night!
-20:02:45 From  claudenozeres  to  Everyone : thanks all!
-20:02:55 From  Heidi van Vliet (DFO)  to  Everyone : Thanks everyone!
-20:02:58 From  Nick Bekolay  to  Everyone : Thanks!
-20:03:13 From  Bruno Gianasi  to  Everyone : thank you
-20:03:13 From  Jeff Cullis  to  Everyone : thanks!
