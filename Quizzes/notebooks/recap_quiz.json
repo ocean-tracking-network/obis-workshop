@@ -1,1 +1,150 @@
-[{"question": "Suppose you monitor biodiversity using 1 by 1 metre quadrats and measure environmental variables (e.g. temperature and salinity) for each location. Which DwC term links the species occurrences with the abiotic measurements?", "answers": ["measurementType", "eventID", "occurrenceID", "parentEventID"], "answer_text": "The eventID from the Event Core links the species occurrences to the sampling events and the abiotic measurements to the sampling events.", "correct_answer": 1}, {"question": "Which DwC term links your occurrence record and your biotic measurements (e.g. body length, wet weight biomass, counts)?", "answers": ["parentEventID", "measurementTypeID", "occurrenceID", "eventID"], "answer_text": "The occurrenceID is a unique ID for each species occurrence and is used to link the occurrence extension (or occurrence core) with the extended MeasurementOrFact extension.", "correct_answer": 2}, {"question": "Your dataset represents a multiple station survey holding species occurrences and environmental data for each station. You also have the sampling protocol for each station and sample. How many files will you have after organising this dataset into the OBIS-ENV-DATA format?", "answers": ["OBIS cannot deal with all these data types", "Two", "Three", "Five", "One"], "answer_text": "One for the sampling events (eventCore), one for the species occurrences (occurrence extension), one for the measurements and sampling facts (extended MeasurementOrFact extension).", "correct_answer": 2}, {"question": "The terms measurementType and measurementTypeID are part of the ExtendedMeasurementorFact Extension file.", "answers": ["True", "False"], "answer_text": "", "correct_answer": 0}, {"question": "Which DwC term links your occurrence record and your biotic measurements (e.g. body length, wet weight biomass, counts)?", "answers": ["parentEventID", "measurementTypeID", "occurrenceID", "eventID"], "answer_text": "The occurrenceID is a unique ID for each species occurrence and is used to link the occurrence extension (or occurrence core) with the extended MeasurementOrFact extension.", "correct_answer": 2}, {"question": "What does it mean when individualCount has the following value?", "answers": [{"NULL": ["100 individuals were observed", "There is no information on individualCount", "The species was not found, the occurrenceStatus should be set to 'Absent'"]}, {"0": ["100 individuals were observed", "There is no information on individualCount", "The species was not found, the occurrenceStatus should be set to 'Absent'"]}, {"100": ["100 individuals were observed", "There is no information on individualCount", "The species was not found, the occurrenceStatus should be set to 'Absent'"]}], "answer_text": "", "correct_answer": {"NULL": 1, "0": 2, "100": 0}}, {"question": "only have the country as location information, no coordinates. What should I do?", "answers": ["Add the country name in the DwC:location. OBIS automatically adds the coordinates", "Add the country's EEZ name in DwC:country. OBIS automatically adds the coordinates", "Provide the midpoint and radius from the countries EEZ (available in marineregions.org) in DwC:decimalLatitude, DwC:decimalLongitude and DwC:coordinateuncertaintyInMeters and provide the country EEZ name in DwC:location and add the marineregions ID (MRGID) in DwC:locationID", "Add the ISO country code in DwC:country. OBIS automatically adds the coordinates"], "answer_text": "The correct answer is: Provide the midpoint and radius from the countries EEZ (available in marineregions.org) in DwC:decimalLatitude, DwC:decimalLongitude and DwC:coordinateuncertaintyInMeters and provide the country EEZ name in DwC:location and add the marineregions ID (MRGID) in DwC:locationID", "correct_answer": 2}, {"question": "The scientificNameID can be found in WoRMS", "answers": ["True", "False"], "answer_text": "", "correct_answer": 0}, {"question": "If you have data about dolphin sightings, which vocabulary should you use for the DwC term: basisOfRecord?", "answers": ["LivingSpecimen", "Present", "PreservedSpecimen", "HumanObservation"], "answer_text": "", "correct_answer": 3}, {"question": "My dataset contains date ranges. How shall I publish this in OBIS?", "answers": ["Provide the dates as DwC:startEventDate and DwC:endEventDate", "Provide the start and end date in DwC:eventDate with a / separator.", "Provide the mid-date."], "answer_text": "", "correct_answer": 1}, {"question": "When a Scientific Name is in WoRMS, but the taxonomic status is unaccepted (synonym), I can use the WoRMS LSID of the unaccepted name.", "answers": ["True", "False"], "answer_text": "OBIS indeed uses the information from WoRMS and will add occurrences to the current accepted name.", "correct_answer": 0}, {"question": "When a Scientific Name is in WoRMS, but the taxonomic status is unaccepted (synonym), I can use the WoRMS LSID of the unaccepted name.", "answers": ["True", "False"], "answer_text": "OBIS indeed uses the information from WoRMS and will add occurrences to the current accepted name.", "correct_answer": 0}, {"question": "The dataset you are processing contains the taxon name Dinophysis intermedia (scientificnameID = urn:lsid:marinespecies.org:taxname:844470) for which the accepted name is Dinophysis fortii (scientificnameID urn:lsid:marinespecies.org:taxname:109624). What do you fill out as scientificName and scientificNameID?", "answers": ["<ul><li>scientificName: the accepted name Dinophysis fortii</li><li>scientificNameID: the LSID of the unaccepted name urn:lsid:marinespecies.org:taxname:844470</li></ul>", "<ul><li>scientificName: the unaccepted name Dinophysis intermedia</li><li>scientificNameID: the LSID of the unaccepted name urn:lsid:marinespecies.org:taxname:844470</li></ul>", "<ul><li>scientificName: the unaccepeted name Dinophysis intermedia</li><li>scientificNameID: the LSID of the accepted name urn:lsid:marinespecies.org:taxname:109624</li></ul>", "<ul><li>scientificName: the accepted name Dinophysis fortii</li><li>scientificNameID: the LSID of the accepted name urn:lsid:marinespecies.org:taxname:109624</li></ul>"], "answer_text": "You should provide the taxon name as recorded in the dataset even if it is not the valid name. OBIS uses WoRMS as it\u00e2\u20ac\u2122s taxonomic backbone and can get the accepted name an all other taxonomic information from there. Using the original name ensures traceability (you store the same as the one which was originally recorded). Moreover taxonomy is not stable: a taxon name which is considered to be an invalid synonym of one species to today, may be a valid taxon name tomorrow; using the original name ensures that you don\u00e2\u20ac\u2122t need to modify the dataset every time taxonomy changes.", "correct_answer": 1}, {"question": "When a Scientific Name is in WoRMS, but the taxonomic status is unaccepted (synonym), I can use the WoRMS LSID of the unaccepted name.", "answers": ["True", "False"], "answer_text": "OBIS indeed uses the information from WoRMS and will add occurrences to the current accepted name.", "correct_answer": 0}, {"question": "The OBIS quality control process focuses on:", "answers": ["Checking for possible errors in the species nomenclature.", "Uploading the data into the IPT.", "Checking for possible errors in taxonomy, geographic coordinates, depth, and data formats.", "Checking the number of records present in an Occurrence Core file."], "answer_text": "", "correct_answer": 2}]
+[
+    {
+        "question": "If you have data about dolphin sightings, which vocabulary should you use for the DwC term: basisOfRecord?",
+        "answers": [
+            "LivingSpecimen",
+            "Present",
+            "PreservedSpecimen",
+            "HumanObservation"
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "What does it mean when individualCount has the following value?",
+        "answers": [
+            {
+                "NULL": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount",
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            },
+            {
+                "0": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount",
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            },
+            {
+                "100": [
+                    "100 individuals were observed",
+                    "There is no information on individualCount",
+                    "The species was not found, the occurrenceStatus should be set to 'Absent'"
+                ]
+            }
+        ],
+        "answer_text": "",
+        "correct_answer": {
+            "NULL": 1,
+            "0": 2,
+            "100": 0
+        }
+    },
+    {
+        "question": "What represents the DwC term: locationID?",
+        "answers": [
+            "The name of the location where the sample was taken.",
+            "A reference code provided by the WoRMS web service.",
+            "The event identifier",
+            "An unique and persistent identifier for the location of the record obtained from a gazetteer service, such as www.marineregions.org."
+        ],
+        "answer_text": "",
+        "correct_answer": 3
+    },
+    {
+        "question": "If you have a species name that includes the word 'aff.', which DwC term can hold this information?",
+        "answers": [
+            "associatedTaxa",
+            "identificationQualifier",
+            "bibliographicCitation",
+            "identificationReferences"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "Your dataset represents a multiple station survey holding species occurrences and environmental data for each station. You also have the sampling protocol for each station and sample. How many files will you have after organising the data according to the OBIS-ENV-DATA format and published as a DwC archive in your IPT?",
+        "answers": [
+            "Occurrence Core, MeasurementOrFact Extension, eml.xml metadata document and meta.xml data archive descriptor",
+            "Event Core, Occurrence extension, ExtendedMeasurementOrFact Extension, eml.xml metadata document and meta.xml data archive descriptor",
+            "Event Core, Occurrence extension, MeasurementOrFact Extension, eml.xml metadata document and meta.xml data archive descriptor",
+            "Occurrence Core, Event extension, MeasurementOrFact Extension, eml.xml metadata document and meta.xml data archive descriptor"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "What represents the columns of your data set in the OBIS table (long) format?",
+        "answers": [
+            "Samples",
+            "Variables",
+            "Events",
+            "Occurrences"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },
+    {
+        "question": "The ExtendedMeasurementorFact Extension file contains the scientific name of the specimens recorded during a sampling event.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "",
+        "correct_answer": 1
+    },{
+        "question": "The dataset you are processing mentions that of the taxon Gadus morhua there were 2 juveniles and 1 female adult with eggs observed. How does this translate to DwC?",
+        "answers": [
+            "One occurrence record with the following structure\n<ul><li>scientificName: Gadus morhua</li><li>lifeStage 2 juveniles and 1 female adult with eggs</li></ul>",
+            "Two occurrence record with the following structures\nRecord 1:<ul><li>scientificName: Gadus morhua</li><li>lifeStage: 2 juveniles</li></ul>Record 2:<ul><li>scientificName: Gadus morhua</li><li>lifeStage: 1 female adult with eggs</li></ul>",
+            "One occurrence record with the following structure<ul><li>scientificName: Gadus morhua 2 juveniles and 1 female adult with eggs</li></ul>",
+            "Two occurrence record with the following structures\nRecord 1:<ul><li>DwC:scientificName: Gadus morhua</li><li>lifeStage: juvenile</li><li>individualCount: 2</li></ul>Record 2:<ul><li>scientificName: Gadus morhua</li><li>lifeStage:adult</li><li>sex: female</li><li>reproductiveCondition: with eggs</li><li>individualCount: 1</li></ul>",
+            "Two occurrence record with the following structures\nRecord 1:<ul><li>DwC:scientificName: Gadus morhua</li><li>eMoF Type: lifeStage and eMoF Value: juvenile</li><li>eMoF Type: individualCount and eMoF Value: 2 and eMoF Unit: individuals</li></ul>\nRecord 2:<ul><li>scientificName: Gadus morhua</li><li>eMoF Type: lifeStage and eMoF Value: adult</li><li>eMoF Type: Sex and eMoF Value: female</li><li>eMoF Type: reproductiveCondition and eMoF Value: with eggs</li><li>eMoF Type: individualCount and eMoF Value: 1 and eMoF Unit: individuals</li></ul>"
+        ],
+        "answer_text": "The field scientificName should only contain a taxon name, other information should be split up in other relevant fields. Note that while OBIS allows the use of the DwC terms sex, lifestage, and individualCount, it's recommended that these data are stored in the ExtendedMeasurementOrFact Extension (eMoF) as this allows the linking to the BODC vocabularies for life stage http://vocab.nerc.ac.uk/collection S11/current/ and gender http://vocab.nerc.ac.uk/collection/S10/current/",
+        "correct_answer": 4
+    },
+    {
+        "question": "The dataset you are processing contains the taxon name Dinophysis intermedia (scientificnameID = urn:lsid:marinespecies.org:taxname:844470) for which the accepted name is Dinophysis fortii (scientificnameID urn:lsid:marinespecies.org:taxname:109624). What do you fill out as scientificName and scientificNameID?",
+        "answers": [
+            "<ul><li>scientificName: the accepted name Dinophysis fortii</li><li>scientificNameID: the LSID of the unaccepted name urn:lsid:marinespecies.org:taxname:844470</li></ul>",
+            "<ul><li>scientificName: the unaccepted name Dinophysis intermedia</li><li>scientificNameID: the LSID of the unaccepted name urn:lsid:marinespecies.org:taxname:844470</li></ul>",
+            "<ul><li>scientificName: the unaccepeted name Dinophysis intermedia</li><li>scientificNameID: the LSID of the accepted name urn:lsid:marinespecies.org:taxname:109624</li></ul>",
+            "<ul><li>scientificName: the accepted name Dinophysis fortii</li><li>scientificNameID: the LSID of the accepted name urn:lsid:marinespecies.org:taxname:109624</li></ul>"
+        ],
+        "answer_text": "You should provide the taxon name as recorded in the dataset even if it is not the valid name. OBIS uses WoRMS as it’s taxonomic backbone and can get the accepted name an all other taxonomic information from there. Using the original name ensures traceability (you store the same as the one which was originally recorded). Moreover taxonomy is not stable: a taxon name which is considered to be an invalid synonym of one species to today, may be a valid taxon name tomorrow; using the original name ensures that you don’t need to modify the dataset every time taxonomy changes.",
+        "correct_answer": 1
+    },
+    {
+        "question": "You always need to correct occurrences with geographic coordinates located on land.",
+        "answers": [
+            "True",
+            "False"
+        ],
+        "answer_text": "You should first get in contact with the data provider and ask him/her to review and update the geographical coordinates if necessary. It is important that the original source file is corrected first. Note also that there are several reasons why a record can fall on land, e.g. the midpoint of a WKT, midpoint of an island, only the name of the country is provided and that country borders more than one sea, the species is a seabird, fossil record, etc..",
+        "correct_answer": 1
+    },    {
+        "question": "When will a taxon name have ambiguous matches in the WoRMS taxon match tool (WoRMS), i.e. multiple matches are possible? In case of...",
+        "answers": [
+            "Scientific name is not accepted",
+            "near_1 match type",
+            "Homonyms",
+            "Typing error"
+        ],
+        "answer_text": "The same genus-species combination can exist in different Kingdoms.",
+        "correct_answer": 2
+    },
+    {
+        "question": "When will a taxon name have ambiguous matches in the WoRMS taxon match tool (WoRMS), i.e. multiple matches are possible? In case of...",
+        "answers": [
+            "Scientific name is not accepted",
+            "near_1 match type",
+            "Homonyms",
+            "Typing error"
+        ],
+        "answer_text": "The same genus-species combination can exist in different Kingdoms.",
+        "correct_answer": 2
+    }
+]
