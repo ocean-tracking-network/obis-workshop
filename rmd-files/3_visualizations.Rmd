@@ -131,7 +131,7 @@ Now fetch some data using the robis package, and add circle markers to the map u
 
 ```{r}
 abrseg <- occurrence("Abra segmentum")
-popup <- paste0(abrseg$datasetName, "<br/>", abrseg$locality, "<br/>",abrseg$catalogNumber,"<br/><a href=\"http://www.iobis.org/explore/#/dataset/", abrseg$dataset_id, "\">OBIS dataset page</a>")
+popup <- paste0(abrseg$datasetName, "<br/>", abrseg$locality, "<br/>",abrseg$catalogNumber,"<br/><a href=\"https://obis.org/dataset/", abrseg$dataset_id, "\">OBIS dataset page</a>")
 
 
 leaflet() %>%
