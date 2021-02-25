@@ -13,9 +13,9 @@ the Recommended version of R is R 3.6+ which can be downloaded from https://www.
 # Import the required R packages
 library(httr)
 library(jsonlite)
-library(container)
 library(dplyr)
 library(tidyr)
+library(leaflet)
 ```
 
 Initialize the base URL for Marine Regions. This variable is unchanged for every api call 

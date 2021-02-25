@@ -14,7 +14,6 @@ the Recommended version of r is 3.6+ which can be downloaded from https://www.r-
 # Import the required R packages
 library(httr)
 library(jsonlite)
-library(container)
 library(dplyr)
 ```
 
@@ -304,7 +303,5 @@ query <- list('startdate'='2020-01-01',
 request <- GET(paste0(OBIS_URL,'/statistics'), query=query)
 fromJSON(content(request, 'text'))
 ```
-
-
 
 

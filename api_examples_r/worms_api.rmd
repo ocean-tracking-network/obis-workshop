@@ -13,7 +13,6 @@ the Recommended version of r is 3.6+ which can be downloaded from https://www.r-
 # Import the required R packages
 library(httr)
 library(jsonlite)
-library(container)
 library(dplyr)
 library(tidyr)
 ```
@@ -85,7 +84,7 @@ Using a valid aphiaID, retrieve species specific attribute data held in WoRMs
 ```{r}
 # Now that we got the valid aphiaID for our Atlantic Salmon species, lets use WoRMS to retrieve some species attributes.
 salmonID <- 127186 # Atlantic Salmon ID
-req <- GET(paste0(WORMS_URL,'/AphiaAttributesByAphiaID/',aphiaID))
+req <- GET(paste0(WORMS_URL,'/AphiaAttributesByAphiaID/',salmonID))
 
 attributes <- fromJSON(content(req, 'text'))
 ```

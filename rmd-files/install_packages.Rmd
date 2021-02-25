@@ -5,7 +5,7 @@ output: html_document
 
 Install required packages
 
-```{r setup, include=FALSE}
+```{r}
 install.packages("devtools")
 
 library(devtools)
@@ -13,6 +13,7 @@ install_github("iobis/robis")
 install_github("iobis/obistools")
 install_github("ropensci/finch")
 
+install.packages("httr")
 install.packages("dplyr")
 install.packages("DT")
 install.packages("stringr")
@@ -27,6 +28,7 @@ install.packages("rnaturalearthdata")
 Test install step by loading the packages
 
 ```{r}
+library(httr)
 library(dplyr)
 library(ggplot2)
 library(sf)
