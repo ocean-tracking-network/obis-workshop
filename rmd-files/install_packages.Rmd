@@ -13,6 +13,7 @@ install_github("iobis/robis")
 install_github("iobis/obistools")
 install_github("ropensci/finch")
 
+install.packages("readr")
 install.packages("httr")
 install.packages("dplyr")
 install.packages("DT")
