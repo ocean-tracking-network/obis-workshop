@@ -12,7 +12,7 @@ editor_options:
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-Run this cell if you are missing the required packages:
+Faites tourner ce bloque de code s'il vous manque certain de ces packages:
 
 ```{r message=FALSE, warning=FALSE, results='hide'}
 install.packages("devtools")
@@ -26,7 +26,7 @@ install.packages("sf")
 install.packages("rnaturalearth")
 ```
 
-First load the required packages:
+Chargez les packages requis:
 
 ```{r}
 library(robis)
@@ -38,13 +38,13 @@ library(sf)
 library(rnaturalearth)
 ```
 
-Then use the `occurrence()` function with `mof = TRUE` to get all occurrences for Mytilus edulis, including the associated MeasurementOrFact data.
+Utilisez la fonction `occurrence()` avec le paramètre: mof = TRUE, pour obtenir toutes les occurrences de la moule bleue Mytilus edulis, incluant les données MeasurementOrFact associées.
 
 ```{r message=FALSE, warning=FALSE, cache=TRUE}
 occ <- occurrence("Mytilus edulis", mof = TRUE)
 ```
 
-The `measurements()` function can be used to create a flat measurements table. Use the `fields` parameter to include occurrence fields in this table.
+La fonction `measurements()` peut être utilisée pour créer une table des mesures dénormalisée (voir .Rmd numéro 2). Utilisez le paramètre : fields =, pour inclure les champs des occurrences dans cette table.
 
 ```{r message = FALSE, warning = FALSE}
 mof <- measurements(occ, fields = c("decimalLongitude", "decimalLatitude", "collectionCode", "catalogNumber", "eventDate", "date_year", "dataset_id", "samplingProtocol", "samplingEffort"))
@@ -52,7 +52,7 @@ mof <- measurements(occ, fields = c("decimalLongitude", "decimalLatitude", "coll
 mof
 ```
 
-This dataset includes a large variety of measurement types, let's create a list:
+Ce jeu de donnée inclu une grande diversité de type de mesure, créons une liste::
 
 ```{r message = FALSE, warning = FALSE}
 types <- mof %>%
@@ -63,7 +63,7 @@ types <- mof %>%
 datatable(types)
 ```
 
-There seem to be only two types of length measurements, both in mm. Let's select these measurements by their `measurementTypeID`, and convert the measurement values to numbers.
+Il semble n y avoir aue deux types de mesure de la longueur, les deux en mm. Sélectionnons ces mesures par leur `measurementTypeID`, et convertissons les valeurs en nombres.
 
 ```{r message = FALSE, warning = FALSE}
 size <- mof %>%
@@ -73,7 +73,7 @@ size <- mof %>%
 size
 ```
 
-Now we can plot the size measurements by `collectionCode`:
+Nous pouvons tracer les mesures de taille par `collectionCode`:
 
 ```{r message = FALSE, warning = FALSE, fig.width=10, fig.height=7}
 ggplot(size) +
@@ -81,7 +81,7 @@ ggplot(size) +
   ylab("length (mm)")
 ```
 
-And finally here are the measurements on a map:
+Puis obtenir les mesures sur une carte:
 
 ```{r message = FALSE, warning = FALSE, fig.width=10, fig.height=7}
 world <- ne_countries(scale = "large", returnclass = "sf")
