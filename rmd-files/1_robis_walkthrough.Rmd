@@ -7,7 +7,7 @@ output: html_document
 # Installer le package {robis}
 
 1- Le package {devtools} disponible sur le CRAN (dépôt de package R en ligne) doit être installé en premier pour permettre l'installation du package {robis} depuis GitHub (Sources: https://obis.org/manual/accessr/, https://iobis.github.io/robis/articles/getting-started.html).
-2- Puisque nous en sommes à l'installation de package sur le CRAN, allons chercher tous les package dont nous aurons besoin.
+2- Puisque nous en sommes à l'installation de package sur le CRAN, allons chercher tous les packages dont nous aurons besoin.
 ```{r setup, include=FALSE}
 install.packages("devtools")
 install.packages("ggplot2")
@@ -35,7 +35,7 @@ help(package = "robis")
 ```
 
 # Aller chercher des occurrences
-Aller chercher toutes les occurrences pour un taxon donné (par exemple Pterois volitans) grace à la fonction occurence()
+Aller chercher toutes les occurrences pour un taxon donné (par exemple Pterois volitans) grâce à la fonction occurence()
 
 On peut chercher ces occurrences grâce au nom du taxon sous forme de vecteur:
 
@@ -54,7 +54,7 @@ View(taxid)
 
 ##### Appliquer un filtre de type polygone
 
-La fonction occurence() accepte des paramètres géométriques qui peuvent être utilisés afin de filtrer les occurences en fonction de leur position géographique. Cet argument doit être formatté comme un WKT (well known text representation https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry). OBIS possède un outil cartographique qui facilite la création de chaine WKT par un simple clique sur une carte (https://obis.org/maptool/). 
+La fonction occurence() accepte des paramètres géométriques qui peuvent être utilisés afin de filtrer les occurences en fonction de leur position géographique. Cet argument doit être formaté comme un WKT (well known text representation https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry). OBIS possède un outil cartographique qui facilite la création de chaîne de caractère WKT par un simple clique sur une carte (https://obis.org/maptool/). 
 
 Allons voir si nous avons des données en provenance des îles Perhentian et Redang:
 ```{r}
@@ -88,7 +88,7 @@ lionfish_native <- occurrence("Pterois volitans", enddate = "1980-01-01")
 map_leaflet(lionfish_native)
 ```
 
-# Explorer les données d occurences
+# Explorer les données d occurrences
 Coup d'oeil rapide à votre jeu de données
 
 La première chose à faire lors de l'exploration d un jeu de données est de vérifier ses colonnes:
@@ -96,7 +96,7 @@ La première chose à faire lors de l'exploration d un jeu de données est de v�
 names(islands)
 ```
 
-Ensuite, utiliser table() pour créer une table de contingence afin de trouver quelles valeurs sont présentes dans certaines colonnes d'intéret.
+Ensuite, utiliser table() pour créer une table de contingence afin de trouver quelles valeurs sont présentes dans certaines colonnes d'intérêt.
 
 ```{r islands}
 table(islands$phylum)
@@ -104,14 +104,14 @@ table(islands$phylum)
 table(islands$family, islands$phylum)
 ```
 
-##### Visualiser les occurences en fonction du temps
+##### Visualiser les occurrences en fonction du temps
 
-Il est toujours intéressant de regarder la distribution temporelle des entrées de jeu de données. Afin de les visualiser, il nous faut une colonne contenant les années d'entrée des occurences. Les ocurrences téléchargées depuis le mappeur ou obtenus en utilisant {robis} ont une colonne nommée yearcollected. Si cette variable est inexistante dans votre je de données, vous pour créer une colonne d année en récupérant l information depuis la colonne enventDates en utilisant la fonction  d'analyse de date as.Date(), puis en l extrayant avec la fonction format(). N hésitez pas a utiliser ?as.Date ou ?format pour obtenir plus d information depuis l aide R:
+Il est toujours intéressant de regarder la distribution temporelle des entrées de jeu de données. Afin de les visualiser, il nous faut une colonne contenant les années d'entrée des occurrences. Les occurrences téléchargées depuis le mappeur ou obtenus en utilisant {robis} ont une colonne nommée yearcollected. Si cette variable est inexistante dans votre jeu de données, il faut créer une colonne d année en récupérant l information depuis la colonne enventDates en utilisant la fonction  d'analyse de date as.Date(), puis en l extrayant avec la fonction format(). N hésitez pas a utiliser ?as.Date ou ?format pour obtenir plus d information depuis l aide R:
 
 ```{r islands}
 table(islands$year)
 ```
-Le package {ggplot2} est un superbe outil de visualisation. Nous approfondirons notre voyage dans {ggplot2} plus loin dans ce chapitre. Pour le moment, vérifiez que voua avez bien installé le package puis lancez la commande ci-dessous pour produire un diagramme en barre montrant la distribution des occurences au cours du temps:
+Le package {ggplot2} est un superbe outil de visualisation. Nous approfondirons notre voyage dans {ggplot2} plus loin dans ce chapitre. Pour le moment, vérifiez que vous avez bien installé le package puis lancez la commande ci-dessous pour produire un diagramme en barre montrant la distribution des occurrences au cours du temps:
 
 ```{r islands}
 ggplot() + 
@@ -140,13 +140,13 @@ checklist(geometry = "POLYGON ((2.59689 51.16772, 2.62436 51.14059, 2.76066 51.1
 
 ##### Mesures ou faits associés
 
-Le package donne également accès aux entrées MeasurementOrFact associées aux occurences. Pour inclure les données de MeasurementOrFact il faut paramétrer: mof = TRUE dans occurence().
+Le package donne également accès aux entrées MeasurementOrFact associées aux occurences. Pour inclure les données de MeasurementOrFact il faut paramétrer: mof = TRUE dans `occurence()`.
 ```{r}
 occ <- occurrence("Abra tenuis", mof = TRUE)
 
 View(occ)
 ```
-Les données de MeasurementOrFact sont nichées dans occurrence, mais la fonction measurements() permet de les extraire vers leur propre data frame. Utilisez le paramètre fields =  pour indiquer les champs d occurrence  devant être conservés dans la table des mesures.
+Les données de MeasurementOrFact sont nichées dans occurrence, mais la fonction `measurements()` permet de les extraire vers leur propre data frame. Utilisez le paramètre fields =  pour indiquer les champs d occurrence  devant être conservés dans la table des mesures.
 
 ```{r occ}
 mof <- measurements(occ, fields = c("scientificName", "decimalLongitude", "decimalLatitude"))
@@ -154,9 +154,9 @@ View(mof)
 ```
 
 
-# Traitement des données d occurence
+# Traitement des données d occurrence
 
-Nous utiliserons le package {dplyr} pour manipuler les données d occurrence résupérées sur OBIS.
+Nous utiliserons le package {dplyr} pour manipuler les données d occurrence récupérées sur OBIS.
 ```{r}
 lag <- occurrence("Lagis")
 
@@ -169,7 +169,7 @@ table(lag$species)
 ##### Filtrer
 
 La fonction filter() peut être utilisée pour filtrer les occurrences en se basant sur une ou plusieurs propriétés.
-Par exemple, pour garder uniquement les occurences de Lagis australis:
+Par exemple, pour garder uniquement les occurrences de Lagis australis:
 ```{r lag}
 lagaus <- lag %>% filter(species == "Lagis australis")
 
@@ -178,9 +178,9 @@ map_leaflet(lagaus)
 str(lag)
 ```
 
-Remarquez l opérateur pipe %>% (https://juba.github.io/tidyverse/10-dplyr.html, section 10.3). Avec le pipe l’ordre des opérations correspond à l’ordre naturel de leur exécution, et on n’a pas besoin de créer d’objet intermédiaire ou d emboiter plusieurs fonctions les unes dans les autres (peu lisible).
+Remarquez l opérateur pipe %>% (https://juba.github.io/tidyverse/10-dplyr.html, section 10.3). Avec le pipe l’ordre des opérations correspond à l’ordre naturel de leur exécution, et on n’a pas besoin de créer d’objet intermédiaire ou d emboîter plusieurs fonctions les unes dans les autres (peu lisible).
 
-Voici un autre exemple ou seules les occurences appartenant aux jeux de données du RSMP Baseline Dataset sont sélectionnées:
+Voici un autre exemple où seules les occurrences appartenant aux jeux de données du RSMP Baseline Dataset sont sélectionnées:
 
 ```{r lag}
 rsmp <- lag %>% filter(grepl("RSMP Baseline Dataset", datasetName))
@@ -190,7 +190,7 @@ rsmp <- lag %>% filter(grepl("RSMP Baseline Dataset", datasetName))
 map_leaflet(rsmp)
 ```
 Notez que le champ MeasurementOrFact peut être utilisé comme paramètres de la fonction occurrence. 
-Par exemple, nous obtenir uniquement les occurences avec des mesures de biomasses associées:
+Par exemple, nous obtenir uniquement les occurrences avec des mesures de biomasses associées:
 ```{r}
 occurrence("Abra tenuis", mof = TRUE, measurementtype = "biomass") %>%
   measurements()
@@ -198,12 +198,12 @@ occurrence("Abra tenuis", mof = TRUE, measurementtype = "biomass") %>%
 
 
 ##### Sélectionner des colonnes
-La fonction select() sélectionne ou déselectionne des colonnes. 
+La fonction select() sélectionne ou désélectionne des colonnes. 
 Pour sélectionner uniquement les champs decimalLongitude et decimalLatitude:
 ```{r lagaus}
 lagaus %>% select(decimalLongitude, decimalLatitude)
 ```
-A partir de ce résultat, des coordonnées disctintes peuvent être obtenues en utilisant la fonction distinct():
+A partir de ce résultat, des coordonnées distintes peuvent être obtenues en utilisant la fonction distinct():
 
 ```{r lagaus}
 lagaus %>% select(decimalLongitude, decimalLatitude) %>% distinct()
