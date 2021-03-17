@@ -2,13 +2,11 @@
 title: "data_qc"
 output: html_document
 ---
-# Data quality control using R
+# Contrôle de qualité des données avec R
 <!-- source: https://obis.org/manual/processing/-->
 ```{r}
 install.packages("devtools")
-
 library(devtools)
-
 install_github("iobis/robis")
 install_github("iobis/obistools")
 install.packages("ggplot2")
@@ -23,74 +21,70 @@ library(finch)
 library(obistools)
 ```
 
-##### Checking points on land
+##### Vérifier des points terrestres
 
-The obistools package has a `check_onland()` function to check if coordinate pairs are located on land. By default this function uses a web service, but it can optionally work offline (although this is less accurate).
+Le package {obistools} possède la fonction check_onland() qui vérifie si les coordonnées renvoient à un lieu terrestre. Par défaut, cette fonction utilise un service web. Elle peut être optionellement utilisée hors ligne mais avec une précision moindre.
 
-Fetch some Madrepora occurrences using robis:
+Allons chercher des occurrences de Madrepora en utilisant {robis}:
 
 ```{r}
 mad <- occurrence("Madrepora")
 map_leaflet(mad)
 ```
-Then run the `check_onland()` command. By default the function will return a data frame containing all records on land (another option is to return a data frame with errors):
+Puis lancez `check_onland()`sur ces données. Par défaut la fonction retourne un data frame contenant toutes les entrées dont les coordonnées sont terrestres (une autre option consiste à retourner un dataframe avec des erreurs):
 ```{r mad}
 land <- check_onland(mad)
-
 map_leaflet(land)
 ```
-In some cases it makes sense to apply a buffer when checking for records on land. In this case we add a 1000 m buffer zone:
+Dans certains cas, appliquer un tampon lorsque l'on regarde les entrées terrestres paraît sensé. Ici, nous avons ajouté une zone tampon de 1000 m:
 
 ```{r mad}
 land_buffer <- check_onland(mad, buffer = 1000)
-
 map_leaflet(land_buffer)
 ```
 
-As expected this returns less “wrong” records.
+Comme attendu, cela retourne des entrées moins erronées.
 
-Now create a map showing all suspicious records, in orange by default but in red when they are suspicious even with the 1000 m buffer zone:
+Nous pouvons maintenant créer une carte affichant les entrées suspectes. En orange par défaut, elles apparaissent en rouge lorsqu'elles sont suspectes, même avec la zone tampon de 1000 m:
 ```{r land, land_buffer}
 world <- map_data("world")
-
 ggplot() +
  geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "#dddddd") +
  geom_point(data = land, aes(x = decimalLongitude, y = decimalLatitude), color = "#cc3300") +
  geom_point(data = land_buffer, aes(x = decimalLongitude, y = decimalLatitude), color = "#ff9900") + coord_fixed(1)
 ``` 
 
-##### Taxon matching
+##### Correspondance des taxons
 
-The obistools package allows us to match taxa with the World Register of Marine Species directly from our R environment. To demonstrate this functionality, we are going to use the Reef Life Survey example dataset which is published on IPT here.
+{obistools} permet de faire correspondre les taxons avec Worms (World Register of Marine Species) depuis notre environnement R. Illustrons cette fonctionnalité avec le jeu de données du Reef Life Survey publié sur IPT ici.
 
-First, make sure the finch package is loaded, then read the Darwin Core Archive:
+Premièrement, s assurer que {finch} est chargé puis lire l archive Darwin Core:
 
 ```{r}
 archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
 occurrence <- archive$data$occurrence.txt
 ```
-Next, we can start the taxon matching procedure by passing our scientific names to the `match_taxa()` function:
+Ensuite, on peut commencer la procédure de correspondance des taxons en rentrant les noms scientifiques dans la fonction `match_taxa()`:
 
 ```{r occurrence}
 names <- match_taxa(occurrence$scientificName)
 ```
 
-When the name matching has finished (this can take a while), a summary will be displayed indicating how many names were matches and how many need to be resolved manually:
+Lorsque la reconnaissance des noms est terminée (cela peut prendre du temps, armez vous de patience), un résumé va s afficher indiquant combien de correspondances de noms ont été résolues et combien ont besoin d être vérifiées à la main:
 
-Type info to see which names need manual action, y to start manual resolution, or n to skip manual resolution. After selecting y, several options will be presented for each name. Pick a number or press enter to skip the names:
+Tapez info pour afficher les noms ayant besoin d une action manuelle : -y- pour une résolution manuelle et -n- pour sauter cette étape. Après avoir tapé -y-, plusieurs options vous seront présentées pour chaque nom. Choisissez un chiffre ou appuyez sur entré pour sauter cette étape:
 
-After this procedure, you will end up with a data frame containing the matched name, the WoRMS LSID, and the type of match. Add the LSIDs to your source data as scientificNameID.
+Vous obtiendrez finalement un dataframe contenant les noms correpondants, les LSID (identifiants uniques) de WoRMS LSID, et le type de correpondance.
+Ajoutés les LSIDs à vos données sources en tant que scientificNameID.
 
 ```{r occurrence, names}
 occurrence$scientificNameID <- names$scientificNameID
-
 View(names)
-
 ```
 
-##### Check required fields
+##### Vérifiez les champs obligatoires
 
-`check_fields()` will check if all OBIS required fields are present in an occurrence table and if any values are missing.This function returns a dataframe of errors (if any):
+`check_fields()` permet de vérifier si tous les champs rendus obligatoires par OBIS sont present dans la table d occurrence. Si certains sont manquants, ils apparaîtront dans le résultat de la fonction sous forme d un dataframe d erreurs:
 
 ```{r}
 data <- data.frame(
@@ -99,68 +93,209 @@ data <- data.frame(
   locality = c("North Sea", "English Channel", "Flemish Banks"),
   minimumDepthInMeters = c("10", "", "5")
 )
-
 check_fields(data)
 ```
-## Plot points on a map
+## Tracer des points sur une carte
 
-`plot_map()` will generate a `ggplot2` map of occurrence records, `plot_map_leaflet()` creates a Leaflet map.
+`plot_map()` va générer une carte `ggplot2` d'occurence des entrées, `plot_map_leaflet()` créer une carte intéractive.
 
 ```{r}
 plot_map(abra, zoom = TRUE)
-
 plot_map_leaflet(abra)
 ```
 
-##### Checking depth values
+##### Vérifier les valeurs de profondeur
 
-The obistools package has a `check_depth()`, it uses the xylookup web service to identify which records have potentially invalid depths. Multiple checks are performed in this function:
+{obistools} possède la fonction `check_depth()` https://rdrr.io/github/iobis/obistools/man/check_depth.html, qui utilise le service web xylookup pour identifier les entrées présentant des profondeurs potentiellement problématiques. Plusieurs vérifications sont réalisées par cette fonction:
 
-    missing depth column (warning)
-    empty depth column (warning)
-    depth values that can't be converted to numbers (error)
-    values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
-    depth values that are negative for off shore points, after applying the provided shoremargin (error)
-    minimum depth greater than maximum depth (error)
+    colonne de profondeur manquante - missing depth column (warning)
+    colonne de profondeur vide -empty depth column (warning)
+    valeurs de profondeur non numériques - depth values that can't be converted to numbers (error)
+    valeurs au delà de l échelle de la couche bathymétrique - values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
+    valeurs de profondeur négatives pour les points non terrestres -depth values that are negative for off shore points, after applying the provided shoremargin (error)
+    valeurs de profondeur minimum supérieures à la profondeur maximum- minimum depth greater than maximum depth (error)
 
-First download some occurrences from OBIS, then use `check_depth()` with a depthmargin of 10 meters, this will return all records where depth values are 10 meters or more below the bottom depth returned from the webservice:
+Dans un premier temps, téléharger des données d occurrences depuis OBIS, puis utiliser `check_depth()` avec le paramètre depthmargin fixé à 10 mètres.
+Ce paramètre permet de fixer dans quelle mesure la profondeur donnée peut s'écarter de la bathymétrie des rasters (en mètres) du service web.
 ```{r}
 abrseg <- robis::occurrence("Abra segmentum")
-
 problems <- check_depth(abrseg, depthmargin = 10)
 ```
-To plot sample depth versus bottom depth, first use `lookup_xy()` to obtain bathymetry for our points:
+Pour tracer les profondeurs échantillonées en fonction de la profondeur du fond-bottom depth, utilisez d abord `lookup_xy()` pour obtenir la bathymetrie pour nos points:
 
 ```{r problems}
 bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
-
 plot(bathymetry, problems$maximumDepthInMeters) +
 abline(0, 1, lty = 2)+
 abline(10, 1, col = "red")
-
 plot_map_leaflet(problems)
-
 ```
-To print a report of the depth check:
+Pour obtenir un rapport des profondeurs il suffit de paramétrer report = TRUE:
 ```{r}
 report <- check_depth(abra, report=T, depthmargin = 50)
 head(report)
 ```
-## Check outliers
+## Vérifier les valeurs aberrantes
 
-`check_outliers_species` and `check_outliers_dataset` use the qc-service web service to identify which records are statistical outliers. For species outlier checks are performed for both environmental data (bathymetry, sea surface salinity and sea surface temperature) as well as spatially. Outliers are identified as all points that deviate more then six times the median absolute deviation (MAD) or three times the interquartile range (IQR) from the median. The `check_outliers_species` requires that the scientificNameID is filled in. When the species is already a known species in OBIS then the median, MAD and IQR from the known records are used for comparing the new species records. For datasets, only the spatial outliers are identified. Spatial outliers are detected based on the distance to the geographical centroid of all unique coordinates. The list in the extra field of the debug level output in the report provides all relevant statistics on which the outlier analysis is based. The `report` also gives an overview of these outliers. Outliers can be plotted with `plot_outliers(report)`
+`check_outliers_species` et `check_outliers_dataset` utilisent le service web qc-service pour identifier les entrées présentant des valeurs statistiques aberrantes (outliers). Pour les espèces, la vérification des aberrances se fait sur les données environnementales (bathymétrie, température et salinité de surface) et spatiales. Les valeurs aberrantes sont identifiées comme étant tous les poins qui s éloigne de plus de 6 x (écart médian absolu) ou 3 x écart interquartile à la médiane. `check_outliers_species` requiert que le champ scientificNameID soit rempli. Quand l espèce est déjà connue dans OBIS, alors la médiane, l écart médian absolu et l écart interquartile à la médiane de l entrée connue sont utilisés pour comparer la nouvelle espèce rentrée. Pour les jeux de données, seules les valeurs aberrantes spatiales sont identifiées. Les valeurs aberrantes spatiales sont détectées en se basant sur la distance au centroid geographique de tous les coordonnnés uniques. La liste dans le champ supplémentaire du rapport de debbug fournit toutes les statistiques importantes sur lesquelles les analyses de valeurs aberrantes sont basées.
+ `report` donne également un aperçu de ces valeurs aberrantes. `plot_outliers(report)` permet de tracer ces dernières.
 
 ```{r abra}
 report <- check_outliers_dataset(abra, report=T)
 head(report)
-
 plot_outliers(report)
+?check_outliers_species
+```---
+title: "data_qc"
+output: html_document
+---
+# Contrôle de qualité des données avec R
+<!-- source: https://obis.org/manual/processing/-->
+```{r}
+install.packages("devtools")
+library(devtools)
+install_github("iobis/robis")
+install_github("iobis/obistools")
+install.packages("ggplot2")
+install_github("ropensci/finch")
+```
 
+```{r}
+library(robis)
+library(obistools)
+library(ggplot2)
+library(finch)
+library(obistools)
+```
+
+##### Vérifier des points terrestres
+
+Le package {obistools} possède la fonction check_onland() qui vérifie si les coordonnées renvoient à un lieu terrestre. Par défaut, cette fonction utilise un service web. Elle peut être optionellement utilisée hors ligne mais avec une précision moindre.
+
+Allons chercher des occurrences de Madrepora en utilisant {robis}:
+
+```{r}
+mad <- occurrence("Madrepora")
+map_leaflet(mad)
+```
+Puis lancez `check_onland()`sur ces données. Par défaut la fonction retourne un data frame contenant toutes les entrées dont les coordonnées sont terrestres (une autre option consiste à retourner un dataframe avec des erreurs):
+```{r mad}
+land <- check_onland(mad)
+map_leaflet(land)
+```
+Dans certains cas, appliquer un tampon lorsque l'on regarde les entrées terrestres parraît sensé. Ici, nous avons ajouté une zone tampon de 1000 m:
+
+```{r mad}
+land_buffer <- check_onland(mad, buffer = 1000)
+map_leaflet(land_buffer)
+```
+
+Comme attendu, cela retourne des entrées moins erronées.
+
+Nous pouvons maintenant créer une carte affichant les entrées suspectes. En orange par défaut, elles apparaissent en rouge lorsqu'elles sont suspectes, même avec la zone tampon de 1000 m:
+```{r land, land_buffer}
+world <- map_data("world")
+ggplot() +
+ geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "#dddddd") +
+ geom_point(data = land, aes(x = decimalLongitude, y = decimalLatitude), color = "#cc3300") +
+ geom_point(data = land_buffer, aes(x = decimalLongitude, y = decimalLatitude), color = "#ff9900") + coord_fixed(1)
+``` 
+
+##### Correspondance des taxons
+
+{obistools} permet de faire correspondre les taxons avec Worms (World Register of Marine Species) depuis notre environnement R. Illustrons cette fonctionnalitéavec le jeu de donnée du Reef Life Survey publié sur IPT ici.
+
+Premièrement, s assurer que {finch} est chargé puis lire l archive Darwin Core:
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
+occurrence <- archive$data$occurrence.txt
+```
+Ensuite, on peu commencer la procédure de correspondance des taxons en rentrant les noms scientifiques dans la fonction `match_taxa()`:
+
+```{r occurrence}
+names <- match_taxa(occurrence$scientificName)
+```
+
+Lorsque la reconnaissance des noms est terminée (cela peut prendre du temps, armez vous de patience), un résumé va s afficher indiquant combien de correspondances de noms ont été résolues et combien ont besoin d être vérifiées à la main:
+
+Tapez info pour affichez les noms ayant besoin d une action manuelle : -y- pour une résolution manuelle et -n- pour sauter cette étape. Après avoir tapé -y-, plusieurs options vous seront présentées pour chaque noms. Choisissez un chiffre ou appuyez sur entré pour sauter cette étape:
+
+Vous obtiendrez finalement un dataframe contenant les noms correpondants, les LSID (identifiants uniques) de WoRMS LSID, et le type de correpondance.
+Ajoutés les LSIDs à vos données sources en tant que scientificNameID.
+
+```{r occurrence, names}
+occurrence$scientificNameID <- names$scientificNameID
+View(names)
+```
+
+##### Vérifiez les champs obligatoires
+
+`check_fields()` permet de vérifier si tous les champs rendus obligatoires par OBIS sont present dans la table d occurrence. Si certains sont manquants, ils apparaitront dans le résultat de la fonction sous forme d un dataframe d erreurs:
+
+```{r}
+data <- data.frame(
+  occurrenceID = c("1", "2", "3"),
+  scientificName = c("Abra alba", NA, ""),
+  locality = c("North Sea", "English Channel", "Flemish Banks"),
+  minimumDepthInMeters = c("10", "", "5")
+)
+check_fields(data)
+```
+## Tracer des points sur une carte
+
+`plot_map()` va générer une carte `ggplot2` d'occurence des entrées, `plot_map_leaflet()` créer une carte intéractive.
+
+```{r}
+plot_map(abra, zoom = TRUE)
+plot_map_leaflet(abra)
+```
+
+##### Vérifier les valeurs de profondeur
+
+{obistools} possède la fonction `check_depth()` https://rdrr.io/github/iobis/obistools/man/check_depth.html, qui utilise le service web xylookup pour identifier les entrées présentant des profondeurs potentiellement problématiques. Plusieurs vérifications sont réalisées par cette fonction:
+
+    colonne de profondeur manquante - missing depth column (warning)
+    colonne de profondeur vide -empty depth column (warning)
+    valeurs de profondeur non numériques - depth values that can't be converted to numbers (error)
+    valeurs au delà de l échelle de la couche bathymétrique - values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
+    valeurs de profondeur négatives pour les points non terrestres -depth values that are negative for off shore points, after applying the provided shoremargin (error)
+    valeurs de profondeur minimum supérieures à la profondeur maximum- minimum depth greater than maximum depth (error)
+
+Dans un premier temps, téléharger des données d occurrences depuis OBIS, puis utiliser `check_depth()` avec le paramètre depthmargin fixé à 10 mètres.
+Ce paramètre permet de fixer dans quelle mesure la profondeur donnée peut s'écarter de la bathymétrie des rasters (en mètres) du service web.
+```{r}
+abrseg <- robis::occurrence("Abra segmentum")
+problems <- check_depth(abrseg, depthmargin = 10)
+```
+Pour tracer les profondeurs échantillonées en fonction de la profondeur du fond-bottom depth, utilisez d abord `lookup_xy()` pour obtenir la bathymetrie pour nos points:
+
+```{r problems}
+bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
+plot(bathymetry, problems$maximumDepthInMeters) +
+abline(0, 1, lty = 2)+
+abline(10, 1, col = "red")
+plot_map_leaflet(problems)
+```
+Pour obtenir un rapport des profondeurs il suffit de paramétrer report = TRUE:
+```{r}
+report <- check_depth(abra, report=T, depthmargin = 50)
+head(report)
+```
+## Vérifier les valeurs aberrantes
+
+`check_outliers_species` et `check_outliers_dataset` utilise le service web qc-service pour identifier les entrées présentant des valeurs statistiques aberrantes (outliers). Pour les espèces, la vérification des aberrances se fait sur les données environnementales (bathymétrie, température et salinité de surface) et spatiales. Les valeurs aberrantes sont identifiées comme étant tous les poins qui s éloigne de plus de 6 x (écart médian absolu) ou 3 x écart interquartile à la médiane. `check_outliers_species` requiert que le champ scientificNameID soit rempli. Quand l espèce est déjà connue dans OBIS, alors la médiane, l écart médian absolu et l écart interquartile à la médiane de l entrée connue sont utilisés pour comparer la nouvelle espèce rentrée. Pour les jeux de données, seules les valeurs aberrantes spatiales sont identifiées. Les valeurs aberrantes spatiales sont détectées en se basant sur la distance au centroid geographique de tous les coordonnnés uniques. La liste dans le champ supplémentaire du rapport de debbug fournit toutes les statistiques importantes sur lesquelles les analyses de valeurs aberrantes sont basées.
+ `report` donne également un aperçu de ces valeurs aberrantes. `plot_outliers(report)` permet de tracer ces dernières.
+
+```{r abra}
+report <- check_outliers_dataset(abra, report=T)
+head(report)
+plot_outliers(report)
 ?check_outliers_species
 ```
-## Check eventID and parentEventID
+## Véfifier les champs eventID et parentEventID
 
-`check_eventids()` checks if both `eventID()` and `parentEventID` fields are present in an event table, and if all `parentEventID`s have a corresponding `eventID`.
+`check_eventids()` vérifie si les deux champs `eventID()` et `parentEventID` sont présents dans une table d évènement (event table),et si tous les `parentEventID`ont un  `eventID`correspondant.
 
 ```{r}
 data <- data.frame(
@@ -170,9 +305,9 @@ data <- data.frame(
 )
 check_eventids(data)
 ```
-## Check eventID in an extension
+## Vérifier les eventID dans une extension
 
-`check_extension_eventids()` checks if all `eventID`s in an extension have matching `eventID`s in the core table.
+`check_extension_eventids()` vérifie si tous les `eventID`dans une extension ont un `eventID`correspondant dans la table principale.
 
 ```{r}
 event <- data.frame(
@@ -183,55 +318,47 @@ event <- data.frame(
   decimalLatitude = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
   stringsAsFactors = FALSE
 )
-
 occurrence <- data.frame(
   eventID = c("sample_1", "sample_1", "sample_2", "sample_28", "sample_3", "sample_4", "subsample_1", "subsample_1"),
   scientificName = c("Abra alba", "Lanice conchilega", "Pectinaria koreni", "Nephtys hombergii", "Pectinaria koreni", "Amphiura filiformis", "Desmolaimus zeelandicus", "Aponema torosa"),
   stringsAsFactors = FALSE
 )
-
 check_extension_eventids(event, occurrence)
 ```
 
-##### Working with OBIS-ENV-DATA
+##### Travailler avec OBIS-ENV-DATA
 
-The obistools package provides some functionality to make it easier to work with OBIS-ENV-DATA (i.e. Event Core + Occurrence Extension + ExtendedMeasurementOrFact Extension).
+{obistools} possède des fonctionnalités facilitant le travail avec OBIS-ENV-DATA (c.à.d Event Core + Occurrence Extension + ExtendedMeasurementOrFact Extension).
 
-First load a subset of the Reef Life Survey from IPT:
+Premièrement, charger un échantillon de Reef Life Survey depuis l IPT (Integrated Publishing Toolkit):
 
 ```{r}
 archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE)
-
 event <- archive$data$event.txt
 occurrence <- archive$data$occurrence.txt
 mof <- archive$data$extendedmeasurementorfact.txt
-
 ```
 
-Checking parentEventIDs in the Event Core
+Vérifier le champ parentEventIDs dans la table des évènements (Event Core)
 
-Use check_eventids() to check if all parentEventIDs in the Event Core have a matching eventID. In the example below, first the original data is checked, then an error is introduced, and then the data is checked again:
+Utilisez `check_eventids()` pour vérifier si tous les parentEventIDs dans la table des évènements Event Core ont un eventID correpondant. 
+Dans l exemple ci-dessous, le jeu de données original est d abord vérifié puis une erreur est introduite et enfin, la donnée est vérifiée à nouveau.
 
 ```{r event}
 check_eventids(event)
-
 event$parentEventID[event$eventID == "4000691_cryptic"] <- "dummy_1"
-
 check_eventids(event)
-
 ```
 
-Checking core record identifiers in the extension file
+Vérifier les identifiants des données de la table principale dans le fichier supplémentaire (the extension file)
 
-Use check_extension_eventids() to check if identifiers in an extension file have matching eventIDs in the Event Core file. Again, in the example first the correct data is checked and then an error is introduced. The function will return a table of errors (if there are any). The field parameter is the name of the identifier column in the extension file:
+`check_extension_eventids()` pour vérifier si les identifiants dans le fichier supplémentaire (extension file) ont un eventIDs correpondant dans le fichier d évènement de la table principale (Event Core file). 
+Une fois encore dans notre exemple, nous allons vérifier des données dans lesquelles nous avons volontairement introduit une erreur. La fonction retourne une table d erreurs (s il y en a). La champ de paramètre est le nom de la colonne d identifiant dans le fichier supplémentaire:
 
 ```{r event, occurrence}
 check_extension_eventids(event, occurrence, field = "id")
-
 occurrence$id[occurrence$occurrenceID == "48432"] <- "dummy_2"
-
 check_extension_eventids(event, occurrence, field = "id")
-
 ```
 
 ##### Flattening occurrences
@@ -243,32 +370,26 @@ Sometimes it’s useful to have a flat occurrence table, i.e. a table of occurre
 
 ```{r archive}
 event <- archive$data$event.txt
-
 occurrence <- archive$data$occurrence.txt
-
 mof <- archive$data$extendedmeasurementorfact.txt
-
 flat <- flatten_occurrence(event, occurrence, field = "id")
-
 names(occurrence)
 names(flat)
-
 ```
-## Calculate centroid and radius for WKT geometries
+## Calculer les centroides et les rayon pour les géométries WKT (well known text representation, voir 1_robis_walkthrough.Rmd)
 
-`calculate_centroid()` calculates a centroid and radius for WKT strings. This is useful for populating `decimalLongitude`, `decimalLatitude` and `coordinateUncertaintyInMeters`.
+`calculate_centroid()` calcule les centroides et les rayons pour les lignes WKT. Cela sert à alimenter les champs decimalLongitude, decimalLatitude et coordinateUncertaintyInMeters.
 
 ```{r}
 wkt <- c(
   "POLYGON ((2.53784 51.12421, 2.99377 51.32031, 3.34534 51.39578, 2.82349 51.85614, 2.27417 51.69980, 2.53784 51.12421))",
   "POLYGON ((3.15582 42.23564, 3.13248 42.14202, 3.22037 42.11249, 3.26019 42.21530, 3.15582 42.23564))"
 )
-
 calculate_centroid(wkt)
 ```
-## Map column names to Darwin Core terms
+## Faire correspondre le nom des colonnes du tableau aux termes Darwin Core (DC)
 
-`map_fields()` changes column names using a terms map.
+`map_fields()` change les noms de colonnes pour les termes DC.
 
 ```{r}
 data <- data.frame(
@@ -279,7 +400,6 @@ data <- data.frame(
   lat = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
   stringsAsFactors = FALSE
 )
-
 mapping <- list(
   decimalLongitude = "lon",
   decimalLatitude = "lat",
@@ -287,10 +407,9 @@ mapping <- list(
   eventID = "id",
   eventDate = "date"
 )
-
 map_fields(data, mapping)
 ```
-## Check eventDate
+## Vérifier eventDate
 
 ```{r}
 data <- data.frame(eventDate = c(
@@ -312,15 +431,13 @@ data <- data.frame(eventDate = c(
   " ",
   NA
 ), stringsAsFactors = FALSE)
-
 check_eventdate(data)
 ```
 
-##### Visualizing dataset structure
+##### Visualiser la structure du jeu de données
+`treeStucture()` provenant de {obistools} génère un arbre simplifié d évènements/occurrences (event/occurrence) montrant la relation entre les différents types d évènements et d occurrences (en se basant sur type et measurementType). Chaque noeud est nommé en se basant sur l eventID ou l occurrenceID de l un des évènements d occurrence de ce type de noeud.
 
-The treeStucture() function in the obistools package generates a simplified event/occurrence tree showing the relationships between the different types (based on type and measurementType) of events and occurrences. Each node in the simplified tree is given a name based on the eventID or occurrenceID of one of the events of occurrences of that node type.
-
-Note that an eventID column is required in the measurements table. In your dataset the extension column pointing to the event records may have another name, so make sure to add eventID.
+Nottez qu une colonne column est requise dans la table des mesures (measurements table). Dans le jeu de donnée, la colonne supplémentaire pointant vers l entrée de l événement peu avoir un autre nom, assurez vous d ajouter eventID.
 
 ```{r}
 archive <- finch::dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=nsbs&v=1.6", read = TRUE)
@@ -328,28 +445,842 @@ event <- archive$data$event.txt
 occurrence <- archive$data$occurrence.txt
 emof <- archive$data$extendedmeasurementorfact.txt
 emof$eventID <- emof$id # adding eventID
-
 tree <- treeStructure(event, occurrence, emof)
 exportTree(tree, "tree.html")
 ```
-## Data quality report 
+## Rapport qualité des données 
 <!--not working-->
-`report()` generates a basic data quality report.
+`report()` ggénère un rapport de qualité simple des données
 <!--
 ```{r}
 report(abra)
 ?report
 ```
 -->
-## Lookup XY
+## Recherche XY
 
-`lookup_xy` returns basic spatial information for a given set of points. Currently three main things are returned: information from vector data (areas), information from rasters (grids) and the shoredistance.
+`lookup_xy` retourne des informations spatiales basiques pour un ensemble de point donné. 
+Pour le moment, trois infos sont retournées: information depuis des vecteurs (areas), information depuis des rasters (grids) and la distance à la côte (shoredistance).
 
 ```{r}
 xydata <- lookup_xy(abra, shoredistance = TRUE, grids = TRUE, areas = TRUE)
-
 head(xydata)
+ggplot(xydata, aes(sssalinity, sstemperature, color=bathymetry)) +
+    geom_point(alpha=0.5)
+```
+## Véfifier les champs eventID et parentEventID
 
+`check_eventids()` vérifie si les deux champs `eventID()` et `parentEventID` sont présents dans une table d événement (event table),et si tous les `parentEventID`ont un  `eventID`correspondant.
+
+```{r}
+data <- data.frame(
+  eventID = c("a", "b", "c", "d", "e", "f"),
+  parentEventID = c("", "", "a", "a", "bb", "b"),
+  stringsAsFactors = FALSE
+)
+check_eventids(data)
+```
+## Vérifier les eventID dans une extension
+
+`check_extension_eventids()` vérifie si tous les `eventID`dans une extension ont un `eventID`correspondant dans la table principale.
+
+```{r}
+event <- data.frame(
+  eventID = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  parentEventID = c(NA, "cruise_1", "cruise_1", "station_1", "station_1", "station_2", "station_2", "sample_3", "sample_3"),
+  eventDate = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  decimalLongitude = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  decimalLatitude = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+occurrence <- data.frame(
+  eventID = c("sample_1", "sample_1", "sample_2", "sample_28", "sample_3", "sample_4", "subsample_1", "subsample_1"),
+  scientificName = c("Abra alba", "Lanice conchilega", "Pectinaria koreni", "Nephtys hombergii", "Pectinaria koreni", "Amphiura filiformis", "Desmolaimus zeelandicus", "Aponema torosa"),
+  stringsAsFactors = FALSE
+)
+check_extension_eventids(event, occurrence)
+```
+
+##### Travailler avec OBIS-ENV-DATA
+
+{obistools} possède des fonctionnalités facilitant le travail avec OBIS-ENV-DATA (c.à.d Event Core + Occurrence Extension + ExtendedMeasurementOrFact Extension).
+
+Premièrement, charger un échantillon de Reef Life Survey depuis l IPT (Integrated Publishing Toolkit):
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+---
+title: "data_qc"
+output: html_document
+---
+# Contrôle de qualité des données avec R
+<!-- source: https://obis.org/manual/processing/-->
+```{r}
+install.packages("devtools")
+library(devtools)
+install_github("iobis/robis")
+install_github("iobis/obistools")
+install.packages("ggplot2")
+install_github("ropensci/finch")
+```
+
+```{r}
+library(robis)
+library(obistools)
+library(ggplot2)
+library(finch)
+library(obistools)
+```
+
+##### Vérifier des points terrestres
+
+Le package {obistools} possède la fonction check_onland() qui vérifie si les coordonnées renvoient à un lieu terrestre. Par défaut, cette fonction utilise un service web. Elle peut être optionellement utilisée hors ligne mais avec une précision moindre.
+
+Allons chercher des occurrences de Madrepora en utilisant {robis}:
+
+```{r}
+mad <- occurrence("Madrepora")
+map_leaflet(mad)
+```
+Puis lancez `check_onland()`sur ces données. Par défaut la fonction retourne un data frame contenant toutes les entrées dont les coordonnées sont terrestres (une autre option consiste à retourner un dataframe avec des erreurs):
+```{r mad}
+land <- check_onland(mad)
+map_leaflet(land)
+```
+Dans certains cas, appliquer un tampon lorsque l'on regarde les entrées terrestres parraît sensé. Ici, nous avons ajouté une zone tampon de 1000 m:
+
+```{r mad}
+land_buffer <- check_onland(mad, buffer = 1000)
+map_leaflet(land_buffer)
+```
+
+Comme attendu, cela retourne des entrées moins erronées.
+
+Nous pouvons maintenant créer une carte affichant les entrées suspectes. En orange par défaut, elles apparaissent en rouge lorsqu'elles sont suspectes, même avec la zone tampon de 1000 m:
+```{r land, land_buffer}
+world <- map_data("world")
+ggplot() +
+ geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "#dddddd") +
+ geom_point(data = land, aes(x = decimalLongitude, y = decimalLatitude), color = "#cc3300") +
+ geom_point(data = land_buffer, aes(x = decimalLongitude, y = decimalLatitude), color = "#ff9900") + coord_fixed(1)
+``` 
+
+##### Correspondance des taxons
+
+{obistools} permet de faire correspondre les taxons avec Worms (World Register of Marine Species) depuis notre environnement R. Illustrons cette fonctionnalitéavec le jeu de donnée du Reef Life Survey publié sur IPT ici.
+
+Premièrement, s assurer que {finch} est chargé puis lire l archive Darwin Core:
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
+occurrence <- archive$data$occurrence.txt
+```
+Ensuite, on peu commencer la procédure de correspondance des taxons en rentrant les noms scientifiques dans la fonction `match_taxa()`:
+
+```{r occurrence}
+names <- match_taxa(occurrence$scientificName)
+```
+
+Lorsque la reconnaissance des noms est terminée (cela peut prendre du temps, armez vous de patience), un résumé va s afficher indiquant combien de correspondances de noms ont été résolues et combien ont besoin d être vérifiées à la main:
+
+Tapez info pour affichez les noms ayant besoin d une action manuelle : -y- pour une résolution manuelle et -n- pour sauter cette étape. Après avoir tapé -y-, plusieurs options vous seront présentées pour chaque noms. Choisissez un chiffre ou appuyez sur entré pour sauter cette étape:
+
+Vous obtiendrez finalement un dataframe contenant les noms correpondants, les LSID (identifiants uniques) de WoRMS LSID, et le type de correpondance.
+Ajoutés les LSIDs à vos données sources en tant que scientificNameID.
+
+```{r occurrence, names}
+occurrence$scientificNameID <- names$scientificNameID
+View(names)
+```
+
+##### Vérifiez les champs obligatoires
+
+`check_fields()` permet de vérifier si tous les champs rendus obligatoires par OBIS sont present dans la table d occurrence. Si certains sont manquants, ils apparaitront dans le résultat de la fonction sous forme d un dataframe d erreurs:
+
+```{r}
+data <- data.frame(
+  occurrenceID = c("1", "2", "3"),
+  scientificName = c("Abra alba", NA, ""),
+  locality = c("North Sea", "English Channel", "Flemish Banks"),
+  minimumDepthInMeters = c("10", "", "5")
+)
+check_fields(data)
+```
+## Tracer des points sur une carte
+
+`plot_map()` va générer une carte `ggplot2` d'occurence des entrées, `plot_map_leaflet()` créer une carte intéractive.
+
+```{r}
+plot_map(abra, zoom = TRUE)
+plot_map_leaflet(abra)
+```
+
+##### Vérifier les valeurs de profondeur
+
+{obistools} possède la fonction `check_depth()` https://rdrr.io/github/iobis/obistools/man/check_depth.html, qui utilise le service web xylookup pour identifier les entrées présentant des profondeurs potentiellement problématiques. Plusieurs vérifications sont réalisées par cette fonction:
+
+    colonne de profondeur manquante - missing depth column (warning)
+    colonne de profondeur vide -empty depth column (warning)
+    valeurs de profondeur non numériques - depth values that can't be converted to numbers (error)
+    valeurs au delà de l échelle de la couche bathymétrique - values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
+    valeurs de profondeur négatives pour les points non terrestres -depth values that are negative for off shore points, after applying the provided shoremargin (error)
+    valeurs de profondeur minimum supérieures à la profondeur maximum- minimum depth greater than maximum depth (error)
+
+Dans un premier temps, téléharger des données d occurrences depuis OBIS, puis utiliser `check_depth()` avec le paramètre depthmargin fixé à 10 mètres.
+Ce paramètre permet de fixer dans quelle mesure la profondeur donnée peut s'écarter de la bathymétrie des rasters (en mètres) du service web.
+```{r}
+abrseg <- robis::occurrence("Abra segmentum")
+problems <- check_depth(abrseg, depthmargin = 10)
+```
+Pour tracer les profondeurs échantillonées en fonction de la profondeur du fond-bottom depth, utilisez d abord `lookup_xy()` pour obtenir la bathymetrie pour nos points:
+
+```{r problems}
+bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
+plot(bathymetry, problems$maximumDepthInMeters) +
+abline(0, 1, lty = 2)+
+abline(10, 1, col = "red")
+plot_map_leaflet(problems)
+```
+Pour obtenir un rapport des profondeurs il suffit de paramétrer report = TRUE:
+```{r}
+report <- check_depth(abra, report=T, depthmargin = 50)
+head(report)
+```
+## Vérifier les valeurs aberrantes
+
+`check_outliers_species` et `check_outliers_dataset` utilise le service web qc-service pour identifier les entrées présentant des valeurs statistiques aberrantes (outliers). Pour les espèces, la vérification des aberrances se fait sur les données environnementales (bathymétrie, température et salinité de surface) et spatiales. Les valeurs aberrantes sont identifiées comme étant tous les poins qui s éloigne de plus de 6 x (écart médian absolu) ou 3 x écart interquartile à la médiane. `check_outliers_species` requiert que le champ scientificNameID soit rempli. Quand l espèce est déjà connue dans OBIS, alors la médiane, l écart médian absolu et l écart interquartile à la médiane de l entrée connue sont utilisés pour comparer la nouvelle espèce rentrée. Pour les jeux de données, seules les valeurs aberrantes spatiales sont identifiées. Les valeurs aberrantes spatiales sont détectées en se basant sur la distance au centroid geographique de tous les coordonnnés uniques. La liste dans le champ supplémentaire du rapport de debbug fournit toutes les statistiques importantes sur lesquelles les analyses de valeurs aberrantes sont basées.
+ `report` donne également un aperçu de ces valeurs aberrantes. `plot_outliers(report)` permet de tracer ces dernières.
+
+```{r abra}
+report <- check_outliers_dataset(abra, report=T)
+head(report)
+plot_outliers(report)
+?check_outliers_species
+```
+## Véfifier les champs eventID et parentEventID
+
+`check_eventids()` vérifie si les deux champs `eventID()` et `parentEventID` sont présents dans une table d évènement (event table),et si tous les `parentEventID`ont un  `eventID`correspondant.
+
+```{r}
+data <- data.frame(
+  eventID = c("a", "b", "c", "d", "e", "f"),
+  parentEventID = c("", "", "a", "a", "bb", "b"),
+  stringsAsFactors = FALSE
+)
+check_eventids(data)
+```
+## Vérifier les eventID dans une extension
+
+`check_extension_eventids()` vérifie si tous les `eventID`dans une extension ont un `eventID`correspondant dans la table principale.
+
+```{r}
+event <- data.frame(
+  eventID = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  parentEventID = c(NA, "cruise_1", "cruise_1", "station_1", "station_1", "station_2", "station_2", "sample_3", "sample_3"),
+  eventDate = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  decimalLongitude = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  decimalLatitude = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+occurrence <- data.frame(
+  eventID = c("sample_1", "sample_1", "sample_2", "sample_28", "sample_3", "sample_4", "subsample_1", "subsample_1"),
+  scientificName = c("Abra alba", "Lanice conchilega", "Pectinaria koreni", "Nephtys hombergii", "Pectinaria koreni", "Amphiura filiformis", "Desmolaimus zeelandicus", "Aponema torosa"),
+  stringsAsFactors = FALSE
+)
+check_extension_eventids(event, occurrence)
+```
+
+##### Travailler avec OBIS-ENV-DATA
+
+{obistools} possède des fonctionnalités facilitant le travail avec OBIS-ENV-DATA (c.à.d Event Core + Occurrence Extension + ExtendedMeasurementOrFact Extension).
+
+Premièrement, charger un échantillon de Reef Life Survey depuis l IPT (Integrated Publishing Toolkit):
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+```
+
+Vérifier le champ parentEventIDs dans la table des évènements (Event Core)
+
+Utilisez `check_eventids()` pour vérifier si tous les parentEventIDs dans la table des évènements Event Core ont un eventID correpondant. 
+Dans l exemple ci-dessous, le jeu de données original est d abord vérifié puis une erreur est introduite et enfin, la donnée est vérifiée à nouveau.
+
+```{r event}
+check_eventids(event)
+event$parentEventID[event$eventID == "4000691_cryptic"] <- "dummy_1"
+check_eventids(event)
+```
+
+Vérifier les identifiants des données de la table principale dans le fichier supplémentaire (the extension file)
+
+`check_extension_eventids()` pour vérifier si les identifiants dans le fichier supplémentaire (extension file) ont un eventIDs correpondant dans le fichier d évènement de la table principale (Event Core file). 
+Une fois encore dans notre exemple, nous allons vérifier des données dans lesquelles nous avons volontairement introduit une erreur. La fonction retourne une table d erreurs (s il y en a). La champ de paramètre est le nom de la colonne d identifiant dans le fichier supplémentaire:
+
+```{r event, occurrence}
+check_extension_eventids(event, occurrence, field = "id")
+occurrence$id[occurrence$occurrenceID == "48432"] <- "dummy_2"
+check_extension_eventids(event, occurrence, field = "id")
+```
+
+##### Flattening occurrences
+
+Sometimes it’s useful to have a flat occurrence table, i.e. a table of occurrences where all the information contained in the related events has been added. For example, all date and location information may be in the Event Core file and not in the Occurrence Extension, but for checking or analyzing your data you may want to have a table with both the date/location information and the scientific names. The field parameter is the column in the extension file which points to the core table:
+
+ first go back to the clean version of the data, then look at the column names before and after flattening:
+
+
+```{r archive}
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+flat <- flatten_occurrence(event, occurrence, field = "id")
+names(occurrence)
+names(flat)
+```
+## Calculer les centroides et les rayon pour les géométries WKT (well known text representation, voir 1_robis_walkthrough.Rmd)
+
+`calculate_centroid()` calcule les centroides et les rayons pour les lignes WKT. Cela sert à alimenter les champs decimalLongitude, decimalLatitude et coordinateUncertaintyInMeters.
+
+```{r}
+wkt <- c(
+  "POLYGON ((2.53784 51.12421, 2.99377 51.32031, 3.34534 51.39578, 2.82349 51.85614, 2.27417 51.69980, 2.53784 51.12421))",
+  "POLYGON ((3.15582 42.23564, 3.13248 42.14202, 3.22037 42.11249, 3.26019 42.21530, 3.15582 42.23564))"
+)
+calculate_centroid(wkt)
+```
+## Faire correspondre le nom des colonnes du tableau aux termes Darwin Core (DC)
+
+`map_fields()` change les noms de colonnes pour les termes DC.
+
+```{r}
+data <- data.frame(
+  id = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  date = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  locality = rep("North Sea", 9),
+  lon = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  lat = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+mapping <- list(
+  decimalLongitude = "lon",
+  decimalLatitude = "lat",
+  datasetName = "dataset",
+  eventID = "id",
+  eventDate = "date"
+)
+map_fields(data, mapping)
+```
+## Vérifier eventDate
+
+```{r}
+data <- data.frame(eventDate = c(
+  "2016",
+  "2016-01",
+  "2016-01-02",
+  "2016-01-02 12",
+  "2016-01-02 12:34",
+  "2016-01-02 12:34:48",
+  "2016-01-02T13:00:00+01:00",
+  "2016-01-02T13:00:00+0100",
+  "2016-01-02T13:00:00+01",
+  "2016-01-02T13:00:00Z",
+  "2016-01-02 13:00:00/2016-01-02 14:00:00",
+  "2016-01-02 13:00:00/14:00:00",
+  "2016-01-02/05",
+  "2016-01-01 13u40",
+  "2016/01/03",
+  " ",
+  NA
+), stringsAsFactors = FALSE)
+check_eventdate(data)
+```
+
+##### Visualiser la structure du jeu de données
+`treeStucture()` provenant de {obistools} génère un arbre simplifié d évènements/occurrences (event/occurrence) montrant la relation entre les différents types d évènements et d occurrences (en se basant sur type et measurementType). Chaque noeud est nommé en se basant sur l eventID ou l occurrenceID de l un des évènements d occurrence de ce type de noeud.
+
+Nottez qu une colonne column est requise dans la table des mesures (measurements table). Dans le jeu de donnée, la colonne supplémentaire pointant vers l entrée de l événement peu avoir un autre nom, assurez vous d ajouter eventID.
+
+```{r}
+archive <- finch::dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=nsbs&v=1.6", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+emof <- archive$data$extendedmeasurementorfact.txt
+emof$eventID <- emof$id # adding eventID
+tree <- treeStructure(event, occurrence, emof)
+exportTree(tree, "tree.html")
+```
+## Rapport qualité des données ---
+title: "data_qc"
+output: html_document
+---
+# Contrôle de qualité des données avec R
+<!-- source: https://obis.org/manual/processing/-->
+```{r}
+install.packages("devtools")
+library(devtools)
+install_github("iobis/robis")
+install_github("iobis/obistools")
+install.packages("ggplot2")
+install_github("ropensci/finch")
+```
+
+```{r}
+library(robis)
+library(obistools)
+library(ggplot2)
+library(finch)
+library(obistools)
+```
+
+##### Vérifier des points terrestres
+
+Le package {obistools} possède la fonction check_onland() qui vérifie si les coordonnées renvoient à un lieu terrestre. Par défaut, cette fonction utilise un service web. Elle peut être optionellement utilisée hors ligne mais avec une précision moindre.
+
+Allons chercher des occurrences de Madrepora en utilisant {robis}:
+
+```{r}
+mad <- occurrence("Madrepora")
+map_leaflet(mad)
+```
+Puis lancez `check_onland()`sur ces données. Par défaut la fonction retourne un data frame contenant toutes les entrées dont les coordonnées sont terrestres (une autre option consiste à retourner un dataframe avec des erreurs):
+```{r mad}
+land <- check_onland(mad)
+map_leaflet(land)
+```
+Dans certains cas, appliquer un tampon lorsque l'on regarde les entrées terrestres parraît sensé. Ici, nous avons ajouté une zone tampon de 1000 m:
+
+```{r mad}
+land_buffer <- check_onland(mad, buffer = 1000)
+map_leaflet(land_buffer)
+```
+
+Comme attendu, cela retourne des entrées moins erronées.
+
+Nous pouvons maintenant créer une carte affichant les entrées suspectes. En orange par défaut, elles apparaissent en rouge lorsqu'elles sont suspectes, même avec la zone tampon de 1000 m:
+```{r land, land_buffer}
+world <- map_data("world")
+ggplot() +
+ geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "#dddddd") +
+ geom_point(data = land, aes(x = decimalLongitude, y = decimalLatitude), color = "#cc3300") +
+ geom_point(data = land_buffer, aes(x = decimalLongitude, y = decimalLatitude), color = "#ff9900") + coord_fixed(1)
+``` 
+
+##### Correspondance des taxons
+
+{obistools} permet de faire correspondre les taxons avec Worms (World Register of Marine Species) depuis notre environnement R. Illustrons cette fonctionnalitéavec le jeu de donnée du Reef Life Survey publié sur IPT ici.
+
+Premièrement, s assurer que {finch} est chargé puis lire l archive Darwin Core:
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE) 
+occurrence <- archive$data$occurrence.txt
+```
+Ensuite, on peu commencer la procédure de correspondance des taxons en rentrant les noms scientifiques dans la fonction `match_taxa()`:
+
+```{r occurrence}
+names <- match_taxa(occurrence$scientificName)
+```
+
+Lorsque la reconnaissance des noms est terminée (cela peut prendre du temps, armez vous de patience), un résumé va s afficher indiquant combien de correspondances de noms ont été résolues et combien ont besoin d être vérifiées à la main:
+
+Tapez info pour affichez les noms ayant besoin d une action manuelle : -y- pour une résolution manuelle et -n- pour sauter cette étape. Après avoir tapé -y-, plusieurs options vous seront présentées pour chaque noms. Choisissez un chiffre ou appuyez sur entré pour sauter cette étape:
+
+Vous obtiendrez finalement un dataframe contenant les noms correpondants, les LSID (identifiants uniques) de WoRMS LSID, et le type de correpondance.
+Ajoutés les LSIDs à vos données sources en tant que scientificNameID.
+
+```{r occurrence, names}
+occurrence$scientificNameID <- names$scientificNameID
+View(names)
+```
+
+##### Vérifiez les champs obligatoires
+
+`check_fields()` permet de vérifier si tous les champs rendus obligatoires par OBIS sont present dans la table d occurrence. Si certains sont manquants, ils apparaitront dans le résultat de la fonction sous forme d un dataframe d erreurs:
+
+```{r}
+data <- data.frame(
+  occurrenceID = c("1", "2", "3"),
+  scientificName = c("Abra alba", NA, ""),
+  locality = c("North Sea", "English Channel", "Flemish Banks"),
+  minimumDepthInMeters = c("10", "", "5")
+)
+check_fields(data)
+```
+## Tracer des points sur une carte
+
+`plot_map()` va générer une carte `ggplot2` d'occurence des entrées, `plot_map_leaflet()` créer une carte intéractive.
+
+```{r}
+plot_map(abra, zoom = TRUE)
+plot_map_leaflet(abra)
+```
+
+##### Vérifier les valeurs de profondeur
+
+{obistools} possède la fonction `check_depth()` https://rdrr.io/github/iobis/obistools/man/check_depth.html, qui utilise le service web xylookup pour identifier les entrées présentant des profondeurs potentiellement problématiques. Plusieurs vérifications sont réalisées par cette fonction:
+
+    colonne de profondeur manquante - missing depth column (warning)
+    colonne de profondeur vide -empty depth column (warning)
+    valeurs de profondeur non numériques - depth values that can't be converted to numbers (error)
+    valeurs au delà de l échelle de la couche bathymétrique - values that are larger than the depth value in the bathymetry layer, after applying the provided depthmargin (error)
+    valeurs de profondeur négatives pour les points non terrestres -depth values that are negative for off shore points, after applying the provided shoremargin (error)
+    valeurs de profondeur minimum supérieures à la profondeur maximum- minimum depth greater than maximum depth (error)
+
+Dans un premier temps, téléharger des données d occurrences depuis OBIS, puis utiliser `check_depth()` avec le paramètre depthmargin fixé à 10 mètres.
+Ce paramètre permet de fixer dans quelle mesure la profondeur donnée peut s'écarter de la bathymétrie des rasters (en mètres) du service web.
+```{r}
+abrseg <- robis::occurrence("Abra segmentum")
+problems <- check_depth(abrseg, depthmargin = 10)
+```
+Pour tracer les profondeurs échantillonées en fonction de la profondeur du fond-bottom depth, utilisez d abord `lookup_xy()` pour obtenir la bathymetrie pour nos points:
+
+```{r problems}
+bathymetry <- lookup_xy(problems, shoredistance = FALSE, grids = TRUE, areas = FALSE)$bathymetry
+plot(bathymetry, problems$maximumDepthInMeters) +
+abline(0, 1, lty = 2)+
+abline(10, 1, col = "red")
+plot_map_leaflet(problems)
+```
+Pour obtenir un rapport des profondeurs il suffit de paramétrer report = TRUE:
+```{r}
+report <- check_depth(abra, report=T, depthmargin = 50)
+head(report)
+```
+## Vérifier les valeurs aberrantes
+
+`check_outliers_species` et `check_outliers_dataset` utilise le service web qc-service pour identifier les entrées présentant des valeurs statistiques aberrantes (outliers). Pour les espèces, la vérification des aberrances se fait sur les données environnementales (bathymétrie, température et salinité de surface) et spatiales. Les valeurs aberrantes sont identifiées comme étant tous les poins qui s éloigne de plus de 6 x (écart médian absolu) ou 3 x écart interquartile à la médiane. `check_outliers_species` requiert que le champ scientificNameID soit rempli. Quand l espèce est déjà connue dans OBIS, alors la médiane, l écart médian absolu et l écart interquartile à la médiane de l entrée connue sont utilisés pour comparer la nouvelle espèce rentrée. Pour les jeux de données, seules les valeurs aberrantes spatiales sont identifiées. Les valeurs aberrantes spatiales sont détectées en se basant sur la distance au centroid geographique de tous les coordonnnés uniques. La liste dans le champ supplémentaire du rapport de debbug fournit toutes les statistiques importantes sur lesquelles les analyses de valeurs aberrantes sont basées.
+ `report` donne également un aperçu de ces valeurs aberrantes. `plot_outliers(report)` permet de tracer ces dernières.
+
+```{r abra}
+report <- check_outliers_dataset(abra, report=T)
+head(report)
+plot_outliers(report)
+?check_outliers_species
+```
+## Véfifier les champs eventID et parentEventID
+
+`check_eventids()` vérifie si les deux champs `eventID()` et `parentEventID` sont présents dans une table d évènement (event table),et si tous les `parentEventID`ont un  `eventID`correspondant.
+
+```{r}
+data <- data.frame(
+  eventID = c("a", "b", "c", "d", "e", "f"),
+  parentEventID = c("", "", "a", "a", "bb", "b"),
+  stringsAsFactors = FALSE
+)
+check_eventids(data)
+```
+## Vérifier les eventID dans une extension
+
+`check_extension_eventids()` vérifie si tous les `eventID`dans une extension ont un `eventID`correspondant dans la table principale.
+
+```{r}
+event <- data.frame(
+  eventID = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  parentEventID = c(NA, "cruise_1", "cruise_1", "station_1", "station_1", "station_2", "station_2", "sample_3", "sample_3"),
+  eventDate = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  decimalLongitude = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  decimalLatitude = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+occurrence <- data.frame(
+  eventID = c("sample_1", "sample_1", "sample_2", "sample_28", "sample_3", "sample_4", "subsample_1", "subsample_1"),
+  scientificName = c("Abra alba", "Lanice conchilega", "Pectinaria koreni", "Nephtys hombergii", "Pectinaria koreni", "Amphiura filiformis", "Desmolaimus zeelandicus", "Aponema torosa"),
+  stringsAsFactors = FALSE
+)
+check_extension_eventids(event, occurrence)
+```
+
+##### Travailler avec OBIS-ENV-DATA
+
+{obistools} possède des fonctionnalités facilitant le travail avec OBIS-ENV-DATA (c.à.d Event Core + Occurrence Extension + ExtendedMeasurementOrFact Extension).
+
+Premièrement, charger un échantillon de Reef Life Survey depuis l IPT (Integrated Publishing Toolkit):
+
+```{r}
+archive <- dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=rls-subset", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+```
+
+Vérifier le champ parentEventIDs dans la table des évènements (Event Core)
+
+Utilisez `check_eventids()` pour vérifier si tous les parentEventIDs dans la table des évènements Event Core ont un eventID correpondant. 
+Dans l exemple ci-dessous, le jeu de données original est d abord vérifié puis une erreur est introduite et enfin, la donnée est vérifiée à nouveau.
+
+```{r event}
+check_eventids(event)
+event$parentEventID[event$eventID == "4000691_cryptic"] <- "dummy_1"
+check_eventids(event)
+```
+
+Vérifier les identifiants des données de la table principale dans le fichier supplémentaire (the extension file)
+
+`check_extension_eventids()` pour vérifier si les identifiants dans le fichier supplémentaire (extension file) ont un eventIDs correpondant dans le fichier d évènement de la table principale (Event Core file). 
+Une fois encore dans notre exemple, nous allons vérifier des données dans lesquelles nous avons volontairement introduit une erreur. La fonction retourne une table d erreurs (s il y en a). La champ de paramètre est le nom de la colonne d identifiant dans le fichier supplémentaire:
+
+```{r event, occurrence}
+check_extension_eventids(event, occurrence, field = "id")
+occurrence$id[occurrence$occurrenceID == "48432"] <- "dummy_2"
+check_extension_eventids(event, occurrence, field = "id")
+```
+
+##### Dénormaliser/aplatir les occurrences
+
+Il est parfois utile d'avoir une table des occurrences platte/dénormalisée (en opposition à la normalisation qui est le processus conduisant à la fragmentation des données dans plusieurs tables, la dénormalisation est par définition facteur de redondance). Cela pourrait consister à créer une nouvelle table des occurrences où l on ajouterai toute l information contenue dans la table des évènements reliée. P. ex. toutes les informations de date et de localisation présentes dans le fichier des événements pourrait ne pas apparaître dans le supplément des occurrences. Cependant, ces informations seraient utiles à la vérification et à l analyse des données. Ainsi, il serait intéressant d avoir en une seule et même table les infos de date, localisation et noms scientifiques. Le paramètre field =, est la colonne du fichier supplémentaire qui pointe vers la table principale:
+
+ D abord, retournez a une version clean des données puis regardez la colonne des noms avant et après le processus de dénormalisation (flattening).
+
+```{r archive}
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+flat <- flatten_occurrence(event, occurrence, field = "id")
+names(occurrence)
+names(flat)
+```
+## Calculer les centroides et les rayon pour les géométries WKT (well known text representation, voir 1_robis_walkthrough.Rmd)
+
+`calculate_centroid()` calcule les centroides et les rayons pour les lignes WKT. Cela sert à alimenter les champs decimalLongitude, decimalLatitude et coordinateUncertaintyInMeters.
+
+```{r}
+wkt <- c(
+  "POLYGON ((2.53784 51.12421, 2.99377 51.32031, 3.34534 51.39578, 2.82349 51.85614, 2.27417 51.69980, 2.53784 51.12421))",
+  "POLYGON ((3.15582 42.23564, 3.13248 42.14202, 3.22037 42.11249, 3.26019 42.21530, 3.15582 42.23564))"
+)
+calculate_centroid(wkt)
+```
+## Faire correspondre le nom des colonnes du tableau aux termes Darwin Core (DC)
+
+`map_fields()` change les noms de colonnes pour les termes DC.
+
+```{r}
+data <- data.frame(
+  id = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  date = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  locality = rep("North Sea", 9),
+  lon = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  lat = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+mapping <- list(
+  decimalLongitude = "lon",
+  decimalLatitude = "lat",
+  datasetName = "dataset",
+  eventID = "id",
+  eventDate = "date"
+)
+map_fields(data, mapping)
+```
+## Vérifier eventDate
+
+```{r}
+data <- data.frame(eventDate = c(
+  "2016",
+  "2016-01",
+  "2016-01-02",
+  "2016-01-02 12",
+  "2016-01-02 12:34",
+  "2016-01-02 12:34:48",
+  "2016-01-02T13:00:00+01:00",
+  "2016-01-02T13:00:00+0100",
+  "2016-01-02T13:00:00+01",
+  "2016-01-02T13:00:00Z",
+  "2016-01-02 13:00:00/2016-01-02 14:00:00",
+  "2016-01-02 13:00:00/14:00:00",
+  "2016-01-02/05",
+  "2016-01-01 13u40",
+  "2016/01/03",
+  " ",
+  NA
+), stringsAsFactors = FALSE)
+check_eventdate(data)
+```
+
+##### Visualiser la structure du jeu de données
+`treeStucture()` provenant de {obistools} génère un arbre simplifié d évènements/occurrences (event/occurrence) montrant la relation entre les différents types d évènements et d occurrences (en se basant sur type et measurementType). Chaque noeud est nommé en se basant sur l eventID ou l occurrenceID de l un des évènements d occurrence de ce type de noeud.
+
+Nottez qu une colonne column est requise dans la table des mesures (measurements table). Dans le jeu de donnée, la colonne supplémentaire pointant vers l entrée de l événement peu avoir un autre nom, assurez vous d ajouter eventID.
+
+```{r}
+archive <- finch::dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=nsbs&v=1.6", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+emof <- archive$data$extendedmeasurementorfact.txt
+emof$eventID <- emof$id # adding eventID
+tree <- treeStructure(event, occurrence, emof)
+exportTree(tree, "tree.html")
+```
+## Rapport qualité des données 
+<!--not working-->
+`report()` ggénère un rapport de qualité simple des données
+<!--
+```{r}
+report(abra)
+?report
+```
+-->
+## Recherche XY
+
+`lookup_xy` retourne des informations spatiales basiques pour un ensemble de point donné. 
+Pour le moment, trois infos sont retournées: information depuis des vecteurs (areas), information depuis des rasters (grids) and la distance à la côte (shoredistance).
+
+```{r}
+xydata <- lookup_xy(abra, shoredistance = TRUE, grids = TRUE, areas = TRUE)
+head(xydata)
+ggplot(xydata, aes(sssalinity, sstemperature, color=bathymetry)) +
+    geom_point(alpha=0.5)
+```
+<!--not working-->
+`report()` ggénère un rapport de qualité simple des données
+<!--
+```{r}
+report(abra)
+?report
+```
+-->
+## Recherche XY
+
+`lookup_xy` retourne des informations spatiales basiques pour un ensemble de point donné. 
+Pour le moment, trois infos sont retournées: information depuis des vecteurs (areas), information depuis des rasters (grids) and la distance à la côte (shoredistance).
+
+```{r}
+xydata <- lookup_xy(abra, shoredistance = TRUE, grids = TRUE, areas = TRUE)
+head(xydata)
+ggplot(xydata, aes(sssalinity, sstemperature, color=bathymetry)) +
+    geom_point(alpha=0.5)
+```
+```
+Vérifier le champ parentEventIDs dans la table des événements (Event Core)
+Utilisez `check_eventids()` pour vérifier si tous les parentEventIDs dans la table des événements Event Core ont un eventID correpondant. 
+Dans l exemple ci-dessous, le jeu de données original est d abord vérifié puis une erreur est introduite et enfin, la donnée est vérifiée à nouveau.
+```{r event}
+check_eventids(event)
+event$parentEventID[event$eventID == "4000691_cryptic"] <- "dummy_1"
+check_eventids(event)
+```
+
+Vérifier les identifiants des données de la table principale dans le fichier supplémentaire (the extension file)
+
+`check_extension_eventids()` pour vérifier si les identifiants dans le fichier supplémentaire (extension file) ont un eventIDs correpondant dans le fichier d événement de la table principale (Event Core file). 
+Une fois encore dans notre exemple, nous allons vérifier des données dans lesquelles nous avons volontairement introduit une erreur. La fonction retourne une table d erreurs (s il y en a). La champ de paramètre est le nom de la colonne d identifiant dans le fichier supplémentaire:
+
+```{r event, occurrence}
+check_extension_eventids(event, occurrence, field = "id")
+occurrence$id[occurrence$occurrenceID == "48432"] <- "dummy_2"
+check_extension_eventids(event, occurrence, field = "id")
+```
+
+##### Flattening occurrences
+
+Sometimes it’s useful to have a flat occurrence table, i.e. a table of occurrences where all the information contained in the related events has been added. For example, all date and location information may be in the Event Core file and not in the Occurrence Extension, but for checking or analyzing your data you may want to have a table with both the date/location information and the scientific names. The field parameter is the column in the extension file which points to the core table:
+
+ first go back to the clean version of the data, then look at the column names before and after flattening:
+
+
+```{r archive}
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+mof <- archive$data$extendedmeasurementorfact.txt
+flat <- flatten_occurrence(event, occurrence, field = "id")
+names(occurrence)
+names(flat)
+```
+## Calculer les centroides et les rayon pour les géométries WKT (well known text representation, voir 1_robis_walkthrough.Rmd)
+
+`calculate_centroid()` calcule les centroides et les rayons pour les lignes WKT. Cela sert à alimenter les champs decimalLongitude, decimalLatitude et coordinateUncertaintyInMeters.
+
+```{r}
+wkt <- c(
+  "POLYGON ((2.53784 51.12421, 2.99377 51.32031, 3.34534 51.39578, 2.82349 51.85614, 2.27417 51.69980, 2.53784 51.12421))",
+  "POLYGON ((3.15582 42.23564, 3.13248 42.14202, 3.22037 42.11249, 3.26019 42.21530, 3.15582 42.23564))"
+)
+calculate_centroid(wkt)
+```
+## Faire correspondre le nom des colonnes du tableau aux termes Darwin Core (DC)
+
+`map_fields()` change les noms de colonnes pour les termes DC.
+
+```{r}
+data <- data.frame(
+  id = c("cruise_1", "station_1", "station_2", "sample_1", "sample_2", "sample_3", "sample_4", "subsample_1", "subsample_2"),
+  date = c(NA, NA, NA, "2017-01-01", "2017-01-02", "2017-01-03", "2017-01-04", NA, NA),
+  locality = rep("North Sea", 9),
+  lon = c(NA, 2.9, 4.7, NA, NA, NA, NA, NA, NA),
+  lat = c(NA, 54.1, 55.8, NA, NA, NA, NA, NA, NA),
+  stringsAsFactors = FALSE
+)
+mapping <- list(
+  decimalLongitude = "lon",
+  decimalLatitude = "lat",
+  datasetName = "dataset",
+  eventID = "id",
+  eventDate = "date"
+)
+map_fields(data, mapping)
+```
+## Vérifier eventDate
+
+```{r}
+data <- data.frame(eventDate = c(
+  "2016",
+  "2016-01",
+  "2016-01-02",
+  "2016-01-02 12",
+  "2016-01-02 12:34",
+  "2016-01-02 12:34:48",
+  "2016-01-02T13:00:00+01:00",
+  "2016-01-02T13:00:00+0100",
+  "2016-01-02T13:00:00+01",
+  "2016-01-02T13:00:00Z",
+  "2016-01-02 13:00:00/2016-01-02 14:00:00",
+  "2016-01-02 13:00:00/14:00:00",
+  "2016-01-02/05",
+  "2016-01-01 13u40",
+  "2016/01/03",
+  " ",
+  NA
+), stringsAsFactors = FALSE)
+check_eventdate(data)
+```
+
+##### Visualiser la structure du jeu de données
+`treeStucture()` provenant de {obistools} génère un arbre simplifié d évènements/occurrences (event/occurrence) montrant la relation entre les différents types d évènements et d occurrences (en se basant sur type et measurementType). Chaque noeud est nommé en se basant sur l eventID ou l occurrenceID de l un des évènements d occurrence de ce type de noeud.
+
+Nottez qu une colonne column est requise dans la table des mesures (measurements table). Dans le jeu de donnée, la colonne supplémentaire pointant vers l entrée de l évènement peut avoir un autre nom, assurez vous d ajouter eventID.
+
+```{r}
+archive <- finch::dwca_read("http://ipt.iobis.org/obis-env/archive.do?r=nsbs&v=1.6", read = TRUE)
+event <- archive$data$event.txt
+occurrence <- archive$data$occurrence.txt
+emof <- archive$data$extendedmeasurementorfact.txt
+emof$eventID <- emof$id # adding eventID
+tree <- treeStructure(event, occurrence, emof)
+exportTree(tree, "tree.html")
+```
+## Rapport qualité des données 
+<!--not working-->
+`report()` ggénère un rapport de qualité simple des données
+<!--
+```{r}
+report(abra)
+?report
+```
+-->
+## Recherche XY
+
+`lookup_xy` retourne des informations spatiales basiques pour un ensemble de points donnés. 
+Pour le moment, trois infos sont retournées: information depuis des vecteurs (areas), information depuis des rasters (grids) and la distance à la côte (shoredistance).
+
+```{r}
+xydata <- lookup_xy(abra, shoredistance = TRUE, grids = TRUE, areas = TRUE)
+head(xydata)
 ggplot(xydata, aes(sssalinity, sstemperature, color=bathymetry)) +
     geom_point(alpha=0.5)
 ```

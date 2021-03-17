@@ -4,13 +4,16 @@ output: html_notebook
 ---
 
 ![](marine_region.jpg)
-# Marine Regions RESTful API Walkthrough
-MarineRegion's REST API can be accessed using R httr package. All API calls to marineregions can return either a JSON file or a XML depending on the extension specified in the call. The below examples exclusively use the json extension since the output is easier for R to parse.
+# Pas à pas, les régions marines avec l API RESTful OBIS:Marine Regions RESTful API
+API (Application Programming Interface) est un protocole qui permet de faire communiquer un logiciel A (le fournisseur) et un logiciel B (le consommateur), en suivant une série de méthodes définies par A (des règles de langage, en quelque sorte)
 
-the Recommended version of R is R 3.6+ which can be downloaded from https://www.r-project.org/ 
+REST ou RESTful (REpresentational State Transfer), est un style d architecture pour les systèmes distribués bâti sur des APIs permettant de centraliser des services partagés. Les réseaux relient des logiciels technologiquement hétérogènes, ce qui justifie l’utilisation d’un langage commun au niveau des échanges (souvent du JSON ou du XML). la philosophie REST est plutôt connue sur le Web grâce au protocole HTTP qui valide la majorité de ses contraintes.
+
+On peut accéder à l API REST MarineRegionavec le package {httr}. Toutes les API appelées vers marineregions peuvent être retournées en fichiers JSON ou XML suivant l extension spécifiée dans l appel. Les exemples ci-dessous utiliseront uniquement l extension json puisque la sortie est plus facile à analyser pour R.
+Utilisez des version R is R 3.6 ou plus récentes (https://www.r-project.org/)
 
 ```{r}
-# Import the required R packages
+# Importer les packages requis
 library(httr)
 library(jsonlite)
 library(dplyr)
@@ -18,22 +21,22 @@ library(tidyr)
 library(leaflet)
 ```
 
-Initialize the base URL for Marine Regions. This variable is unchanged for every api call 
+Récupérer l URL de base pour "Marine Regions". Cette variable restera inchangée pour tous les appels API 
 ```{r}
 MARINE_REGIONS_URL <- "https://marineregions.org/rest"
-API_EXT <- "json" # sets the return format for every MarineRegion API query (json or xml)
+API_EXT <- "json" # règle le format de réponse pour toutes les requêtes API MarineRegion (json ou xml)
 ```
 
 
-## Get Gazetteer Records by Name
-By Name, with 'like' (defaults to True if not included)¶
-When the argument for 'like' (bool) is not provided, the gazetteer API will match everything before and after your search term.
+## Obtenir les entrées de l index géographique par nom
+Par nom, avec 'like' (par défaut à True s'il n'est pas inclus) ¶
+Lorsque l'argument pour 'like' (booléen) n'est pas fourni, l'API du répertoire géographique correspondra à tout ce qu il y a avant et après votre terme de recherche
 
-The argument 'fuzzy' (bool) will use the Levenshtein algorithm to match nearest records. By default this is set as 'false'
+L argument 'fuzzy' (bool) utilisera l algorithme Levenshtein pour faire correspondre l entrée la plus proche. Par défaut, il est réglé comme 'false'
 
-Note: Boolean values should be set using 'true' or 'false' R strings.
+Note: les valeurs bolléennes devraient être utilisées comme chaîne de caractère telles que 'true' or 'false'.
 ```{r}
-# Quering using the country Belgian as the location value
+# Faites une requête en utilisant la Belgique comme localisation
 location <- 'Belgian'
 
 # /getGazetteerRecordsByName.json
@@ -41,10 +44,10 @@ req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByName.',API_EXT,'/',U
 fromJSON(content(req, 'text'))
 ```
 
-### By Name, without 'like'
-When setting like to false ensure you provide the exact name of Gazetteer resource as it appears in MarineRegions
+### Par nom, sans 'like'
+Quand vous définissez like sur 'false' assurez-vous de fournir le nom exact de la ressource du répertoire géographique tel qu'il apparaît dans MarineRegions.
 ```{r}
-# Setting the location and like value
+# Définir les valeurs de localisation et de like 
 location = "Belgian 24 NM"
 like = 'false' #Defaults to true
 
@@ -53,34 +56,38 @@ req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByName.',API_EXT,'/',U
 fromJSON(content(req, 'text'))
 ```
 
-### Get Multiple Gazetteers By Name
-Multiple name search entries can be sent to the getGazetteerRecordsByNames.json call, but first, you must provide the boolean values for both the like and fuzzy query slot path.
+### Obtenir  plusieurs index géographiques par Name
+Plusieurs entrées de recherche de nom peuvent être envoyées à l'appel getGazetteerRecordsByNames.json, mais vous devez d'abord fournir les valeurs booléennes de like et de fuzzy pour le chemin de l'emplacement de requête.
+
 ```{r}
-# Lets keep the defaults for like and fuzzy
+# Gardon les valeurs par défaut de like et fuzzy
 like <- 'false' 
 fuzzy <- 'false'
 
-# build a slash separated list of names to query by
+# Construisez une liste de noms séparés par des barres obliques pour créer la requête
+
 names <- URLencode("Canadian Coast/Mexican Coast/Norwegian Coast")
  
 req = GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByNames.',API_EXT,'/',like,'/',fuzzy,'/',names,'/'))
 fromJSON(content(req, 'text'))
 ```
 
-### Getting Gazetteers by Sources¶
-Querying the getGazetteerSources will provide you will a list of MarineRegions source information. There are no arguments or query strings needed for this API call.
+### Obtenir les index géographiques par sources¶
+Interroger getGazetteerSources vous fournira une liste des informations sources de MarineRegions. Aucun argument ou chaîne de requête n'est nécessaire pour cet appel d API.
+
 ```{r}
-# Getting the list of gazetteer sources
+# Obtenir la liste des sources d index géographique
 
 # /getGazetteerSources
 req = GET(paste0(MARINE_REGIONS_URL,'/getGazetteerSources.',API_EXT,'/'))
 fromJSON(content(req, 'text'))
 ```
 
-### Get Gazetteers from a Specific Source
-If you know the name exact source name you can use that value in the call to getGazetteerRecordsBySource to return only the gazetteer records from that source.
+### Obtenir les index géographiques par sources spécifiques
+Si vous connaissez le nom exact du nom de la source, vous pouvez utiliser cette valeur dans l appel à getGazetteerRecordsBySource pour renvoyer uniquement les entrées du répertoire géographique de cette source.
+
 ```{r}
-# Picking only the gazetteer records for SAIL
+# Récupérer seulement les entrées d index géographique pour SAIL
 source <- "SAIL"
 
 # /getGazetteerSources
@@ -89,19 +96,19 @@ sail_locations <- fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# Drawing a map of all the locations listed by source SAIL
+# Dessinez une carte de tous les emplacements répertoriés par la source SAIL
 popup <- paste0(sail_locations$preferredGazetteerName, "<br/>MRGID: ", sail_locations$MRGID)
 
-# For every point that has a location lets map those points to the map 
+# Placez chaque point qui a un emplacement sur la carte
 leaflet() %>%
   addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
   addCircleMarkers(popup=popup, lat = sail_locations$latitude, lng =  sail_locations$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300", clusterOptions = markerClusterOptions())
 ```
-## Get Gazetteer by MGRID
-A MarineRegions MGRID is used to query for a specific Gazetteer record.
+## Obtenir les index géographiques par MGRID
+Une MarineRegions MGRID est utilisé pour rechercher une entrée spécifique du répertoire géographique.
 
-### Gazetteer Records
-Returns the gazetteer records for a given MGRID
+### Entrées de l index géographique
+Renvoie les enregistrements du répertoire géographique pour un MGRID donné
 
 ```{r}
 mgrid <- "3293" # MGRID for Belgian Exclusive Economic Zone
@@ -111,8 +118,8 @@ req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordByMRGID.',API_EXT,'/',m
 fromJSON(content(req, 'text'))
 ```
 
-### Gazetteer Names¶
-Just returns the name values for a MGRID
+### Noms de de l index géographique
+Renvoie les noms pour MGRID
 
 ```{r}
 mgrid <- "3293" # MGRID for Belgian Exclusive Economic Zone
@@ -122,14 +129,15 @@ req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerNamesByMRGID.',API_EXT,'/',mg
 fromJSON(content(req, 'text'))
 ```
 
-### Get Gazetteer Relations by MGRID
-Returns related Gazetteer records given a valid MGRID.
+### Obtenir les relations entre répertoire géographique par MGRID
 
-Relations are defined by the type variable.
+Renvoie les entrées de répertoire géographique associés avec un MGRID valide.
+
+Les relations sont définies par le type de variable.
 
 
 ```{r}
-# What are all the marine regions related to Belgian Exclusive Economic Zone?
+# Quelles sont les régions marines liées à la zone économique exclusive belge?
 mgrid <- "3293"
 direction <- 'both' #Must be upper, lower, or both
 rtype <- 'all' #Must be either partof,partlypartof,adjecentto,similarto,administrativepartof,influencedby or all
@@ -141,17 +149,17 @@ related_belgian_eco_zone
 ```
 
 ```{r}
-# Drawing a map of the gazetteer records related to the Belgian Exclusive Economic Zone
+# Dessinez une carte des registres de répertoire géographique liés à la zone économique exclusive belge
 popup <- paste0(related_belgian_eco_zone$preferredGazetteerName, "<br/>MRGID: ", related_belgian_eco_zone$MRGID)
 
-# For every point that has a location lets map those points to the map 
+# Plaçez les points sur la carte 
 leaflet() %>%
   addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
   addCircleMarkers(popup=popup, lat = related_belgian_eco_zone$latitude, lng =  related_belgian_eco_zone$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300")
 ```
 
-### Get Gazetteer WMSes
-The WMS records contain URLs to layers that can be used in GIS packages such as ArcGIS and QGIS.
+### Obtenir les WMS du répertoire géographique
+Les entrées WMS contiennent des URL menant aux couches utilisable dans QGIS ou ArcGIS.
 ```{r}
 mgrid <- "3293"
 
@@ -160,30 +168,30 @@ req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerWMSes.',API_EXT,'/',mgrid,'/'
 fromJSON(content(req, 'text'))
 ```
 
-### Get Gazetteer Records by Latitude/Longitude
-Return Gazetteer records within the default radius of a specific lat/lon
+### Obtenir les entrées de répertoire géographique par latitude / longitude
+Renvoie les entrées de répertoire géographique dans le rayon par défaut d'une latitude / longitude spécifique
 
 ```{r}
 lat = 45.0 #Double, from 0 to 90
 lon = 0 #Double, from -180 to 180
-#Default radius is 5 degrees for both lat and lon
+#Le rayon par défaut est de 5 degrés pour lat et lon
 
 req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerRecordsByLatLong.',API_EXT,'/',lat,'/',lon,'/'))
 map_points <- fromJSON(content(req, 'text'))
 map_points
 
-# Drawing a map of the gazetteer records related to the Belgian Exclusive Economic Zone
+# Dessinez une carte des registres de répertoire géographique liés à la zone économique exclusive belge
 popup <- paste0(map_points$preferredGazetteerName, "<br/>MRGID: ", map_points$MRGID)
 
-# For every point that has a location lets map those points to the map 
+# Plaçez les points sur la carte
 leaflet() %>%
   addTiles('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png') %>%
   addCircleMarkers(popup=popup, lat = map_points$latitude, lng =  map_points$longitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300")
 
 ```
 
-### Get Gazetteer Types
-Retrieve all the Gazetteer Types along with their descriptions.
+### Obtenir les types de répertoire géographique
+Récupère tous les types de répertoire géographique ainsi que leurs descriptions.
 ```{r}
 #/getGazetteerTypes
 req <- GET(paste0(MARINE_REGIONS_URL,'/getGazetteerTypes.',API_EXT,'/'))
