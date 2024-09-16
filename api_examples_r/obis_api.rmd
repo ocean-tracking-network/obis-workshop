@@ -5,35 +5,37 @@ output:
 ---
 ![](obis.jpg)
 
-# OBIS RESTful API Walkthrough
-OBIS REST API can be accessed using r httr package.
+# Démonstration de l API RESTful OBIS
+API (Application Programming Interface) est un protocole qui permet de faire communiquer un logiciel A (le fournisseur) et un logiciel B (le consommateur), en suivant une série de méthodes définies par A (des règles de langage, en quelque sorte)
 
-the Recommended version of r is 3.6+ which can be downloaded from https://www.r-project.org/
+REST ou RESTful (REpresentational State Transfer), est un style d architecture pour les systèmes distribués bâti sur des APIs permettant de centraliser des services partagés. Les réseaux relient des logiciels technologiquement hétérogènes, ce qui justifie l’utilisation d’un langage commun au niveau des échanges (souvent du JSON ou du XML). la philosophie REST est plutôt connue sur le Web grâce au protocole HTTP qui valide la majorité de ses contraintes.
+
+Vous aurez besoin du package {httr} pour accéder à l API  REST  OBIS (Ocean Biodiversity Information System).
+
+Nous vous recommandons d utiliser des version R 3.6+ (https://www.r-project.org/)
 
 ```{r}
-# Import the required R packages
+# Importer les packages nécessaires
 library(httr)
 library(jsonlite)
 library(dplyr)
 ```
 
 
-Initialize the base URL for OBIS. This variable will be used for every API call
+Récupérer l URL de base pour OBIS. Elle sera utilisée pour chaque requête API
 ```{r}
 OBIS_URL <- "https://api.obis.org/v3"
 ```
 
 ## OCCURRENCE
-OBIS occurrence data API takes several variables to return the relevant occurrence record data. 
+L API OBIS occurrence data nécessite plusieurs variables pour retourner les données d occurrence enregistrées qui nous intéressent.
 
-#### Designing Query Strings 
-Creating such a long query strings are prone to errors and are difficult to debug when an issue occurs.
-
-Using a r list along with the httr library we can simplify the process for creating complicated URL queries.
-
+#### Conception de chaînes de requête
+La création de longues chaînes de requête engendre souvent des erreurs difficiles à identifier et à résoudre.
+L utilisation d une `list()` R avec {httr} permet de simplifier le processus de création de requêtes URL complexes.
 ```{r}
-# Here a complete list of terms we'll use to create our occurrence query string.
-# The list includes definitions from https://api.obis.org/#/Occurrence/get_occurrence with a few expanded where needed.
+# Voici une liste complète des termes que nous allons utiliser pour créer la chaîne de requête des occurrences.
+# La liste inclue des définitions provenant de https://api.obis.org/#/Occurrence/get_occurrence avec quelques explications supplémentaires où cela est nécessaire.
 
 query <- list("scientificname" = NULL, # (string) Scientific name. Leave empty to include all taxa.
               "taxonid"= NULL, # (string) Taxon AphiaID.
@@ -62,49 +64,48 @@ query <- list("scientificname" = NULL, # (string) Scientific name. Leave empty t
               )
 ```
 
-Note: When setting booleans for RESTful APIs in R, use a string lowercase 'true' or 'false' value instead of R's built in variable types
+Note: Lorsque vous définissez des valeurs booléennes (TRUE, FALSE, NA) pour les API RESTful dans R, respectez la casse en minuscule («true» ou «false»).
 
 ```{r}
-# Let's use our query to get occurrence data
+# Utilisons notre requête pour obtenir les données d'occurrence
 request <- GET(paste0(OBIS_URL,'/occurrence?'), query=query)
 
-# Using R's jsonlite library convert the returned content into a dataframe
+# Utilisez {jsonlite} pour convertir le contenu retourné par la requête dans un format dataframe
 dataframe <- fromJSON(content(request, 'text'))
 dataframe$results
 ```
 
-Looking over the data output, it's clear we need to further define our query to get only the results we need.
-```{r}
-#Rewrite the query to take all the 2014 Atlantic Salmon occurrence records
+L examen des données en sortie nous indique la nécessité de rafiner notre requête pour obtenir uniquement les résultats dont nous avons besoin.
+#Réécrire la requête pour récupérer toutes les entrées d'occurrence de saumon atlantique de 2014
 query <- list("scientificname" = "Salmo salar",
               "startdate"= "2014-01-01",
               "enddate"= "2014-12-31",
               "size"=300)
 request <- GET(paste0(OBIS_URL,'/occurrence?'), query=query)
 
-# get Atlantic salmon occurrences 
+# Récupérer les occurrences de saumon atlantique dans R
 dataframe <- fromJSON(content(request, 'text'))
 dataframe$results
 ```
-## Returning geometery from occurrance queries
-
-OBIS's Occurrence API calls includes additional arguments that return geometry objects from you intial occurance queries.
-
- - `/occurrence/centroid` - return a central point for the queried occurrence records
- - `/occurrence/grid/{precision}` - returns a bounding volume that contains all queried occurrence records.
- - `/occurrence/grid/{precision}/kml` - return bounding volume in kml format
- - `/occurrence/grid/points` - return unique points of all the occurrence records returned from the query
- - `/occurrence/grid/point/{x}/{y}` - return only occurrence records at a specific location point
- - `/occurrence/grid/point/{x}/{y}/{z}` - return only occurrence records at a specific location/depth point
- - `/occurrence/tile/{x}/{y}/{z}` - not entirely sure about this one.
+## Récupération des attributs géométriques et géographiques depuis la requête d occurrence
+l appel de l API OBIS d occurrence inclut des arguments additionnels qui retourne des objets géométriques et géographiques depuis la requête initiale d occurrence.
+Des informations complètes incluant les paramètres spécifiables se trouvent : https://api.obis.org/
+Rapidement:
+ - `/occurrence/centroid` - va chercher le centroïde associé aux occurrences requises
+ - `/occurrence/grid/{precision}` - va chercher une grille qui englobe toutes occurrences requises
+ - `/occurrence/grid/{precision}/kml` - va chercher cette même grille au format kml
+ - `/occurrence/grid/points` - va chercher des points uniques de toutes les occurrences requises
+ - `/occurrence/grid/point/{x}/{y}` - va chercher seulement les occurrence à un point spécifié GeoJSON
+ - `/occurrence/grid/point/{x}/{y}/{z}` - va chercher seulement les occurrence à un point spécifié (incluant une spécification de la profondeur)
+ - `/occurrence/tile/{x}/{y}/{z}` - va chercher les occurrences pour une tuile GeoJSON
 
 ## TAXON
-Basic WoRMS functionality used to retrieve taxonomic data. 
+Fonctionnalité basique de WoRMS (marinespecies.org) pour retrouver des informations taxonomiques.
 
-For more complete suite of queries, use the WoRMS RESTful API directly. Examples for using WoRMS can be found in the worms_api.rmd - WoRMS Walkthrough
+FDes exemple d utilisation de WoRMS peuvent être trouvées dans le fichier worms_api.rmd - WoRMS Walkthrough
 
 ```{r}
-# Let's query use the taxon function using the scientificname Salmo salar (Atlantic salmon)
+# Faisons une requête en utilisant la fonction taxon avec pour exemple le nom scientifique du saumon atlantique (Salmo salar)
 
 scientific_name <- 'Salmo salar'
 
@@ -113,21 +114,21 @@ request <- GET(paste0(OBIS_URL,'/taxon/', scientific_name))
 fromJSON(content(request, 'text'))$results
 ```
 ```{r}
-# We get back a taxonID which is the same as a WoRMS AphiaID
-# now feed that id into the same call to taxon
+# Nous récupérons un taxonID équivalant au AphiaID de WoRMS
+# Si l on utilise cet ID dans le même appel au taxon:
 taxonID <- 127186
 
 # taxon/
 request <- GET(paste0(OBIS_URL,'/taxon/', taxonID))
 fromJSON(content(request, 'text'))$results
 ```
-Note: The Taxon API call works with both scientific name and taxonIDs
+Note: Les appels avec l API taxon fonctionne donc avec les noms scientifiques et les taxonIDs
 
 # Checklist
-The checklist call returns the taxonomic records fitting the given criteria. A complete list of query terms are described can be found here: https://api.obis.org/#/Checklist
+L appel checklist renvoie des entrées taxonomiques correspondant aux critères donnés. Pour plus de détails, voir: https://api.obis.org/#/Checklist
 
 ```{r}
-# Given a taxonID value the checklist call will return the same results as the taxon API call
+# Avec un taxonID donné, l appel checklist va retourner le même résultat que l appel API taxon
 taxonID = 127186
 
 # checklist
@@ -135,7 +136,7 @@ request <- GET(paste0(OBIS_URL,'/checklist?taxonid=', taxonID))
 fromJSON(content(request, 'text'))$results
 ```
 ```{r}
-# We can change the query to only include the records listed on the International Union for Conservation of Nature 
+# On peut changer la requête pour n inclut que les entrées listées rouges dans l IUCN (International Union for Conservation of Nature)
 # (IUCN) redlist:
 
 # checklist/redlist
@@ -145,7 +146,7 @@ fromJSON(content(request, 'text'))$results
 
 
 ```{r}
-# Also with the taxonID entered, we can check if the Chilean Angelshark is on the IUCN redlist
+# On peut également vérifier avec les entrées taxonID si les anges de mer chiliens sont dans cette liste rouge
 taxonID = 271665
 
 query <- list("size"=2000,
@@ -156,11 +157,11 @@ request <- GET(paste0(OBIS_URL,'/checklist'), query=query)
 data <- fromJSON(content(request, 'text'))$results
 data %>% select(scientificName, taxonID, category)
 ```
-From the results we can observe that the CHilean Angelshark is listed in the IUCN redlist with the category CR (Critically Endangered)
+Les résultats nous indiquent que l'ange de mer chilien est considéré comme en danger critique d'extinction (CR (Critically Endangered)) sur la liste rouge IUCN
 
 ```{r}
-# The last checklist call we can make checks the IUCN redlist for records that have been recently added
-# note: this call takes more time to process or will fail if a startdate is not provided
+# On peut également vérifier quelles sont les entrées qui ont été ajoutées dernièrement sur la liste rouge (IUCN)
+# note: tattention, cet appel peut prendre du temps et ne fonctionnera pas si l on ne fournit pas de startdate
 query <- list("startdate"="2020-01-01")
 
 # /checklist/newest
@@ -170,39 +171,39 @@ data$results
 ```
 
 ## Node
-Retrieves information on a OBIS Node, given the correct node ID value. If the node ID is not provided, the *node* API call will return all OBIS node records.
+Récuprère l information sur un noeuds OBIS en donnant l ID valide de ce noeud. Si l on ne fournit pas cet ID, l appel API *node* renvoie tous les noeuds enregistrés dans OBIS.
 
 ``` {r}
-# Assume we don't know which node to query. Let's return all the OBIS node values
+# Supposons que nous ne sachions pas quel nœud interroger. Allons chercher l ensemble des noeuds OBIS
 query <- list("size"="50")
 
-# node
+# noeuds
 request <- GET(paste0(OBIS_URL,'/node'), query=query)
 nodes <- fromJSON(content(request, 'text'))
 
-# count the amount of OBIS nodes
+# Nombre de noeuds OBIS
 paste0("Total Nodes: ", nodes$total)
 ```
 ```{r}
-# Now let's print the node dataframe
+# Affichons le dataframe des noeuds
 nodes$results
 ```
 
 
 ```{r}
-# Let's plug OTN's Node ID back into the node API call
+# Entrons l'ID de noeud d OTN dans l appel d API
 OTN_nodeID <- '68f83ea7-69a7-44fd-be77-3c3afd6f3cf8'
 
-# node
+# noeuds
 request <- GET(paste0(OBIS_URL,'/node/', OTN_nodeID))
 otn_node <- fromJSON(content(request, 'text'))
 otn_node$results
 ```
 
-## Node Activities
-Gets a OBIS node's reported activities. Activities show additional partnerships and initiatives a node is involved in.
+## Activité des noeuds
+Obtenir un rapport d activité des noeuds d OBIS. Les activités permettent de montrer les partenariats et les initatives dans lesquels les noeuds sont impliqués
 ```{r}
-# Getting the activity records for the Antarctic OBIS node
+# Obtenir les activités du noeud Antarctic OBIS: d abord, intégrer l ID
 Antarctic_nodeID = 'dc6c6ea2-83f5-4b18-985a-9efff6320d69'
 
 #/node/{id}/activities
@@ -211,11 +212,11 @@ node_activities <- fromJSON(content(request, 'text'))
 node_activities$results
 ```
 
-## Dataset
-Dataset API call queries information about OBIS and OBIS node held datasets.
+## Jeu de données
+Les requêtes API dataset récupèrent des informations sur les jeux de données stockés par OBIS et ses noeuds.
 
 ```{r}
-# We are now check the amount of obis held datasets on species listed on the IUCN Red List
+# Vérifions maintenant le nombre de jeux de données stockés dans OBIS qui contiennent des espèces sur la liste rouge IUCN
 # /dataset?redlist=true
 request <- GET(paste0(OBIS_URL,'/dataset?redlist=true'))
 redlist_datasets <- fromJSON(content(request, 'text'))
@@ -224,15 +225,15 @@ paste('Number of Red List datasets in OBIS:', redlist_datasets$total)
 ```
 
 ```{r}
-# 1650+ is quite the amount of datasets say we only want a single specific dataset
+# Au total, plus de 1650 jeux de données en contiennent, cela fait beaucoup. Concentrons nous sur un jeu de données
 
-# Narrow down the results to only include records with "green tutles" in the title column
+# Réduisons les résultats pour n inclure que les entrées de tortue verte dans la colonne title
 only_tutles <- redlist_datasets$results %>% filter(grepl('green turtle',title))
 only_tutles
 ```
 
 ```{r}
-# If we know the dataset ID beforehand we can query OBIS directly for it's dataset record
+# Si nous connaissons l ID du jeu de donnée, nous pouvons lancer la requête directement pour les entrées de ce jeu de données
 dataset_id <- "ca78b5b9-d4e4-4ab0-bbe1-9f75659769e2"
 
 # dataset/id
@@ -242,32 +243,29 @@ dataset <- fromJSON(content(request, 'text'))
 dataset$results
 ```
 
-Note: The url value returned in dataset calls point to the dataset's IPT location.
-
-## Institute
-Returns OBIS held institution records.
-
-Institution records provide brief summaries including id, name, country, parent institution, children institutions and the number of records held in obis.
+Note: l url retournée dans l appel au jeu de données pointe vers la localisation de l IPT du jeu de donnée
+## Institut
+Renvoie vers les instituts qui possèdent les jeux de données. institut : fournit un bref résumé de ces institutions, incluent leur nom, ID, pays et le nombre d entrées enregistrées dans OBIS
 ```{r}
 request <- GET(paste0(OBIS_URL,'/institute'))
 institutes <- fromJSON(content(request, 'text'))
-# Only select id and name values. sort the output
+# Séléctionne uniquement les iIDs et noms. Trie le résultat
 institutes$results %>% select(id, name) %>% arrange(id)
 ```
 
 ```{r}
-# Using Ocean Tracking Network's Institution ID 18704 let's query this ID directly
+# Exemple en utilisant l ID de l institut Ocean Tracking Network's Institution = 18704
 institution_id = 18704
 
 # institute/id
 request <- GET(paste0(OBIS_URL,'/institute/', institution_id))
 fromJSON(content(request, 'text'))
 ```
-## Area / Country
-Area records represent a list of areas reported in OBIS. Country RESTful call returns a list of country records in the OBIS system.
+## Zone / Pays
+Area présente la liste des zones pour lesquelles des donnnées ont été rapportées dans OBIS. L appel RESTful country fait de même pour les pays.
 
 ```{r}
-# Let pull all of the OBIS Area records
+# Sortons toutes les zones enregistrées dans OBIS
 
 # /area
 request <- GET(paste0(OBIS_URL,'/area'))
@@ -275,27 +273,27 @@ fromJSON(content(request, 'text'))
 ```
 
 ```{r}
-# And now the same for countries
+# De même pour les pays
 
 # /country
 request <- GET(paste0(OBIS_URL,'/country'))
 fromJSON(content(request, 'text'))
 ```
-Does not look like the country query by default returns the complete set of data. Adding a integer after the country query can be used to request countries based on id value
+Il ne semble pas que la requête country retourne par défaut l'ensemble des données. Ajouter un nombre entier après la requête peut être utilisée pour réclamer un pays en se basant sur son ID
 ```{r}
-# return the country record with id 1
+# Renvoie les données pour le pays ID = 1
 
 # /country/1
 request <- GET(paste0(OBIS_URL,'/country/1'))
 fromJSON(content(request, 'text'))
 ```
 
-## Statistics
-Get basic statistics on all OBIS datasets. Every call to statics can use the same query string arguments as the calls to occurrence, institute, dataset and the checklist
+## Statistiques
+Obtenir les statistiques élémentaires ou l ensemble des jeux de données OBIS. Chaque appel peut utiliser les mêmes chaînes d argument que pour les appels d occurrence, d institut, de jeu de donnée..
 
 ```{r}
-# statistics query should always include query values to narrow down the summary return.
-# Only take the 2020 statistics
+# La requête statistics devrait toujours inclure des valeurs permettant de raffiner le résumé résultant de cette commande.
+#Statistiques pour 2020
 query <- list('startdate'='2020-01-01',
               'enddate'='2021-01-01')
 
@@ -303,5 +301,3 @@ query <- list('startdate'='2020-01-01',
 request <- GET(paste0(OBIS_URL,'/statistics'), query=query)
 fromJSON(content(request, 'text'))
 ```
-
-

@@ -3,7 +3,7 @@ title: "install_packages.Rmd"
 output: html_document
 ---
 
-Install required packages
+Installez les {packages}, ils contiennent toutes les `fonction` que nous utiliserons pendant ce workshop
 
 ```{r}
 install.packages("devtools")
@@ -26,7 +26,7 @@ install.packages("rnaturalearthdata")
 ```
 
 
-Test install step by loading the packages
+Puis chargez ces packages pour vérifier s il sont correctement installés
 
 ```{r}
 library(httr)

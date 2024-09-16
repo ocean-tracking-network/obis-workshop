@@ -13,7 +13,7 @@ editor_options:
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-Install packages:
+Installez les packages:
 
 ```{r}
 install.packages("dplyr")
@@ -25,7 +25,7 @@ install.packages("rnaturalearthdata")
 
 ```
 
-Loading packages:
+Chargez les packages:
 
 ```{r, message = FALSE, warning = FALSE}
 library(dplyr)
@@ -41,18 +41,18 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 filename <- "occurrence.csv"
 ```
 
-## Data preparation
+## Préparation des données
 
-First create a global grid using `sf::st_make_grid`:
+Créez d abord une grille globale en utilisant `sf::st_make_grid`:
 
 ```{r, message = FALSE, warning = FALSE}
 geom <- st_sfc(st_polygon(list(rbind(c(-180, -90), c(180, -90), c(180, 90), c(-180, 90), c(-180, -90)))), crs = 4326)
 grid <- st_as_sf(st_make_grid(geom, cellsize = 1, square = TRUE))
 ```
 
-This notebook uses a A CSV file with occurrence records exported from the database database. Download the latest export from [https://obis.org/manual/access](https://obis.org/manual/access). Only the coordinate columns are read using `readr::read_csv()`.
+Ce notebook utilise un fichier .csv avec les entrées d occurrence exportées depuis le la base de données database. Téléchargez le dernier export depuis [https://obis.org/manual/access](https://obis.org/manual/access). Seules les colonnes de coordonnées sont lues avec `readr::read_csv()`.
 
-**Warning**: because intersection is very slow in `sf` I'm rounding coordinates here instead of doing an actual intersection with the grid. If you are not using a 1 degree rectangular grid, adjust accordingly.
+**Attention**: parce que les intersections  sont très lentes dans {sf}, vous pouvez arrondir les coordonnées ici au lieu de faire une vraie intersection avec la grille. Si vous n'utilisez pas une grille rectangulaire de  1 degré, ajustez en fonction.
 
 ```{r, message = FALSE, warning = FALSE}
 df <- read_csv(filename, col_type = cols_only(decimallongitude = col_double(), decimallatitude = col_double()))
@@ -64,14 +64,14 @@ df_sf <- df %>%
   st_as_sf(coords = c("decimallongitude", "decimallatitude"), crs = 4326)
 ```
 
-Now we can join the point layer with the grid.
+Vous pouvez maintenant joindre la couche de point sur la grille.
 
 ```{r, message = FALSE, warning = FALSE}
 grid_density <- grid %>%
   st_join(df_sf)
 ```
 
-## Map
+## Carte
 
 ```{r, message = FALSE, warning = FALSE}
 ggplot() + 

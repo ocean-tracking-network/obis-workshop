@@ -2,36 +2,36 @@ library(tidyverse)
 library(worrms)
 library(obistools)
 
-## Read in the Excel file and sheet that we need to compare
+## Lire dans le fichier et la feuille excel à comparer
 
 scinames_df <- readxl::read_excel('data/nafo2016presencedata.xlsx', sheet='IDmatch')
 
-# check the column names
+# Vérifier la colonne des noms
 names(scinames_df)
 
-## Get the unique scientificnames
+## Récupérer le nom scientifique unique
 names_to_search <- scinames_df %>% distinct(`Scientific Name`)
 
-## Check they're ok.
+## Vérifier.
 names_to_search
 
-## This time they were already unique! 
-#    Query WoRMS for the sciname and aphiaID for each.
+## Dans cet exemple, ils étaient déjà uniques! 
+#    Faire une requête WoRMS pour les sciname et aphiaID de chacun.
 
 scinames_matched <- scinames_df %>% 
                       mutate(sciNameID = obistools::match_taxa(`Scientific Name`, ask=FALSE)$scientificNameID) %>%
                       mutate(aphiaID = paste0('urn:lsid:marinespecies.org:taxname:', aphiaID))
 
-## Compare the aphiaID to the returned aphiaID 
-##    (did it return multiple accepted/unaccepted? may have to fix)
+## Comparer les aphiaID avec les aphiaID récupérés
+##   Y a t il des résultats multiples accepted/unaccepted, voir les possibles corrections
 
 View(scinames_matched)
 
 scinames_matched %>% filter(aphiaID != sciNameID | is.na(sciNameID)) %>% write_csv('data/questionable_sciname_aphiaID_pairs.csv')
 
-## NOT PART OF SCRIPT: testing match_taxa - it was being funny.
+## HORS SCRIPT: testing match_taxa - pour la beauté du geste.
 
 obistools::match_taxa('Hymenodora glacialis', ask=FALSE)
-## Verify that status == accepted for each
+## Verifier que le status == accepted pour chacun
 
-## Verify that scinames and vernaculars in excel file match the returned values
+## Verifier aue les noms cientifiques et vernaculaires sdu fichier excel correspondent aux valeurs récupérées

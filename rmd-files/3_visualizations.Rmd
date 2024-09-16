@@ -2,12 +2,13 @@
 title: "robis_visualizations"   
 output: html_document
 ---
-# Visualizing OBIS data
+# Visualiser les données OBIS
 <!--source:https://obis.org/manual/visualization/-->
 
-#### Introduction to the ggplot2 package
+#### Introduction au package {ggplot2}
 
-For making static maps in R, we are going to use the ggplot2 package. Getting some Southern sunfish occurrences from OBIS:
+Pour faire des cartes statique dans R, nous utiliserons le package {ggplot2}.
+Alloez chercher des données d' occurrence de poisson lune de Ramsay dans OBIS:
 
 ```{r}
 install.packages("devtools")
@@ -26,7 +27,8 @@ molram <- occurrence("Mola ramsayi")
 
 ```
 
-Now create a simple scatter plot using the occurrence coordinates. Use the ggplot() function to initialize a new plot, and geom_point() to create a scatter plot. The aes() function is used to create a mapping (aesthetic) between our data and the visual properties, which is then passed to the geom_point() function. Here decimalLongitude is used as the x coordinate and decimalLatitude as the y coordinate:
+Créez un diagramme de dispersion (nuage de point) en utilisant les coordonnées des occurences.
+Initialisez une base de travail avec `ggplot()` et utilisez `geom_point()` pour y projeter le nuage de point. `aes()` associe les esthétiques que l on veut utiliser à une variable à représenter (notez que les coordonnées x et y sont aussi considérés comme des esthétiques). Ici la longitude en abscisse et la latitude en ordonnée provenant de la table molram.
 
 ```{r molram}
 library(ggplot2)
@@ -34,7 +36,7 @@ ggplot() + geom_point(data = molram, aes(x = decimalLongitude, y = decimalLatitu
 
 ```
 
-Let’s now add a world polygon to our map. ggplot2 provides a map_data() function to load maps of countries, continents or the entire world (this requires the maps package as well). Besides the world polygon, we also pass an aesthetic and a fill parameter to the geom_polygon() function. We will use coord_fixed() to make sure the axes have the same scale. You may want to pass a different value to this function if you are mapping areas close to the poles:
+On peut désormais ajouter un polygone du monde à notre carte. `map_data()` permet de charger des cartes de pays, continents ou du monde entier (attention, il faut aussi charger le package {maps}). Comme le polygone et les points sont projetés sur la même base de travail, il faut utiliser `coord_fixed()`  pour s assurer que les axes ont la même échelle. N hésitez pas à adapter les valeurs à entrer dans cette fonction pour tenir compte de la latitude de votre travail (équateur, pôles ...):
 
 ```{r molram}
 library(maps)
@@ -47,7 +49,7 @@ ggplot() +
  
 ```
  
- Let’s now zoom in a bit by passing xlim and ylim to coord_fixed:
+ Zoomons en passant de xlim and ylim à coord_fixed:
 
 ```{r world molram}
 ggplot() +
@@ -57,7 +59,7 @@ ggplot() +
 
 ```
  
- There are many ways to change color scales in ggplot, look into scale_color_brewer() for example:
+ Il y a plusieurs façon de personnaliser les échelles de couleur dans ggplot (p. ex pour les daltoniens), voir `scale_color_brewer()`:
 
 ```{r world molram}
 ggplot() +
@@ -69,7 +71,8 @@ ggplot() +
 ```
 <!--this ones doesnt show anything much, and the aes is messy-->
 
-The geom_bar() function can be used to create a graph. To try this, first fetch a bit more data from OBIS, and create a simple bar graph:
+`geom_bar()` peut être utilisée pour créer un graphique.
+Pour essayer, allons d' abord chercher un peu de données depuis OBIS et créons un simple diagramme en bâton:
 
 ```{r}
 dor <- occurrence("Doridoidea")
@@ -78,7 +81,7 @@ ggplot() +
  geom_bar(data = dor,stat='count', aes(x = year), binwidth = 2)
 ```
 
-Binning the data by year doesn't always display nicely, so to give a better display, we will create a new column using dplyr mutate(), and do a bit of math to create 10 year bins for the data.
+Regrouper les données par années n est pas toujours du meilleur effet visuel. Pour améliorer cela, nous allons créer une nouvelle colonne en utilisant `mutate()` de {dplyr} et faire un peu de calcul pour créer des regroupement décennaux pour les données.
 
 ```{r dor}
 library(dplyr)
@@ -91,15 +94,15 @@ ggplot() +
 
 ```
 
-By adding fill to the aesthetic, we can color the bars based on the family, and using xlim() we can zoom in a bit:
+En définissant le paramètre fill= à l esthétique (`aes()`), on peut colorer les bâtons en fonction de la famille et en jouant sur xlim() on peut zoomer un peu:
 
 ```{r binned_dor}
 ggplot() +
  geom_histogram(data = binned_dor, stat="count", aes(x = yearBins, fill = family)) +
  scale_fill_brewer(palette = "Spectral") +
- xlim(c(1950, 2017)) 
+ xlim(c(1950, 2017))
 ```
-Moving to a new feature, in case you need to split up your graph based on one or more factors, you can use facet_grid(). For example:
+Passons à une autre fonctionnalité. Vous pouvez, en utilisant `facet_grid()`, séparer votre diagramme en fonction d un ou plusieurs facteurs:
 
 ```{r}
 lag <- occurrence("Lagis")
@@ -112,13 +115,13 @@ ggplot() +
 
 ```
  
-# Creating interactive maps using the leaflet package
+# {leaflet} ou les joies des cartes intéractives
 
-The leaflet package is a wrapper around the popular Leaflet JavaScript library for interactive maps. Install the package as follows:
+Le package {leaflet} englobe la librairie populaire Leaflet JavaScript pour les cartes intéractives. N oubliez pas d installer le package:
 
-##### A simple map
+##### Une carte simple
 
-Initialize a map with leaflet() and add the default OpenStreetMap basemap using addTiles(), to change the basemap, pick any of the tile providers here and pass the URL to addTiles():
+Initialisez une carte avec `leaflet()` et ajoutez le fond de carte par défaut OpenStreetMap avec `addTiles()`, pour changer le fond de carte, choisissez un fournisseur de tuile ici et entrez l URL dans `addTiles()` :
 :
 
 ```{r}
@@ -126,7 +129,7 @@ library(leaflet)
 
 leaflet() %>% addTiles("https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}")
 ```
-Now fetch some data using the robis package, and add circle markers to the map using addCircleMarkers(). This function accepts lng, lat, as well as some styling patameters:
+Allons maintenant chercher des données avec {robis} et ajoutons des marqueurs correspondants aux centroides avec la fonction `addCircleMarkers()`. Cette fonction accepte des longitudes et latitudes ainsi que certains paramètres stylistiques:
 
 
 ```{r}
@@ -139,9 +142,9 @@ leaflet() %>%
   addCircleMarkers(popup = popup,lat = abrseg$decimalLatitude, lng = abrseg$decimalLongitude, radius = 3.5, weight = 0, fillOpacity = 1, fillColor = "#cc3300")
 
 ```
-##### Multiple species
+##### PLusieurs espèces
 
-In the example below, data is retrieved and visualized for two cod species.
+Dans l exemple ci dessous, les données sont récupérées et visualisées pour deux espèces de morue.
 ```{r}
 pac <- occurrence("Gadus macrocephalus", startdate = '1993-01-01',enddate= '1995-01-01')
 

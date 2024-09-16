@@ -4,9 +4,10 @@ output: html_document
 ---
 <!--source:https://obis.org/manual/accessr-->
 
-# Installing the robis package
+# Installer le package {robis}
 
-To be able to install the robis R package from the source control system GitHub, first install the devtools package. This package is available from CRAN, the online R package repository.(Sources: https://obis.org/manual/accessr/, https://iobis.github.io/robis/articles/getting-started.html). While we're here, let's install all the packages we'll need from CRAN.
+1- Le package {devtools} disponible sur le CRAN (dépôt de package R en ligne) doit être installé en premier pour permettre l'installation du package {robis} depuis GitHub (Sources: https://obis.org/manual/accessr/, https://iobis.github.io/robis/articles/getting-started.html).
+2- Puisque nous en sommes à l'installation de package sur le CRAN, allons chercher tous les packages dont nous aurons besoin.
 ```{r setup, include=FALSE}
 install.packages("devtools")
 install.packages("ggplot2")
@@ -14,29 +15,29 @@ install.packages("dplyr")
 library(devtools)
 ```
 
-Once devtools is installed, the install_github() function can be used to install robis:
+Lorsque {devtools} est installé, la fonction install_github() peut être utilisée pour installer {robis}:
 ```{r, include=FALSE}
 install_github("iobis/robis")
 ```
 
-Include robis and the other packages we need in this notebook
+Inclure {robis} et les autres packages que nous allons utiliser dans ce notebook
 ```{r} 
 library(robis)
 library(ggplot2)
 library(dplyr)
 ```
 
-After loading the robis package, take a look at some of the documentation:
+Après avoir chargé {robis}, regardons sa documentation:
 
 ```{r}
 help(package = "robis")
 ?occurrence 
 ```
 
-# Fetching occurrences
-Fetching all occurrences for a taxon
+# Aller chercher des occurrences
+Aller chercher toutes les occurrences pour un taxon donné (par exemple Pterois volitans) grâce à la fonction occurence()
 
-To fetch all occurrences for a taxon, pass a taxon name or vector of taxon names to the occurrence() function:
+On peut chercher ces occurrences grâce au nom du taxon sous forme de vecteur:
 
 ```{r}
 ptevol <- occurrence("Pterois volitans")
@@ -44,56 +45,58 @@ ptevol <- occurrence("Pterois volitans")
 View(ptevol)
 ```
 
-Alternatively, occurrences can be fetched by AphiaID:
+On peut également chercher ces occurrences grâce au AphiaID:
 ```{r}
 taxid <- occurrence(taxonid = 293683)
 
 View(taxid)
 ```
 
-##### Applying a polygon filter
+##### Appliquer un filtre de type polygone
 
-The occurrence() function accepts a geometry parameter, which can be used to filter occurrences geographically. This argument must be formatted as WKT (well known text representation). OBIS has a map tool which makes it easy to create WKT strings by clicking a map (https://obis.org/maptool/). 
+La fonction occurence() accepte des paramètres géométriques qui peuvent être utilisés afin de filtrer les occurences en fonction de leur position géographique. Cet argument doit être formaté comme un WKT (well known text representation https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry). OBIS possède un outil cartographique qui facilite la création de chaîne de caractère WKT par un simple clique sur une carte (https://obis.org/maptool/). 
 
-Let’s see if we have any data for the Perhentian and Redang Islands:
+Allons voir si nous avons des données en provenance des îles Perhentian et Redang:
 ```{r}
 islands <- occurrence(geometry = "POLYGON ((102.68921 6.05862, 102.57111 5.95346, 103.07785 5.49980, 103.25226 5.62555, 103.07648 5.87970, 102.68921 6.05862))")
 
 View(islands)
 ```
 
-The map_leaflet() function allows us to create a simple interactive map
+La fonction map_leaflet() nous permet de créer une carte intéractive simple
 
 ```{r islands}
 map_leaflet(islands)
 ```
-##### Applying a depth filter
+##### Appliquer un filtre de profondeur
 
-Occurrences between certain depth levels can be selected by using the startdepth and enddepth parameters. For example, to find shallow records of the Orange roughy (a deep sea fish which is being commercially exploited), do:
+On peut sélectionner les occurrences provenant d'une profondeur ou d'une classe de profondeur ciblée grâce aux paramètres startdepth et endepth. 
+Par exemple, on peut retrouver les enregistrement les moins profonds d Hoplostèthes oranges (l hoplostèthe orange, revendu sous le nom empereur, est un poisson vivant dans la zone bathyale et est ciblé par la pêche industrielle) en tapant:
 ```{r}
 roughy_shallow <- occurrence("Hoplostethus atlanticus", enddepth = 400)
 
 map_leaflet(roughy_shallow) 
 ```
 
-##### Applying a date filter
+##### Appliquer un filtre de date
 
-To filter occurrences by date, use the startdate and enddate arguments. Make sure to use the correct date format:
+De la même manière que pour la profondeur, on peut utiliser la date comme filtre avec les arguments startdate et enddate. 
+/!\ Attention aux formats de date à utiliser (aaaa-mm-jj):
 ```{r}
 lionfish_native <- occurrence("Pterois volitans", enddate = "1980-01-01")
 
 map_leaflet(lionfish_native)
 ```
 
-# Exploring occurrence data
-A quick look at your dataset
+# Explorer les données d occurrences
+Coup d'oeil rapide à votre jeu de données
 
-The first thing you want to do when exploring a dataset is checking which columns you have:
+La première chose à faire lors de l'exploration d un jeu de données est de vérifier ses colonnes:
 ```{r islands}
 names(islands)
 ```
 
-Next, use table() to create contingency tables to find out which values are present in some columns of interest:
+Ensuite, utiliser table() pour créer une table de contingence afin de trouver quelles valeurs sont présentes dans certaines colonnes d'intérêt.
 
 ```{r islands}
 table(islands$phylum)
@@ -101,14 +104,14 @@ table(islands$phylum)
 table(islands$family, islands$phylum)
 ```
 
-##### Visualizing occurrences over time
+##### Visualiser les occurrences en fonction du temps
 
-It’s always interesting to know how dataset records are distributed over time. In order to be able to visualize this, we need a column with the year when occurrences were recorded. Occurrences downloaded from the mapper or obtained using robis have a yearcollected column, but if your data does not include a year column, you may need to parse the eventDate and extract the year from it. eventDates can be parsed to dates using as.Date(), and the year can be extracted with format():
+Il est toujours intéressant de regarder la distribution temporelle des entrées de jeu de données. Afin de les visualiser, il nous faut une colonne contenant les années d'entrée des occurrences. Les occurrences téléchargées depuis le mappeur ou obtenus en utilisant {robis} ont une colonne nommée yearcollected. Si cette variable est inexistante dans votre jeu de données, il faut créer une colonne d année en récupérant l information depuis la colonne enventDates en utilisant la fonction  d'analyse de date as.Date(), puis en l extrayant avec la fonction format(). N hésitez pas a utiliser ?as.Date ou ?format pour obtenir plus d information depuis l aide R:
 
 ```{r islands}
 table(islands$year)
 ```
-The ggplot2 package can be used to create nice visualizations. We’ll go into ggplot2 in later chapters, for now just install the package and run the code below to produce a bar plot showing the distribution of occurrences over time:
+Le package {ggplot2} est un superbe outil de visualisation. Nous approfondirons notre voyage dans {ggplot2} plus loin dans ce chapitre. Pour le moment, vérifiez que vous avez bien installé le package puis lancez la commande ci-dessous pour produire un diagramme en barre montrant la distribution des occurrences au cours du temps:
 
 ```{r islands}
 ggplot() + 
@@ -118,9 +121,9 @@ ggplot() +
 ```
 
 
-##### Checklists
+##### Liste de contrôle
 
-The checklist() function returns all taxa observed for a given set of filters.
+La fonction checklist() renvoie tous les taxons observés pour un ensemble de filtres.
 
 ```{r}
 ?checklist
@@ -128,22 +131,22 @@ The checklist() function returns all taxa observed for a given set of filters.
 checklist("Semelidae")
 ```
 
-Just like the occurrence() function, checklist() accepts WKT geometries:
+Tout comme la fonction occurrence(), la fonction checklist() accepte les géométries WKT:
 
 ```{r}
 checklist(geometry = "POLYGON ((2.59689 51.16772, 2.62436 51.14059, 2.76066 51.19225, 2.73216 51.20946, 2.59689 51.16772))")
 ```
 
 
-##### Measurements and facts
+##### Mesures ou faits associés
 
-The package also provides access to MeasurementOrFact records associated with occurrences. When calling occurrence(), MeasurementOrFact records can be included by setting mof = true.
+Le package donne également accès aux entrées MeasurementOrFact associées aux occurences. Pour inclure les données de MeasurementOrFact il faut paramétrer: mof = TRUE dans `occurence()`.
 ```{r}
 occ <- occurrence("Abra tenuis", mof = TRUE)
 
 View(occ)
 ```
-MeasurementOrFact records are nested in the occurrence, but the measurements() function allows you to extract them to a flat data frame. Use the fields parameter to indicate which occurrence fields need to be preserved in the measurements table.
+Les données de MeasurementOrFact sont nichées dans occurrence, mais la fonction `measurements()` permet de les extraire vers leur propre data frame. Utilisez le paramètre fields =  pour indiquer les champs d occurrence  devant être conservés dans la table des mesures.
 
 ```{r occ}
 mof <- measurements(occ, fields = c("scientificName", "decimalLongitude", "decimalLatitude"))
@@ -151,9 +154,9 @@ View(mof)
 ```
 
 
-# Processing occurrence data
+# Traitement des données d occurrence
 
-We will use the dplyr package to further manipulate the occurrence data retrieved from OBIS.
+Nous utiliserons le package {dplyr} pour manipuler les données d occurrence récupérées sur OBIS.
 ```{r}
 lag <- occurrence("Lagis")
 
@@ -163,9 +166,10 @@ table(lag$species)
 ```
 
 
-##### Filtering
+##### Filtrer
 
-The filter() function can be used to filter occurrences based on one or more properties. For example, to only keep occurrences of Lagis australis, do:
+La fonction filter() peut être utilisée pour filtrer les occurrences en se basant sur une ou plusieurs propriétés.
+Par exemple, pour garder uniquement les occurrences de Lagis australis:
 ```{r lag}
 lagaus <- lag %>% filter(species == "Lagis australis")
 
@@ -174,9 +178,9 @@ map_leaflet(lagaus)
 str(lag)
 ```
 
-Notice the pipe operator %>%. This operator allows us to link different operations together, where the results of one function are passed on to the next.
+Remarquez l opérateur pipe %>% (https://juba.github.io/tidyverse/10-dplyr.html, section 10.3). Avec le pipe l’ordre des opérations correspond à l’ordre naturel de leur exécution, et on n’a pas besoin de créer d’objet intermédiaire ou d emboîter plusieurs fonctions les unes dans les autres (peu lisible).
 
-Here is another example where only occurrences belonging to the RSMP Baseline Dataset datasets are selected:
+Voici un autre exemple où seules les occurrences appartenant aux jeux de données du RSMP Baseline Dataset sont sélectionnées:
 
 ```{r lag}
 rsmp <- lag %>% filter(grepl("RSMP Baseline Dataset", datasetName))
@@ -185,43 +189,45 @@ rsmp <- lag %>% filter(grepl("RSMP Baseline Dataset", datasetName))
 
 map_leaflet(rsmp)
 ```
-Note that the MeasurementOrFact fields can be used as parameters to the occurrence() function. For example, to only get occurrences with associated biomass measurements:
+Notez que le champ MeasurementOrFact peut être utilisé comme paramètres de la fonction occurrence. 
+Par exemple, nous obtenir uniquement les occurrences avec des mesures de biomasses associées:
 ```{r}
 occurrence("Abra tenuis", mof = TRUE, measurementtype = "biomass") %>%
   measurements()
 ```
 
 
-##### Selecting columns
-
-The select() function is used to select or deselect columns. To select just the decimalLongitude and decimalLatitude fields for example, do:
+##### Sélectionner des colonnes
+La fonction select() sélectionne ou désélectionne des colonnes. 
+Pour sélectionner uniquement les champs decimalLongitude et decimalLatitude:
 ```{r lagaus}
 lagaus %>% select(decimalLongitude, decimalLatitude)
 ```
-From this results, distinct coordinates can be obtained using the distinct() function:
+A partir de ce résultat, des coordonnées distintes peuvent être obtenues en utilisant la fonction distinct():
 
 ```{r lagaus}
 lagaus %>% select(decimalLongitude, decimalLatitude) %>% distinct()
 ```
 
-This can be simplified to:
+En simplifiant:
 
 ```{r lagaus}
 
 lagaus %>% distinct(decimalLongitude, decimalLatitude)
 ```
 
-In the following example the decimalLongitude and decimalLatitude columns are selected as well, but by checking column names for “decimal”:
+Dans l exemple suivant les colonnes decimalLongitude et decimalLatitude sont également sélectionnées, mais en vérifiant les colonnes dont le noms commence par decimal:
 
 ```{r lagaus}
 lagaus %>% select(starts_with("decimal"))
 ```
 
-In order to remove columns, add a minus sign before the column name.
+Pour supprimer une colonne, il suffit d ajouter le signe moins devant le nom de la colonne.
 
-##### Summarizing
+##### Summarizing, en français dans le texte
 
-To aggregate data and create summary statistics, we can use the group_by() and summarize() functions. This example groups the occurrences by species, and then counts the records per group and calculates min, max and median longitude and latitude:
+Pour regrouper les données et créer un résumé de statistiques descriptives, on peut utiliser les fonctions group_by() and summarize(). 
+Pour regrouper les occurrences par espèces puis compter le nombre d'entrées par groupe et calculer les latitudes et longitudes min, max and median:
 ```{r lag}
 lag %>%
   group_by(species) %>%
@@ -235,18 +241,20 @@ lag %>%
     maxlat = round(max(decimalLatitude))
   )
 ```
-##### Sorting
+##### Trier
 
-To sort data, use arrange(). Column names can be wrapped in desc() to sort in descending order. This first shows the earliest and then the last few records of the Lagis dataset:
+La fonction arrange() permet de trier les données. Les noms de colonnes peuvent être compilés dans desc() pour les trier dans l ordre décroissant. 
+Ici on montre 1- les plus récents et 2- les plus vieux enregistrements de jeux de données de Lagis:
 
 ```{r lag}
 head(lag %>% arrange(eventDate)) %>% select(eventDate, decimalLongitude, decimalLatitude, datasetName)
 
 head(lag %>% arrange(desc(eventDate))) %>% select(eventDate, decimalLongitude, decimalLatitude, datasetName)
 ```
-##### Mutating
+##### Muter
 
-mutate() is used to add extra columns. So in order to add a year column based on the eventDate, do:-
+mutate() est utilisé pour ajouter une colonne.
+Pour ajouter une colonne d année basée sur eventDate:
 
 ```{r lag}
 lag_withyear <-lag %>% mutate(year = format(as.Date(eventDate), "%Y"))  

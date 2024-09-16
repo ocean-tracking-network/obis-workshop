@@ -5,32 +5,35 @@ output: html_notebook
 
 ![](worms.png)
 # WoRMS RestAPI Walkthrough
-Provided is a general outline of how the WoRMS Rest API can be accessed using R
+API (Application Programming Interface) est un protocole qui permet de faire communiquer un logiciel A (le fournisseur) et un logiciel B (le consommateur), en suivant une série de méthodes définies par A (des règles de langage, en quelque sorte)
 
-the Recommended version of r is 3.6+ which can be downloaded from https://www.r-project.org/
+REST ou RESTful (REpresentational State Transfer), est un style d architecture pour les systèmes distribués bâti sur des APIs permettant de centraliser des services partagés. Les réseaux relient des logiciels technologiquement hétérogènes, ce qui justifie l’utilisation d’un langage commun au niveau des échanges (souvent du JSON ou du XML). la philosophie REST est plutôt connue sur le Web grâce au protocole HTTP qui valide la majorité de ses contraintes.
+
+On peut accéder à l API REST Worms avec le package {httr}.
+Utilisez des version R is R 3.6 ou plus récentes (https://www.r-project.org/)
 
 ```{r}
-# Import the required R packages
+# Importer les packages requis
 library(httr)
 library(jsonlite)
 library(dplyr)
 library(tidyr)
 ```
 
-Initialize the base URL for WoRMS. This variable is unchanged for every api call 
+Récupérer l URL de base pour WoRMS. Cette variable restera inchangée pour tous les appels API 
 ```{r}
 WORMS_URL <- "https://www.marinespecies.org/rest"
 ```
 
 
-## Getting AphiaIDs
-API calls to retrieve aphiaIDs from the WoRMS system. AphiaIDs are the IDs that link to a specific species in the WoRMS database.
+## Récupérer les AphiaIDs
+Les appels API récupèrent les aphiaIDs depuis le système WoRMS. AphiaIDs sont les IDs qui lient une espèce spécifique à la base de données WoRMS.
 
-## Search for AphiaIDs using vernacular
-Basic search using the WoRMS API to get back a AphiaID from a vernacular name
+## Chercher les AphiaIDs en utilisant les noms vernaculaires
+En utilisant l API WoRMS récupérer les AphiaID depuis une nom vernaculaire
 
 ```{r}
-# Search WoRMS to get the aphiaID using Atlantic salmon as the vernacular input
+# Faire la recherche en utilisant le saumon atlantique (en anglais = Atlantic salmon)
 vernacular <- 'Atlantic Salmon'
 
 # AphiaRecordsByVernacular
@@ -38,11 +41,11 @@ req <- GET(paste0(WORMS_URL,'/AphiaRecordsByVernacular/',URLencode(vernacular)))
 fromJSON(content(req, 'text'))
 ```
 
-### Search using Multilingual vernacular names?
-WoRMS accepts vernacular names in a multitude of difference languages as shown below.
+### Du coup.... les noms vernaculaires en français ?
+Il suffit que ce nom soit connu par la base WoRMS (vu la diversité des noms vernaculaires, ce n est pas toujours le cas).
 
 ```{r}
-# Try in French and see if we get the same aphiaID for 'Saumon atlantique'
+# Essai en français pour 'Saumon atlantique'
 vernacular <- 'Saumon atlantique'
 
 # AphiaRecordsByVernacular
@@ -51,10 +54,10 @@ req <- GET(paste0(WORMS_URL,'/AphiaRecordsByVernacular/',URLencode(vernacular)))
 fromJSON(content(req, 'text'))
 ```
 
-### Searching aphiaID by using scientific name
-Use the API call AphiaRecordsByName to retrieve aphiaID WoRMS records using the scientific name
+### Récupérer les aphiaID avec les noms scientifiques
+Appel API avec AphiaRecordsByName pour récupérer les aphiaID WoRMS à partir de noms scientifiques
 ```{r}
-# Now let's try the scientific name for Atlantic Salmon, 'Salmo salar'
+# Essai avec le saumon atlantique 'Salmo salar'
 scientificName <- 'Salmo Salar'
 
 # AphiaRecordsByName
@@ -62,12 +65,12 @@ req <- GET(paste0(WORMS_URL,'/AphiaRecordsByName/',URLencode(scientificName)))
 fromJSON(content(req, 'text'))
 ```
 
-### Refine AphiaRecordsByName search
+### Raffiner la recherche AphiaRecordsByName
 
 ```{r}
-# The above cell returned more results than needed. Since we know the exact scientific name
-# we are going to add "like=false" to the query,
-# this will exclude all the extra like matched results.
+# La commande précédente renvoie plus de résultats que désiré. Puisque nous connaissons le nom scientifique précis
+# ajoutons à la requête "like=false",
+# Cela permet d exclure les résultats `semblables` en extra.
 scientificName <- 'Salmo Salar'
 like_matched <- 'false'  
 
@@ -78,20 +81,20 @@ req <- GET(paste0(WORMS_URL,'/AphiaRecordsByName/', URLencode(scientificName)), 
 fromJSON(content(req, 'text'))
 ```
 
-### Species Attributes
-Using a valid aphiaID, retrieve species specific attribute data held in WoRMs
+### Attributs d espèces
+Utilisez un aphiaID valide pour récupérer les données d attribut des espèces contenu dans WoRMs
 
 ```{r}
-# Now that we got the valid aphiaID for our Atlantic Salmon species, lets use WoRMS to retrieve some species attributes.
+# Avec l aphiaID valide du saume atlantiqur, utlisez WoRMS pour récupérer les attributs de l espèce.
 salmonID <- 127186 # Atlantic Salmon ID
 req <- GET(paste0(WORMS_URL,'/AphiaAttributesByAphiaID/',salmonID))
 
 attributes <- fromJSON(content(req, 'text'))
 ```
-What is returned is a nested dataframe. Using tidyr unnest we can produce a flat table of all of our species attributes.
+Le résultat est un dataframe imbriqué. En utilisant {tidyr} `unnest` permet de décompresser le dataframe contenant les attributs de l espèce.
 ```{r}
 
-# Running unnest operations for each level of attribute
+# Utilisez la fonction unnest pour chaque niveau d attribut
 attributes %>% unnest(children, names_repair='unique', keep_empty =TRUE) %>% 
   unnest(children, names_repair='unique', keep_empty =TRUE)%>% 
   unnest(children, names_repair='unique', keep_empty =TRUE)%>% 
@@ -99,17 +102,17 @@ attributes %>% unnest(children, names_repair='unique', keep_empty =TRUE) %>%
 
 attributes_unnested
 ```
-Get more info about measurementTypes accepted for a CategoryID
-The call to AphiaAttributeValuesByCategoryID will show all available acceptable values for a given CategoryID
+Obtenez plus d information à propos des measurementTypes acceptés pour une CategoryID
+L appel à AphiaAttributeValuesByCategoryID permet de récupérer toutes les valeurs acceptées disponibles pour une CategoryID
 
-ID Values
-0 = All Attribute Measurement Types
+Valeurs ID
+0 = Tous les attributs Measurement Types
 1 = IUCN Red List Category
-2 = Geologic time periods
+2 = périodes géeologiques
 
 ```{r}
-# Using measurementTypeID = 1 (IUCN Red List Category) 
-# We will show all the accepted values for this category
+# Avec measurementTypeID = 1 (IUCN Red List Category) 
+# Nous pouvons récupérer toutes les valeurs acceptées pour cette catégorie
 CategoryID = 0
 
 # AphiaAttributeValuesByCategoryID
@@ -118,24 +121,24 @@ fromJSON(content(req, 'text'))
 ```
 
 ### Distributions
-Querying for distributions using AphiaDistributionsByAphiaID will return regions where a species has been observed including marineregions.org links.
+En utilisant AphiaDistributionsByAphiaID la requête de distribution permet de récupérer les régions où l espèce visée à été observée (incluant les liens marineregions.org)
 
 ```{r}
-# Lets retrieve the list of distributions on record for Atlantic Salmon, with record status and quality status
+# Récupérez la liste de la distribution du saumon atlantique, cela inclut les statuts d entrée et de qualité
 salmonID <- 127186 # Atlantic Salmon ID
 req = GET(paste0(WORMS_URL, '/AphiaDistributionsByAphiaID/', salmonID))
 distributions <- fromJSON(content(req, 'text'))
 distributions
 ```
 
-### External Identifiers
-Many other Taxonomic databases use their own ID systems to reference species records. Using AphiaExternalIDByAphiaID for a given aphiaID, you can retrieve these external IDs as they are known to WoRMS.
+### Identifiants externes 
+De nombreuses autres bases de données taxonomiques utilisent leur propre système de référence d ID d espèces. Pour un  aphiaID défini, en utilisant  AphiaExternalIDByAphiaID vous pouvez récupérer ces IDs externes car ils sont connus par WoRMS.
 
 
 ```{r}
 salmonID = 127186
   
-# Let's get all the external IDs for Atlantic Salmon from external taxonomic systems known to WoRMS
+# Récupérez tous les IDs externes (mais connus du système WoRNS) pour le saumon atlantique
 external_ids <- list('algaebase' = 'Algaebase species ID',
     'bold' = 'Barcode of Life Database (BOLD) TaxID',
     'dyntaxa' = 'Dyntaxa ID',
@@ -147,7 +150,7 @@ external_ids <- list('algaebase' = 'Algaebase species ID',
     'tsn' = 'ITIS Taxonomic Serial Number',
     'gisd' = 'Global Invasive Species Database')
 
-# Loop and print out all known IDs
+# Créer une boucle pour visualiser tous les IDs connus
 for (ext in names(external_ids)){
   # AphiaExternalIDByAphiaID
   req <- GET(paste0(WORMS_URL,'/AphiaExternalIDByAphiaID/',salmonID,'?type=',ext))
@@ -161,16 +164,16 @@ for (ext in names(external_ids)){
 ```
 
 ## Sources
-Get source and reference data given a valid aphiaID value.
+Récupérez la donnée de source et de référence pour un aphiaID.
 
 ```{r}
-# Now we are going to retrieve all the source reference data Atlantic Salmon
+# Récupérez toutes les sources des données de référence du saumon atlantique
 req <- GET(paste0(WORMS_URL,'/AphiaSourcesByAphiaID/',salmonID))
 fromJSON(content(req, 'text'))
 ```
 
-### Taxonomic data
-Directly query taxonomic data. Source/definitions borrowed from http://www.marinespecies.org/rest/
+### Données taxonomiques
+Sources/définitions empreintées depuis http://www.marinespecies.org/rest/
 ```{r}
 # AphiaChildrenByAphiaID
 req <- GET(paste0(WORMS_URL,'/AphiaChildrenByAphiaID/',salmonID))
@@ -178,7 +181,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# the complete classification for one taxon. This also includes any sub or super ranks.
+# La classification complète d un taxon incluant des sous ou super rangs lorsque présents.
 
 # AphiaClassificationByAphiaID
 req <- GET(paste0(WORMS_URL,'/AphiaClassificationByAphiaID/',salmonID))
@@ -186,7 +189,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# the AphiaID for a given name
+# AphiaID pour un nom scientifique donné
 scientific_name = 'Salmo salar'
 
 # AphiaIDByName
@@ -195,7 +198,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# the name for a given AphiaID
+# Le nom pour un AphiaID donné
 # AphiaNameByAphiaID
 
 req <- GET(paste0(WORMS_URL,'/AphiaNameByAphiaID/',salmonID))
@@ -203,7 +206,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# the complete AphiaRecord for a given AphiaID
+# L AphiaRecord complet pour l AphiaID choisi
 
 # AphiaRecordByAphiaID
 req <- GET(paste0(WORMS_URL,'/AphiaRecordByAphiaID/',salmonID))
@@ -211,7 +214,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# an AphiaRecord for multiple AphiaIDs in one go (max: 50)
+# Un AphiaRecord pour plusieurs AphiaIDs (max: 50)
 aphiaID1 <- 127186 # Atlantic Salmon
 aphiaID2 <- 137116 # Narwhal
 # AphiaRecordsByAphiaIDs
@@ -220,7 +223,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# Lists all AphiaRecords (taxa) that have their last edit action (modified or added) during the specified period
+# Liste tous les AphiaRecords (taxons) qui ont été édité (modifiée ou ajoutée) pendant la période spécifiée
 startdate <- '1998-10-01'
 enddate <- '1999-12-31'
 
@@ -230,7 +233,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# Try to find AphiaRecords using the TAXAMATCH fuzzy matching algorithm by Tony Rees http://www.cmar.csiro.au/datacentre/taxamatch.htm
+# Aller chercher AphiaRecords en utilisant l algorythme de correspondance approximative TAXAMATCH de Tony Rees http://www.cmar.csiro.au/datacentre/taxamatch.htm
 fuzzy_scientific_name = 'Salmon salarr'
 # AphiaRecordsByMatchNames
 req <- GET(paste0(WORMS_URL,'/AphiaRecordsByMatchNames?scientificnames[]=',URLencode(fuzzy_scientific_name)))
@@ -239,7 +242,7 @@ fromJSON(content(req, 'text'))
 
 
 ```{r}
-# For each given scientific name, try to find one or more AphiaRecords
+# Pour chaque noms scientifiques, essayez de trouver au moins un AphiaRecords
 scientific_name1 = 'Salmo salar'
 scientific_name2 =  'Monodon monoceros'
 
@@ -250,7 +253,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# the AphiaRecords for a given taxonRankID (max 50)
+# Les AphiaRecords pour un taxonRankID (max 50)
 rankID <- '220' # Species
 
 # AphiaRecordsByTaxonRankID
@@ -259,14 +262,14 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# all synonyms for a given AphiaID
+# Tous les synonymes pour un AphiaID
 # AphiaSynonymsByAphiaID
 req <- GET(paste0(WORMS_URL,'/AphiaSynonymsByAphiaID/',salmonID))
 fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# taxonomic ranks by their identifier
+# Rangs taxonomiques par leurs identifiants
 rankID = '220' # Species
 # AphiaTaxonRanksByID
 req <- GET(paste0(WORMS_URL,'/AphiaTaxonRanksByID/',rankID))
@@ -274,7 +277,7 @@ fromJSON(content(req, 'text'))
 ```
 
 ```{r}
-# taxonomic ranks by their name
+# Rangs taxonomiques par leurs noms
 # AphiaTaxonRanksByName
 req <- GET(paste0(WORMS_URL,'/AphiaTaxonRanksByName/',salmonID))
 fromJSON(content(req, 'text'))
